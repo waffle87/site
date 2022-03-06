@@ -1,0 +1,76 @@
+/*https://github.com/catppuccin/catppuccin*/
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
+
+:root {
+  --dark: #1e1e2e;
+  --darkish: #575268;
+  --darker: #161320;
+  --blue: #96cdfb;
+  --sky: #89dceb;
+  --yellow: #fae3b0;
+  --peach: #f8bd96;
+  --lavender: #c9cbff;
+  --flamingo: #f2cdcd;
+  --pink: #f5c2e7;
+  --maroon: #e8a2af;
+  --gray: #988ba2;
+}
+
+body {
+  background-color: var(--dark);
+  font-family: 'Open Sans', sans-serif;
+  color: var(--dark);
+  font-size: 18px;
+}
+
+.c1 { /*home*/
+  background-color: var(--lavender);
+}
+
+.c2 { /*dotfiles*/
+  background-color: var(--peach);
+}
+
+.c3 {
+  background-color: var(--yellow);
+}
+
+.c4 { /*configuration*/
+  background-color: var(--blue);
+}
+
+.c5 { /*3d printing*/
+  background-color: var(--maroon); 
+}
+
+.row1 {
+  background-color: var(--flamingo);
+  color: var(--dark);
+  font-size: 18px;
+  padding-bottom: 10px;
+}
+
+::-moz-selection {
+  color: var(--dark);
+  background: var(--yellow);
+}
+
+::selection {
+  color: var(--dark);
+  background: var(--yellow);
+}
+
+i {
+  margin-right: 10px;
+}
+
+a { text-decoration: none; }
+a:link { color: var(--dark); }
+a:visited { color: var(--dark); }
+a:hover { 
+  color: var(--darker);
+  text-decoration: underline;
+}
+
+.gpgkey { font-family: 'Source Code Pro', monospace; }

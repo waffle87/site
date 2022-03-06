@@ -15,6 +15,7 @@
   --pink: #f5c2e7;
   --maroon: #e8a2af;
   --gray: #988ba2;
+  --mauve: #ddb6f2;
 }
 
 body {
@@ -24,15 +25,68 @@ body {
   font-size: 18px;
 }
 
+.btn {
+  border: none;
+  margin: 5px 0 0 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn1 { /*home*/
+  color: var(--lavender);
+}
+
+.btn1:hover {
+  background-color: var(--lavender);
+  color: var(--dark);
+}
+
+.btn2 { /*dotfiles*/
+  color: var(--peach);
+}
+
+.btn2:hover {
+  background-color: var(--peach);
+  color: var(--dark);
+}
+
+.btn3 { /*keyboards*/
+  color: var(--yellow);
+}
+
+.btn3:hover {
+  background-color: var(--yellow);
+  color: var(--dark);
+}
+
+.btn4 { /*configuration*/
+  color: var(--blue);
+}
+
+.btn4:hover {
+  background-color: var(--blue);
+  color: var(--dark);
+}
+
+.btn5 { /*other*/
+  color: var(--maroon);
+}
+
+.btn5:hover {
+  background-color: var(--maroon);
+  color: var(--dark);
+}
+
 .c1 { /*home*/
   background-color: var(--lavender);
+  margin-bottom: 15px;
 }
 
 .c2 { /*dotfiles*/
   background-color: var(--peach);
 }
 
-.c3 {
+.c3 { /*keyboards*/
   background-color: var(--yellow);
 }
 
@@ -53,12 +107,12 @@ body {
 
 ::-moz-selection {
   color: var(--dark);
-  background: var(--yellow);
+  background: var(--mauve);
 }
 
 ::selection {
   color: var(--dark);
-  background: var(--yellow);
+  background: var(--mauve);
 }
 
 i {

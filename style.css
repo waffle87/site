@@ -77,26 +77,25 @@ body {
   color: var(--dark);
 }
 
-.c1 { /*home*/
+.lav {
   background-color: var(--lavender);
   margin-bottom: 10px;
   max-width: 90%;
-
 }
 
-.c2 { /*dotfiles*/
+.peach {
   background-color: var(--peach);
   margin-bottom: 10px;
   max-width: 90%;
 }
 
-.c3 { /*keyboards*/
+.c3 {
   background-color: var(--yellow);
   margin-bottom: 10px;
   max-width: 90%;
 }
 
-.c4 { /*configuration*/
+.blue {
   background-color: var(--blue);
   margin-bottom: 10px;
   max-width: 90%;
@@ -106,6 +105,14 @@ body {
   background-color: var(--maroon); 
   margin-bottom: 10px;
   max-width: 90%;
+}
+
+.col-margins-l {
+  margin-left: 5%;
+}
+
+.col-margins-r {
+  margin-right: 5%;
 }
 
 .row1 {
@@ -138,3 +145,14 @@ a:hover {
 }
 
 .gpgkey { font-family: 'Source Code Pro', monospace; }
+
+.desktop {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.desktop-cont {
+  padding-top: 14px;
+  padding-bottom: 14px;
+  margin-bottom: 15px;
+}

@@ -79,23 +79,33 @@ body {
 
 .c1 { /*home*/
   background-color: var(--lavender);
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  max-width: 90%;
+
 }
 
 .c2 { /*dotfiles*/
   background-color: var(--peach);
+  margin-bottom: 10px;
+  max-width: 90%;
 }
 
 .c3 { /*keyboards*/
   background-color: var(--yellow);
+  margin-bottom: 10px;
+  max-width: 90%;
 }
 
 .c4 { /*configuration*/
   background-color: var(--blue);
+  margin-bottom: 10px;
+  max-width: 90%;
 }
 
 .c5 { /*3d printing*/
   background-color: var(--maroon); 
+  margin-bottom: 10px;
+  max-width: 90%;
 }
 
 .row1 {
@@ -116,7 +126,7 @@ body {
 }
 
 i {
-  margin-right: 10px;
+  margin-right: 5px;
 }
 
 a { text-decoration: none; }

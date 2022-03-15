@@ -16,6 +16,7 @@
   --maroon: #e8a2af;
   --gray: #988ba2;
   --mauve: #ddb6f2;
+  --green: #abe9b3;
 }
 
 body {
@@ -95,12 +96,6 @@ body {
   max-width: 90%;
 }
 
-.blue {
-  background-color: var(--blue);
-  margin-bottom: 10px;
-  max-width: 90%;
-}
-
 .c5 { /*3d printing*/
   background-color: var(--maroon); 
   margin-bottom: 10px;
@@ -136,7 +131,6 @@ i {
   margin-right: 5px;
 }
 
-a { text-decoration: none; }
 a:link { color: var(--dark); }
 a:visited { color: var(--dark); }
 a:hover { 
@@ -155,4 +149,44 @@ a:hover {
   padding-top: 14px;
   padding-bottom: 14px;
   margin-bottom: 15px;
+}
+
+.pic1 {
+  background-color: var(--blue);
+  padding-top: 12px;
+  padding-bottom: 12px;
+  height: 100%;
+}
+
+.tools {
+  line-height: 170%;
+  background-color: var(--green);
+  padding-top: 6px;
+  margin-left: -10px;
+  height: 100%;
+  width: 102.3%;
+}
+
+.dot-r1 {
+  max-width: 91.5%;
+  margin-bottom: 15px;
+}
+
+.sys-info {
+  line-height: 170%;
+  background-color: var(--yellow);
+  padding-top: 6px;
+  height: 100%;
+  width: 102.3%;
+}
+
+.pic2 {
+  background-color: var(--mauve);
+  padding-top: 12px;
+  padding-bottom: 12px;
+  height: 100%;
+}
+
+.idnt {
+  text-indent: 20px;
 }

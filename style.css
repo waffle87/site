@@ -1,6 +1,6 @@
 /*https://github.com/catppuccin/catppuccin*/
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
 
 :root {
   --dark: #1e1e2e;
@@ -17,6 +17,8 @@
   --gray: #988ba2;
   --mauve: #ddb6f2;
   --green: #abe9b3;
+  --white: #d9e0ee;
+  --gray: #6e6c7e;
 }
 
 body {
@@ -138,7 +140,7 @@ a:hover {
   text-decoration: underline;
 }
 
-.gpgkey { font-family: 'Source Code Pro', monospace; }
+.gpgkey { font-family:'Fira Code', monospace; }
 
 .desktop {
   max-width: 100%;
@@ -189,4 +191,32 @@ a:hover {
 
 .idnt {
   text-indent: 20px;
+}
+
+.dot-keys {
+  width: 90%;
+  padding: 8px 20px 15px 20px;
+  margin-bottom: 15px;
+  background-color: var(--maroon);
+}
+
+.kmonad {
+  max-height: 400px;
+  overflow: auto;
+  background-color: var(--dark);
+  color: var(--white);
+  scrollbar-width: none;
+}
+
+code {
+  font-family:'Fira Code', monospace;
+}
+
+.inline {
+  font-size: 16px;
+  color: var(--dark);
+  background-color: rgba(195, 186, 198, 0.5);
+  border-radius: 4px;
+  padding-left: 3px;
+  padding-right: 3px;
 }

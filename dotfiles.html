@@ -57,13 +57,83 @@
             <h4>other</h4>
             <a href="https://github.com/BurntSushi/ripgrep" target="_blank">ripgrep</a><br>
             <a href="https://github.com/slicer69/doas" target="_blank">doas</a><br>
-            <a href="https://github.com/wwmm/easyeffects" target="_blank">easyeffects</a>
+            <a href="https://github.com/wwmm/easyeffects" target="_blank">easyeffects</a><br>
+            <a href="https://linrunner.de/tlp/" target="_blank">tlp</a>
           </div>
         </div>
         <div class="col-8">
           <div class="container rounded pic2">
             <img src="media/dracula.png" class="rounded mx-auto d-block desktop" alt="dracula desktop">
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="container rounded dot-keys">
+      <h2 class="text-center">keymappings</h2>
+      <h4><a href="https://github.com/kmonad/kmonad" target="_blank">kmonad</a></h4>
+      <div class="row">
+        <div class="col-7">
+          <div class="container rounded kmonad">
+            <pre><code>
+(defcfg
+  input  (device-file "/dev/input/by-path/pci-0000:00:14.0-usb-0:5:1.1-event-kbd")
+  output (uinput-sink "My KMonad output"
+  "/run/current-system/sw/bin/sleep 1 && /run/current-system/sw/bin/setxkbmap -option compose:ralt")
+  fallthrough true
+  allow-cmd true
+)
+
+(defalias
+  ctlz (tap-hold 170 z ctl)
+  ctldot (tap-hold 170 KeyDot ctl)
+  sfa (tap-hold 170 a sft)
+  sfcln (tap-hold 170 ; sft)
+  altq (tap-hold 170 q alt)
+  altp (tap-hold 170 p alt)
+  alt1 (tap-hold 170 1 alt)
+  alt0 (tap-hold 170 0 alt)
+  tgnum (layer-toggle num)
+  lt1 (tap-hold 150 spc @tgnum)
+  clipst C-S-v
+)
+
+(defsrc ;;physical layout
+  esc  f1 f2 f3 f4 f5 f6 f7 f8 f9 f10 f11 f12
+  grv  1  2  3  4  5  6  7  8  9  0   -   =  bspc
+  tab  q  w  e  r  t  y  u  i  o  p   [   ]  \
+  caps a  s  d  f  g  h  j  k  l  ;   '   ret
+  lsft z  x  c  v  b  n  m  ,  .  /   rsft up
+  p lctl lalt lmet spc rmet ralt left down rght
+)
+
+(deflayer default
+  _ brdn brup _ _ bldn blup prev pp next mute vold volu
+  _ _ _ _ _ _ _ _ _ _ _ _ _ _
+  _ @altq _ _ _ _ _ _ _ _ @altp _ _ _
+  _ @sfa  _ _ _ _ _ _ _ _ @sfcln _ _
+  _ @ctlz  _ _ _ _ _ _ _  @ctldot _ _ _
+  _ _ _ _ @lt1 @clipst _ _ _ _
+)
+
+(deflayer num
+  _ _ _ _ _ _ _ _ _ _ _ _ _
+  _ _ _ _ _ _ _ _ _ _ _ _ _ _
+  _ @alt1 2 3 4 5 6 7 8 9 @alt0 _ _ _
+  _ ! @ # $ % ^ & * \( \) _ _
+  _ esc tab caps ~ grv left down up rght rctl _ _
+  _ _ _ _ _ _ _ _ _ _
+)
+            </code></pre>
+          </div>
+        </div>
+        <div class="col-5">
+          unfortunately, laptop keyboards can't be replaced with small ergo keyboards, so kmonad is the next best thing
+          (or my laptop's favorite feature). it's quite full featured considering the scope of the project, 
+          with layers, mod-taps, macros, etc. despite the minor lack of documentation, i've been able to recreate my commonly 
+          used layout across my <a href="https://qmk.fm" target="_blank">QMK</a> compatible keyboards. this is mostly based on 
+          a 3x10 layout, with 4 thumb keys. my biggest trouble is not having found a better place for backspace without moving 
+          other keys around. normally this is solved with a split spacebar, or combos, sadly one of the only features kmonad is 
+          missing. attached is my <code class="inline">*.kbd</code> config file which may be useful. 
         </div>
       </div>
     </div>

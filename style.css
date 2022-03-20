@@ -19,6 +19,7 @@
   --green: #abe9b3;
   --white: #d9e0ee;
   --gray: #6e6c7e;
+  --red: #f28fad;
 }
 
 body {
@@ -88,6 +89,12 @@ body {
 
 .peach {
   background-color: var(--peach);
+  margin-bottom: 10px;
+  max-width: 90%;
+}
+
+.blue {
+  background-color: var(--blue);
   margin-bottom: 10px;
   max-width: 90%;
 }
@@ -200,7 +207,7 @@ a:hover {
   background-color: var(--maroon);
 }
 
-.kmonad {
+.block {
   max-height: 400px;
   overflow: auto;
   background-color: var(--dark);
@@ -219,4 +226,25 @@ code {
   border-radius: 4px;
   padding-left: 3px;
   padding-right: 3px;
+}
+
+.r5 {
+  width: 91.5%;
+  margin-bottom: 15px;
+}
+
+.zsh {
+  background-color: var(--lavender);
+  line-height: 180%;
+  padding-top: 8px;
+  padding-bottom: 12px;
+  height: 100%;
+}
+
+.nvim {
+  background-color: var(--sky);
+  line-height: 180%;
+  padding-top: 8px;
+  padding-bottom: 12px;
+  height: 100%;
 }

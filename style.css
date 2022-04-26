@@ -201,7 +201,7 @@ a:hover {
 }
 
 .dot-keys {
-  width: 90%;
+  max-width: 90%;
   padding: 8px 20px 15px 20px;
   margin-bottom: 15px;
   background-color: var(--maroon);
@@ -229,7 +229,7 @@ code {
 }
 
 .r5 {
-  width: 91.5%;
+  max-width: 91%;
   margin-bottom: 15px;
 }
 

@@ -1,0 +1,38 @@
+<html lang="en">
+  <head>
+    <style>
+@font-face {
+  font-family: eightBit;
+  src: url(media/PressStart2P-Regular.ttf);
+}
+body {
+  background: linear-gradient(-50deg, #1e2030, #24273a, #494d64);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  height: 100vh;
+}
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.text {
+  font-family: eightBit;
+  font-size: 150px;
+  background-image: linear-gradient(to right, #f5bde6, #8bd5ca);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  user-select: none;
+}
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+    </style>
+  </head>
+  <body>
+    <div class="container text">404</div>
+  </body>
+</html>

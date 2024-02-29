@@ -1,0 +1,179 @@
+00:00.0 Host bridge: Intel Corporation 3rd Gen Core processor DRAM Controller (rev 09)
+	Subsystem: Apple Inc. 3rd Gen Core processor DRAM Controller
+	Flags: bus master, fast devsel, latency 0
+	Capabilities: <access denied>
+	Kernel driver in use: ivb_uncore
+
+00:02.0 VGA compatible controller: Intel Corporation 3rd Gen Core processor Graphics Controller (rev 09) (prog-if 00 [VGA controller])
+	Subsystem: Apple Inc. 3rd Gen Core processor Graphics Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 29
+	Memory at a0000000 (64-bit, non-prefetchable) [size=4M]
+	Memory at 90000000 (64-bit, prefetchable) [size=256M]
+	I/O ports at 2000 [size=64]
+	Capabilities: <access denied>
+	Kernel driver in use: i915
+
+00:14.0 USB controller: Intel Corporation 7 Series/C210 Series Chipset Family USB xHCI Host Controller (rev 04) (prog-if 30 [XHCI])
+	Subsystem: Intel Corporation 7 Series/C210 Series Chipset Family USB xHCI Host Controller
+	Flags: medium devsel, IRQ 32
+	Memory at a0600000 (64-bit, non-prefetchable) [size=64K]
+	Capabilities: <access denied>
+	Kernel driver in use: xhci_hcd
+
+00:16.0 Communication controller: Intel Corporation 7 Series/C216 Chipset Family MEI Controller #1 (rev 04)
+	Subsystem: Intel Corporation 7 Series/C216 Chipset Family MEI Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 30
+	Memory at a0617100 (64-bit, non-prefetchable) [size=16]
+	Capabilities: <access denied>
+	Kernel driver in use: mei_me
+
+00:1a.0 USB controller: Intel Corporation 7 Series/C216 Chipset Family USB Enhanced Host Controller #2 (rev 04) (prog-if 20 [EHCI])
+	Subsystem: Intel Corporation 7 Series/C216 Chipset Family USB Enhanced Host Controller
+	Flags: medium devsel, IRQ 23
+	Memory at a0616c00 (32-bit, non-prefetchable) [size=1K]
+	Capabilities: <access denied>
+	Kernel driver in use: ehci-pci
+
+00:1b.0 Audio device: Intel Corporation 7 Series/C216 Chipset Family High Definition Audio Controller (rev 04)
+	Subsystem: Intel Corporation 7 Series/C216 Chipset Family High Definition Audio Controller
+	Flags: bus master, fast devsel, latency 0, IRQ 33
+	Memory at a0610000 (64-bit, non-prefetchable) [size=16K]
+	Capabilities: <access denied>
+	Kernel driver in use: snd_hda_intel
+
+00:1c.0 PCI bridge: Intel Corporation 7 Series/C216 Chipset Family PCI Express Root Port 1 (rev c4) (prog-if 00 [Normal decode])
+	Subsystem: Intel Corporation 7 Series/C216 Chipset Family PCI Express Root Port 1
+	Flags: fast devsel, IRQ 16
+	Bus: primary=00, secondary=01, subordinate=01, sec-latency=0
+	I/O behind bridge: [disabled] [16-bit]
+	Memory behind bridge: a0500000-a05fffff [size=1M] [32-bit]
+	Prefetchable memory behind bridge: [disabled] [64-bit]
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:1c.1 PCI bridge: Intel Corporation 7 Series/C210 Series Chipset Family PCI Express Root Port 2 (rev c4) (prog-if 00 [Normal decode])
+	Subsystem: Intel Corporation 7 Series/C210 Series Chipset Family PCI Express Root Port 2
+	Flags: bus master, fast devsel, latency 0, IRQ 17
+	Bus: primary=00, secondary=02, subordinate=02, sec-latency=0
+	I/O behind bridge: [disabled] [16-bit]
+	Memory behind bridge: a0400000-a04fffff [size=1M] [32-bit]
+	Prefetchable memory behind bridge: [disabled] [64-bit]
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:1c.4 PCI bridge: Intel Corporation 7 Series/C210 Series Chipset Family PCI Express Root Port 5 (rev c4) (prog-if 00 [Normal decode])
+	Subsystem: Intel Corporation 7 Series/C210 Series Chipset Family PCI Express Root Port 5
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=00, secondary=03, subordinate=99, sec-latency=0
+	I/O behind bridge: 3000-5fff [size=12K] [16-bit]
+	Memory behind bridge: a0700000-ac9fffff [size=195M] [32-bit]
+	Prefetchable memory behind bridge: aca00000-b89fffff [size=192M] [32-bit]
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+00:1d.0 USB controller: Intel Corporation 7 Series/C216 Chipset Family USB Enhanced Host Controller #1 (rev 04) (prog-if 20 [EHCI])
+	Subsystem: Intel Corporation 7 Series/C216 Chipset Family USB Enhanced Host Controller
+	Flags: bus master, medium devsel, latency 0, IRQ 22
+	Memory at a0616800 (32-bit, non-prefetchable) [size=1K]
+	Capabilities: <access denied>
+	Kernel driver in use: ehci-pci
+
+00:1f.0 ISA bridge: Intel Corporation QS77 Express Chipset LPC Controller (rev 04)
+	Subsystem: Intel Corporation QS77 Express Chipset LPC Controller
+	Flags: bus master, medium devsel, latency 0
+	Capabilities: <access denied>
+	Kernel driver in use: lpc_ich
+
+00:1f.2 SATA controller: Intel Corporation 7 Series Chipset Family 6-port SATA Controller [AHCI mode] (rev 04) (prog-if 01 [AHCI 1.0])
+	Subsystem: Intel Corporation 7 Series Chipset Family 6-port SATA Controller [AHCI mode]
+	Flags: bus master, 66MHz, medium devsel, latency 0, IRQ 31
+	I/O ports at 2098 [size=8]
+	I/O ports at 20bc [size=4]
+	I/O ports at 2090 [size=8]
+	I/O ports at 20b8 [size=4]
+	I/O ports at 2060 [size=32]
+	Memory at a0616000 (32-bit, non-prefetchable) [size=2K]
+	Capabilities: <access denied>
+	Kernel driver in use: ahci
+
+00:1f.3 SMBus: Intel Corporation 7 Series/C216 Chipset Family SMBus Controller (rev 04)
+	Subsystem: Intel Corporation 7 Series/C216 Chipset Family SMBus Controller
+	Flags: medium devsel, IRQ 18
+	Memory at a0617000 (64-bit, non-prefetchable) [size=256]
+	I/O ports at efa0 [size=32]
+	Kernel driver in use: i801_smbus
+
+02:00.0 Network controller: Broadcom Inc. and subsidiaries BCM43224 802.11a/b/g/n (rev 01)
+	Subsystem: Apple Inc. AirPort Extreme
+	Flags: bus master, fast devsel, latency 0, IRQ 17
+	Memory at a0400000 (64-bit, non-prefetchable) [size=16K]
+	Capabilities: <access denied>
+	Kernel driver in use: bcma-pci-bridge
+
+03:00.0 PCI bridge: Intel Corporation DSL3510 Thunderbolt Controller [Cactus Ridge 4C 2012] (rev 03) (prog-if 00 [Normal decode])
+	Subsystem: Device 2222:1111
+	Flags: bus master, fast devsel, latency 0, IRQ 16
+	Bus: primary=03, secondary=04, subordinate=69, sec-latency=0
+	I/O behind bridge: 3000-4fff [size=8K] [16-bit]
+	Memory behind bridge: a0700000-a89fffff [size=131M] [32-bit]
+	Prefetchable memory behind bridge: aca00000-b49fffff [size=128M] [32-bit]
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+04:00.0 PCI bridge: Intel Corporation DSL3510 Thunderbolt Controller [Cactus Ridge 4C 2012] (rev 03) (prog-if 00 [Normal decode])
+	Subsystem: Device 2222:1111
+	Flags: bus master, fast devsel, latency 0, IRQ 24
+	Bus: primary=04, secondary=05, subordinate=05, sec-latency=0
+	I/O behind bridge: [disabled] [32-bit]
+	Memory behind bridge: a0900000-a09fffff [size=1M] [32-bit]
+	Prefetchable memory behind bridge: [disabled] [64-bit]
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+04:03.0 PCI bridge: Intel Corporation DSL3510 Thunderbolt Controller [Cactus Ridge 4C 2012] (rev 03) (prog-if 00 [Normal decode])
+	Subsystem: Device 2222:1111
+	Flags: bus master, fast devsel, latency 0, IRQ 25
+	Bus: primary=04, secondary=06, subordinate=36, sec-latency=0
+	I/O behind bridge: 3000-3fff [size=4K] [16-bit]
+	Memory behind bridge: a0a00000-a49fffff [size=64M] [32-bit]
+	Prefetchable memory behind bridge: aca00000-b09fffff [size=64M] [32-bit]
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+04:04.0 PCI bridge: Intel Corporation DSL3510 Thunderbolt Controller [Cactus Ridge 4C 2012] (rev 03) (prog-if 00 [Normal decode])
+	Subsystem: Device 2222:1111
+	Flags: bus master, fast devsel, latency 0, IRQ 26
+	Bus: primary=04, secondary=37, subordinate=67, sec-latency=0
+	I/O behind bridge: 4000-4fff [size=4K] [16-bit]
+	Memory behind bridge: a4a00000-a89fffff [size=64M] [32-bit]
+	Prefetchable memory behind bridge: b0a00000-b49fffff [size=64M] [32-bit]
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+04:05.0 PCI bridge: Intel Corporation DSL3510 Thunderbolt Controller [Cactus Ridge 4C 2012] (rev 03) (prog-if 00 [Normal decode])
+	Subsystem: Device 2222:1111
+	Flags: bus master, fast devsel, latency 0, IRQ 27
+	Bus: primary=04, secondary=68, subordinate=68, sec-latency=0
+	I/O behind bridge: [disabled] [32-bit]
+	Memory behind bridge: a0800000-a08fffff [size=1M] [32-bit]
+	Prefetchable memory behind bridge: [disabled] [64-bit]
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+04:06.0 PCI bridge: Intel Corporation DSL3510 Thunderbolt Controller [Cactus Ridge 4C 2012] (rev 03) (prog-if 00 [Normal decode])
+	Subsystem: Device 2222:1111
+	Flags: bus master, fast devsel, latency 0, IRQ 28
+	Bus: primary=04, secondary=69, subordinate=69, sec-latency=0
+	I/O behind bridge: [disabled] [32-bit]
+	Memory behind bridge: a0700000-a07fffff [size=1M] [32-bit]
+	Prefetchable memory behind bridge: [disabled] [64-bit]
+	Capabilities: <access denied>
+	Kernel driver in use: pcieport
+
+05:00.0 System peripheral: Intel Corporation DSL3510 Thunderbolt Controller [Cactus Ridge 4C 2012] (rev 03)
+	Subsystem: Device 2222:1111
+	Flags: bus master, fast devsel, latency 0
+	Memory at a0900000 (32-bit, non-prefetchable) [size=256K]
+	Memory at a0940000 (32-bit, non-prefetchable) [size=4K]
+	Capabilities: <access denied>
+

@@ -1,0 +1,173 @@
+<html lang="en">
+  <head>
+    <style>
+    body {
+      max-width: 65%;
+      margin: auto;
+      line-height: 1.5;
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+    code {
+      border: 1px solid grey;
+      border-radius: 3px;
+      color: #434C5E;
+      padding: 1.5px;
+    }
+    pre {
+      background: #f4f4f4;
+      border: 1px solid #grey;
+      color: #434C5E;
+      padding-top: 20px;
+      padding-left: 20px;
+      overflow: auto;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        width: auto\9;
+    }
+    </style>
+  </head>
+  <body>
+    <h2>Gentoo Linux on Macbook Air</h2>
+    This page covers various features, nuances, notes, etc. of my
+    Gentoo system running on a 2012 Macbook Air. This laptop was
+    initially bought as a tinkering project for $150USD. While this
+    is not the most powerful device, it is suitable for all the work
+    I encounter on a daily basis and is used as my primary system. My
+    intentions for this system are reliability and speed above all.
+    With this comes a minimal OS with very few kernel parameters
+    set, extremely fine-tuned USE flags, and a usable system that I
+    am extremely familiar with. All my configuration can be found on
+    my <a href="https://github.com/waffle87/dots/tree/xena"> github</a>.
+    <br><br>
+    <img src="data/gentoo/laptop.jpg" width="672" height="504" alt="laptop image">
+    <br><br>
+
+    <a href="#hardware_features">hardware features</a><br>
+    <a href="#kernel">kernel</a><br>
+    <a href="#bootloader">bootloader</a><br>
+    <a href="#portage">portage</a><br>
+
+    <div id="hardware_features">
+      <h3>Hardware Features</h3>
+      This is a Macbook Air 5,2 (EMC 2559) fit with the following (see <a href="data/gentoo/lspci">lspci</a>, <a href="data/gentoo/lsusb">lsusb</a>)
+      <ul>
+        <li>Intel i7 3667U at 3.2 GHz with 4 cores (<a href="data/gentoo/lscpu">lscpu</a>)</li>
+        <li>8 GB RAM </li>
+        <li>1 TB NVMe Samsung 970 SSD (used adapter)</li>
+        <li>Intel 3rd gen graphics</li>
+        <li>Broadcom BCM43224 802.11 Network Controller</li>
+        <li>Broadcom BCM2046 Bluetooth</li>
+        <li>Broadcom BCM5974 Touchpad</li>
+        <li>Keyboard with backlight</li>
+        <li>13" 1440 x 900 LCD display</li>
+        <li>2x USB 2.0, SD card reader, & Thunderbolt port</li>
+      </ul>
+    </div>
+    <div id="kernel">
+      <h3>Kernel</h3>
+      After spending many hours narrowing down kernel options enabled,
+      I have a 7.8 MB kernel image with ~4000 parameters set. Note,
+      this configuration is very hardware and user specific. I opted
+      for absolutely zero modules since I don't need any out-of-tree
+      hardware support. I also did not configure anything very drastically
+      in either direction, like extreme security, sacraficing usability, etc.
+      I chose to use <a href="https://packages.gentoo.org/packages/sys-kernel/gentoo-sources">gentoo-sources</a>
+      to provide kernel source as it contains some handy patches and is easy
+      to obtain via emerge. A base 6.7 kernel builds locally (remember, 4 
+      cores) in approximately 17 minutes, which is not too much of a pain
+      when troubleshooting on bare metal. For more kernel configuration stuff, 
+      see <a href="kernel.html">here</a>. MICROOOCODEEEE
+    </div>
+    <div id="bootloader">
+      <h3>Bootloader</h3>
+      Spoiler: there is none. For the duration of my time using Linux, I have used GRUB as my
+      bootloader across various systems. In my experience, it's been
+      ok, it does what it needs to, allows for extensive configuration
+      like theming and requiring a password. However, some time ago it
+      went kaput and despite manually setting the root partition in
+      <code>/boot/grub/grub.cfg</code>, it seems the incorrect value
+      was passed to the kernel at boot and the partition could not be found.
+      Every time I would reboot I would have to manually set it (which
+      is a handy trick to know nonetheless)
+      <pre>
+grub> ls
+(hd0) (hd0,gpt0) (hd0,gpt1) (hd0,gpt2)
+grub> ls (hd0,gpt1)/
+vmlinuz vmlinuz.old
+grub> root=(hd0,gpt1)
+grub> linux /boot/vmlinuz root=/dev/sda3
+grub> boot
+      </pre>
+      Since this isn't a multiboot machine or anything, I can simply omit
+      GRUB and expose the kernel image as an EFI stub. First, the
+      following kernel options must be set
+      <pre>
+CONFIG_EFI=y
+CONFIG_EFI_STUB=y
+CONFIG_CMDLINE_BOOL=y
+CONFIG_CMDLINE="root=PARTUUID=... ro"
+      </pre>
+      The root must be set to the <code>PARTUUID</code> value
+      of the root partition. Use <code>blkid</code> to obtain this
+      Once kernel has been recompiled, copy the image to the EFI partition
+      and create a new boot entry. It is also wise to remove unneeded entries
+      to conserve space
+      <pre>
+# efibootmgr -b 1 -B
+# cp arch/x86/boot/bzImage /boot/efi/gentoo/bzImage-x.y.z.efi
+# efibootmgr -c -d /dev/sda -L "gentoo efi stub" -l "\efi\gentoo\bzImage-x.y.z.efi"
+      </pre>
+      Reboot and the bootable system should be shown in Mac's EFI program
+    </div>
+    <div id="portage">
+      <h3>Portage</h3>
+      <h4>Profile</h4>
+      When initially setting this up, I opted for a multilib system as
+      I was still using some 32-bit programs at the time. Since, I have
+      switched to a no-multilib profile. Unlike adding multilib support
+      to a 64-bit only system, going from multilib to no-multilib is
+      quite easy.
+      <pre>
+# eselect profile list
+  ...
+  [12]  default/linux/amd64/17.1/no-multilib (stable)
+  ...
+# eselect profile set 12
+# emerge -auDN @world
+# emerge --depclean
+      </pre>
+      It was pleasant to see 60+ packages removed after the switch. And
+      have much reduced overhead in my system overall.
+      <h4>Compiler</h4>
+      As Clang/LLVM has become more and more stable and is able to compile all
+      packages installed, I chose to switch the default compiler, linker
+      and other bits over from GCC. This is easy enough in <code>/etc/portage/make.conf</code>.
+      <pre>
+CC="clang"
+CXX="clang++"
+AR="llvm-ar"
+NM="llvm-nm"
+RANLIB="llvm-ranlib"
+      </pre>
+      If needed, a GCC fallback environment can be made containing the
+      previous variables, then applied to certain packages which may fail
+      under Clang via adding an entry in <code>/etc/portage/package.env</code>.
+      Some advantagees of using Clang over GCC are slightly faster compilation
+      times and reduced memory usage, and potentially safer binaries overall.
+      <h4>USE Flags</h4>
+      My USE flags and related options are quite minimal. Global flags include
+      <pre>
+USE="alsa bluetooth clang dbus elogind gles2 jpeg png \
+     pulseaudio sdl udev wayland X -systemd -vulkan -nls"
+ACCEPT_LICENSE="*"
+ACCEPT_KEYWORDS="~amd64"
+      </pre>
+      For reference, some primary features used on this system are
+      Wayland, Pipewire, elogind, and OpenRC. Since no-multilib already
+      has very few things enabled, not many flags needed to be disabled.
+    </div>
+  </body>
+</html>

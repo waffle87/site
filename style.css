@@ -1,0 +1,16 @@
+body {
+  max-width: 65%;
+  margin: auto;
+  line-height: 1.5;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-family: monospace;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  width: auto\9;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}

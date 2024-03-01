@@ -1,13 +1,8 @@
 <html lang="en">
   <head>
+    <title>Gentoo</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-    body {
-      max-width: 65%;
-      margin: auto;
-      line-height: 1.5;
-      padding-top: 15px;
-      padding-bottom: 15px;
-    }
     code {
       border: 1px solid grey;
       border-radius: 3px;
@@ -21,11 +16,6 @@
       padding-top: 20px;
       padding-left: 20px;
       overflow: auto;
-    }
-    img {
-        max-width: 100%;
-        height: auto;
-        width: auto\9;
     }
     </style>
   </head>
@@ -49,6 +39,8 @@
     <a href="#kernel">kernel</a><br>
     <a href="#bootloader">bootloader</a><br>
     <a href="#portage">portage</a><br>
+    <a href="#applications">applications</a>
+    <a href="#screenshots">screenshots</a>
 
     <div id="hardware_features">
       <h3>Hardware Features</h3>
@@ -78,8 +70,29 @@
       to provide kernel source as it contains some handy patches and is easy
       to obtain via emerge. A base 6.7 kernel builds locally (remember, 4 
       cores) in approximately 17 minutes, which is not too much of a pain
-      when troubleshooting on bare metal. For more kernel configuration stuff, 
-      see <a href="kernel.html">here</a>. MICROOOCODEEEE
+      when troubleshooting on bare metal. I also chose to omit an initramfs,
+      which means CPU microcode can/should be built directly into the kernel.
+      This can be achieved by first installing <code>sys-firmware/intel-microcode</code>.
+      This is also a good time to add microcode signature to <code>/etc/portage/make.conf</code>
+      <pre>
+$ iucode_tool -S -l /lib/firmware/intel-ucode/*
+iucode_tool: system has processor(s) with signature 0x000306a9
+microcode bundle 1: /lib/firmware/intel-ucode/06-3a-09
+selected microcodes:
+  001/001: sig 0x000306a9, pf_mask 0x12, 2019-02-13, rev 0x0021, size 14336
+# echo 'MICROCODE_SIGNATURES="-s 0x000306a9"' >> /etc/portage/make.conf
+      </pre>
+      CPU's signature is found in bundle 1, so the filename to use is <code>/lib/firmware/intel-ucode/06-3a-09</code>.
+      Ensure the following kernel options are set approximately, where the argument
+      passed to <code>CONFIG_EXTRA_FIRMWARE</code> is the filename of our microcode
+      <pre>
+CONFIG_MICROCODE=y
+CONFIG_FW_LOADER=y
+CONFIG_EXTRA_FIRMWARE="intel-ucode/06-3a-09"
+CONFIG_EXTRA_FIRMWARE_DIR="/lib/firmware"
+      </pre>
+      Check dmesg for microcode output to ensure all was successful. For
+      some more kernel configuration stuff, see <a href="kernel.html">here</a>.
     </div>
     <div id="bootloader">
       <h3>Bootloader</h3>
@@ -168,6 +181,53 @@ ACCEPT_KEYWORDS="~amd64"
       For reference, some primary features used on this system are
       Wayland, Pipewire, elogind, and OpenRC. Since no-multilib already
       has very few things enabled, not many flags needed to be disabled.
+    </div>
+    <div id="applications">
+      <h3>Applications</h3>
+      Packages in my world file can be found in <a href="data/gentoo/pkglist">package list</a>,
+      and list of all system packages in <a href="data/gentoo/pkglist_full">full package list</a>.
+      Some notable utilities I use are below.
+      <ul>
+        <li>
+          <b>Window Manager: </b><a href="https://github.com/swaywm/sway">Sway</a><br>
+        </li>
+        <li>
+          <b>Bar: </b><a href="https://github.com/Alexays/Waybar">Waybar</a>
+        </li>
+        <li>
+          <b>Launcher: </b><a href="https://hg.sr.ht/~scoopta/wofi">Wofi</a>
+        </li>
+        <li>
+          <b>Notifications: </b><a href="https://github.com/emersion/mako">Mako</a>
+        </li>
+        <li>
+          <b>Lock Screen: </b><a href="https://github.com/jovanlanik/gtklock">gtklock</a>
+        </li>
+        <li>
+          <b>Keyboard Manager: </b><a href="https://github.com/rvaiya/keyd">Keyd</a>
+        </li>
+        <li>
+          <b>Terminal: </b><a href="https://github.com/waffle87/st">st (fork)</a>
+        </li>
+        <li>
+          <b>Shell: </b><a href="https://github.com/zsh-users/zsh">ZSH</a>
+        </li>
+        <li>
+          <b>Editor: </b><a href="https://github.com/neovim/neovim">Neovim</a>
+        </li>
+        <li>
+          <b>Document Viewer: </b><a href="https://github.com/pwmt/zathura">Zathura</a>
+        </li>
+      </ul>
+    </div>
+    <div id="screenshots">
+      <h3>Screenshots</h3>
+      <img src="data/gentoo/fetch.png" alt="fetch image">
+      <img src="data/gentoo/nvim.png" alt="neovim image">
+      <img src="data/gentoo/gotop.png" alt="gotop image">
+      <img src="data/gentoo/wofi.png" alt="wofi image">
+      <img src="data/gentoo/zathura.png" alt="zathura image">
+      <img src="data/gentoo/lockscreen.png" alt="gtklock image">
     </div>
   </body>
 </html>

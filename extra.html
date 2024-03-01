@@ -1,4 +1,70 @@
 <html lang="en">
+  <head>
+    <title>Extra Extra</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+    code {
+      border: 1px solid grey;
+      border-radius: 3px;
+      color: #434C5E;
+      padding: 1.5px;
+    }
+    pre {
+      background: #f4f4f4;
+      border: 1px solid #grey;
+      color: #434C5E;
+      padding-top: 20px;
+      padding-left: 20px;
+      overflow: auto;
+    }
+    </style>
+  </head>
   <body>
+    <h2>Some bits & bobs</h2>
+    Here lives some miscellaneous things I reference one or one hundred
+    times and figure they should be gathered somewhere.
+    <h3>wpa_supplicant</h3>
+    Frequently forgotten usage of the <code>wpa_cli</code> tool
+    <pre>
+> scan
+...
+<3>CTRL-EVENT-SCAN-RESULTS
+> scan_results # run once above event appears
+bssid / freq / sig lvl / flags / ssid
+...
+> add_network
+#
+> set_network # ssid "my network"
+> set_network # psk "my psswd"
+# or if no password:
+> set_network # key_mgmt NONE
+> enable_network #
+> save_config
+    </pre>
+    <h3>GPG key signing with Git</h3>
+    Sometime ago I spent hours on a new system on this. When signing a
+    commit, this error would appear
+    <pre>
+gpg: skipped "Foo Bar <Foo_Bar@baz>": No secret key[GNUPG:] INV_SGNR 9 Foo Bar <Foo_Bar@baz>[GNUPG:] FAILURE sign 17
+gpg: signing failed: No secret key
+    </pre>
+    After much searching I came up empty handed. Finally, one thing
+    stood out. The name and email in <code>~/.gitconfig</code> must
+    match exactly to the name and email associated with the GPG key
+    <pre>
+$ gpg --list-secret-keys --keyid-format=long
+/home/foo/.gnupg/pubring.kbx
+-----------------------------
+sec   rsa4096/FC53C827D09C7050 2019-03-24 [SC]
+      ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890
+uid                 [ultimate] Foo Bar <Foo_Bar@baz>
+ssb   rsa4096/2EE67124D597BB00 2019-03-24 [E]
+
+$ head -n 4 .gitconfig
+[user]
+	name = Foo Bar
+	email = Foo_Bar@baz
+	signingkey = FC53C827D09C7050
+    </pre>
   </body>
 </html>

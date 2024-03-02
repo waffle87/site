@@ -30,11 +30,11 @@
     With this comes a minimal OS with very few kernel parameters
     set, extremely fine-tuned USE flags, and a usable system that I
     am extremely familiar with. All my configuration can be found on
-    my <a href="https://github.com/waffle87/dots/tree/xena"> github</a>.
+    my <a href="https://github.com/waffle87/dots/tree/xena" target="_blank"> github</a>.
     <br><br>
-    <img src="data/gentoo/laptop.jpg" width="672" height="504" alt="laptop image">
+    <img src="data/gentoo/laptop.jpg" alt="laptop image">
+    <img src="data/gentoo/laptop_open.jpg" alt="laptop open image">
     <br><br>
-
     <a href="#hardware_features">hardware features</a><br>
     <a href="#kernel">kernel</a><br>
     <a href="#bootloader">bootloader</a><br>
@@ -44,19 +44,33 @@
 
     <div id="hardware_features">
       <h3>Hardware Features</h3>
-      This is a Macbook Air 5,2 (EMC 2559) fit with the following (see <a href="data/gentoo/lspci">lspci</a>, <a href="data/gentoo/lsusb">lsusb</a>)
+      This is a Macbook Air 5,2 (EMC 2559) fit with the following (see <a href="data/gentoo/lspci" target="_blank">lspci</a>, <a href="data/gentoo/lsusb" target="_blank">lsusb</a>)
       <ul>
-        <li>Intel i7 3667U at 3.2 GHz with 4 cores (<a href="data/gentoo/lscpu">lscpu</a>)</li>
+        <li>Intel i7 3667U at 3.2 GHz with 4 cores (<a href="data/gentoo/lscpu" target="_blank">lscpu</a>)</li>
         <li>8 GB RAM </li>
         <li>1 TB NVMe Samsung 970 SSD (used adapter)</li>
         <li>Intel 3rd gen graphics</li>
-        <li>Broadcom BCM43224 802.11 Network Controller</li>
+        <li>Broadcom BCM43224 802.11 Network Controller (bcma-pci-bridge driver)</li>
         <li>Broadcom BCM2046 Bluetooth</li>
         <li>Broadcom BCM5974 Touchpad</li>
         <li>Keyboard with backlight</li>
         <li>13" 1440 x 900 LCD display</li>
         <li>2x USB 2.0, SD card reader, & Thunderbolt port</li>
       </ul>
+      <h4>Modifications</h4>
+      Since 2010, Apple Macbooks have use their proprietary SSDs
+      with non-standard connectors. When I bought this machine, it
+      came with a 128 GB Samgsung "blade" SSD which I was not very
+      keen on keeping. Luckily, there exists <a href="https://www.microconnectors.com/macbook-m-2-nvme-upgrade-adapter/" target="_blank">adapters</a>
+      which simply act as a bridge between a standard M.2 SSD and Apple's
+      connector. Installation was quite easy and the adapter has been
+      reliable since. This laptop also came with what I presume was the
+      original battery, as it lasted about 15 minutes after being charged
+      and would lose power randomly. A suitable <a href="https://www.amazon.com/Replacement-Battery-MacBook-7200mAh-Laptop/dp/B07SDBKDDK" target="_blank">replacement</a>
+      can be found roughly $50USD. With this, I get about 5 hours on
+      a full charge, mostly thanks to <a href="https://github.com/linrunner/TLP" target="_blank">TLP</a>
+      and thermald. Now, if only the memory wasn't soldered directly to
+      the motherboard, or I could find the courage to <a href="https://www.youtube.com/watch?v=aH4n9xBaWxg" target="_blank">replace it</a>.
     </div>
     <div id="kernel">
       <h3>Kernel</h3>
@@ -66,7 +80,7 @@
       for absolutely zero modules since I don't need any out-of-tree
       hardware support. I also did not configure anything very drastically
       in either direction, like extreme security, sacraficing usability, etc.
-      I chose to use <a href="https://packages.gentoo.org/packages/sys-kernel/gentoo-sources">gentoo-sources</a>
+      I chose to use <a href="https://packages.gentoo.org/packages/sys-kernel/gentoo-sources" target="_blank">gentoo-sources</a>
       to provide kernel source as it contains some handy patches and is easy
       to obtain via emerge. A base 6.7 kernel builds locally (remember, 4 
       cores) in approximately 17 minutes, which is not too much of a pain
@@ -91,8 +105,12 @@ CONFIG_FW_LOADER=y
 CONFIG_EXTRA_FIRMWARE="intel-ucode/06-3a-09"
 CONFIG_EXTRA_FIRMWARE_DIR="/lib/firmware"
       </pre>
-      Check dmesg for microcode output to ensure all was successful. For
-      some more kernel configuration stuff, see <a href="kernel.html">here</a>.
+      Check dmesg for microcode output to ensure all was successful.
+      My specific configuation for this machine can be found at
+      <a href="https://raw.githubusercontent.com/waffle87/dots/xena/.config/kernel.config">6.7.4 .config</a>
+
+      For
+      some more kernel related stuff, see <a href="kernel.html">here</a>.
     </div>
     <div id="bootloader">
       <h3>Bootloader</h3>
@@ -184,39 +202,39 @@ ACCEPT_KEYWORDS="~amd64"
     </div>
     <div id="applications">
       <h3>Applications</h3>
-      Packages in my world file can be found in <a href="data/gentoo/pkglist">package list</a>,
-      and list of all system packages in <a href="data/gentoo/pkglist_full">full package list</a>.
+      Packages in my world file can be found in <a href="data/gentoo/pkglist" target="_blank">package list</a>,
+      and list of all system packages in <a href="data/gentoo/pkglist_full" target="_blank">full package list</a>.
       Some notable utilities I use are below.
       <ul>
         <li>
-          <b>Window Manager: </b><a href="https://github.com/swaywm/sway">Sway</a><br>
+          <b>Window Manager: </b><a href="https://github.com/swaywm/sway" target="_blank">Sway</a><br>
         </li>
         <li>
-          <b>Bar: </b><a href="https://github.com/Alexays/Waybar">Waybar</a>
+          <b>Bar: </b><a href="https://github.com/Alexays/Waybar" target="_blank">Waybar</a>
         </li>
         <li>
-          <b>Launcher: </b><a href="https://hg.sr.ht/~scoopta/wofi">Wofi</a>
+          <b>Launcher: </b><a href="https://hg.sr.ht/~scoopta/wofi" target="_blank">Wofi</a>
         </li>
         <li>
-          <b>Notifications: </b><a href="https://github.com/emersion/mako">Mako</a>
+          <b>Notifications: </b><a href="https://github.com/emersion/mako" target="_blank">Mako</a>
         </li>
         <li>
-          <b>Lock Screen: </b><a href="https://github.com/jovanlanik/gtklock">gtklock</a>
+          <b>Lock Screen: </b><a href="https://github.com/jovanlanik/gtklock" target="_blank">gtklock</a>
         </li>
         <li>
-          <b>Keyboard Manager: </b><a href="https://github.com/rvaiya/keyd">Keyd</a>
+          <b>Keyboard Manager: </b><a href="https://github.com/rvaiya/keyd" target="_blank">Keyd</a>
         </li>
         <li>
-          <b>Terminal: </b><a href="https://github.com/waffle87/st">st (fork)</a>
+          <b>Terminal: </b><a href="https://github.com/waffle87/st" target="_blank">st (fork)</a>
         </li>
         <li>
-          <b>Shell: </b><a href="https://github.com/zsh-users/zsh">ZSH</a>
+          <b>Shell: </b><a href="https://github.com/zsh-users/zsh" target="_blank">ZSH</a>
         </li>
         <li>
-          <b>Editor: </b><a href="https://github.com/neovim/neovim">Neovim</a>
+          <b>Editor: </b><a href="https://github.com/neovim/neovim" target="_blank">Neovim</a>
         </li>
         <li>
-          <b>Document Viewer: </b><a href="https://github.com/pwmt/zathura">Zathura</a>
+          <b>Document Viewer: </b><a href="https://github.com/pwmt/zathura" target="_blank">Zathura</a>
         </li>
       </ul>
     </div>

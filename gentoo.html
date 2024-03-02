@@ -2,22 +2,6 @@
   <head>
     <title>Gentoo</title>
     <link rel="stylesheet" href="style.css">
-    <style>
-    code {
-      border: 1px solid grey;
-      border-radius: 3px;
-      color: #434C5E;
-      padding: 1.5px;
-    }
-    pre {
-      background: #f4f4f4;
-      border: 1px solid #grey;
-      color: #434C5E;
-      padding-top: 20px;
-      padding-left: 20px;
-      overflow: auto;
-    }
-    </style>
   </head>
   <body>
     <h2>Gentoo Linux on Macbook Air</h2>
@@ -26,11 +10,10 @@
     initially bought as a tinkering project for $150USD. While this
     is not the most powerful device, it is suitable for all the work
     I encounter on a daily basis and is used as my primary system. My
-    intentions for this system are reliability and speed above all.
-    With this comes a minimal OS with very few kernel parameters
-    set, extremely fine-tuned USE flags, and a usable system that I
-    am extremely familiar with. All my configuration can be found on
-    my <a href="https://github.com/waffle87/dots/tree/xena" target="_blank"> github</a>.
+    intentions for this system are reliability and speed most importantly.
+    With this comes a tidy OS with quite few kernel parameters set, 
+    fine-tuned USE flags, and a usable system that I'm very familiar with.
+    All my configuration can be found on my <a href="https://github.com/waffle87/dots/tree/xena" target="_blank">Github</a>.
     <br><br>
     <img src="data/gentoo/laptop.jpg" alt="laptop image">
     <img src="data/gentoo/laptop_open.jpg" alt="laptop open image">
@@ -39,7 +22,8 @@
     <a href="#kernel">kernel</a><br>
     <a href="#bootloader">bootloader</a><br>
     <a href="#portage">portage</a><br>
-    <a href="#applications">applications</a>
+    <a href="#applications">applications</a><br>
+    <a href="#miscellaneous">miscellaneous</a><br>
     <a href="#screenshots">screenshots</a>
 
     <div id="hardware_features">
@@ -208,6 +192,23 @@ ACCEPT_KEYWORDS="~amd64"
       <ul>
         <li>
           <b>Window Manager: </b><a href="https://github.com/swaywm/sway" target="_blank">Sway</a><br>
+            To omit the need for a display manager and launch directly
+            from a tty, the <code>XDG_RUNTIME_DIR</code> variable needs
+            to be manually set in shell startup file (<code>~/.zshrc</code>)
+            Then to launch Sway, simply add the following as well.
+            <pre>
+if test -z "${XDG_RUNTIME_DIR}"; then
+    export XDG_RUNTIME_DIR=/tmp/${UID}-runtime-dir
+    if ! test -d "${XDG_RUNTIME_DIR}"; then
+        mkdir "${XDG_RUNTIME_DIR}"
+        chmod 0700 "${XDG_RUNTIME_DIR}"
+    fi
+fi
+
+if [ "$(tty)" = "/dev/tty1" ]; then
+  exec dbus-run-session sway
+fi
+            </pre>
         </li>
         <li>
           <b>Bar: </b><a href="https://github.com/Alexays/Waybar" target="_blank">Waybar</a>
@@ -216,19 +217,66 @@ ACCEPT_KEYWORDS="~amd64"
           <b>Launcher: </b><a href="https://hg.sr.ht/~scoopta/wofi" target="_blank">Wofi</a>
         </li>
         <li>
-          <b>Notifications: </b><a href="https://github.com/emersion/mako" target="_blank">Mako</a>
+          <b>Notifications: </b><a href="https://github.com/emersion/mako" target="_blank">Mako</a><br>
+            Requires <code>x11-libs/libnotify</code> and to be manually
+            launched via Sway configuration.
         </li>
         <li>
           <b>Lock Screen: </b><a href="https://github.com/jovanlanik/gtklock" target="_blank">gtklock</a>
         </li>
         <li>
-          <b>Keyboard Manager: </b><a href="https://github.com/rvaiya/keyd" target="_blank">Keyd</a>
+          <b>Keyboard Manager: </b><a href="https://github.com/rvaiya/keyd" target="_blank">Keyd</a><br>
+            For many months, I used <a href="https://github.com/kmonad/kmonad" target="_blank">KMonad</a>,
+            which was suitable for most of what I needed, but lacked a couple
+            things, namely key combos. I stumbled across Keyd which to my
+            surprise did in fact support combos. The <a href="https://raw.githubusercontent.com/waffle87/dots/xena/.config/keyd.conf" target="_blank">configuration syntax</a>
+            is also incredibly simple. After creating an OpenRC service
+            script, it was ready for use. Putting this here as I'm sure
+            I'll need to reference it sometime in the future.
+            <pre>
+#!/sbin/openrc-run
+command=/usr/bin/keyd
+command_background="true"
+pidfile="/run/keyd.pid"
+            </pre>
         </li>
         <li>
           <b>Terminal: </b><a href="https://github.com/waffle87/st" target="_blank">st (fork)</a>
         </li>
         <li>
-          <b>Shell: </b><a href="https://github.com/zsh-users/zsh" target="_blank">ZSH</a>
+          <b>Shell: </b><a href="https://github.com/zsh-users/zsh" target="_blank">ZSH</a><br>
+            Some command line tools I used along with ZSH include
+            <ul>
+              <li>
+                <a href="https://github.com/starship/starship" target="_blank">Starship prompt</a>
+                which provides some useful UI tools like Git repository status.
+              </li>
+              <li>
+                <a href="https://github.com/ajeetdsouza/zoxide" target="_blank">Zoxide cd replacement</a>
+                which has auto-jump functionality meaning <code>cd very/long/long/path</code>
+                can be simplified to <code>cd path</code>.
+              </li>
+              <li>
+                <a href="https://github.com/eza-community/eza" target="_blank">eza ls replacement</a>
+                which mostly offers useful UI improvments like file
+                type icons and empty directories.
+              </li>
+              <li>
+                <a href="https://github.com/sharkdp/bat" target="_blank">bat cat replacement</a>
+                also mostly consists of UI features like syntax
+                highlighting and line numbers.
+              </li>
+              <li>
+                <a href="https://github.com/zsh-users/zsh-autosuggestions" target="_blank">autosuggestions</a>
+                which allows past-run long commands to be completed by
+                tapping right arrow key.
+              </li>
+            <li>
+              <a href="https://github.com/zsh-users/zsh-syntax-highlighting" target="_blank">syntax highlighting</a>
+              does exactly as the name suggests; colours available commands
+              in green, underlines valid paths, etc.
+            </li>
+            </ul>
         </li>
         <li>
           <b>Editor: </b><a href="https://github.com/neovim/neovim" target="_blank">Neovim</a>
@@ -237,6 +285,23 @@ ACCEPT_KEYWORDS="~amd64"
           <b>Document Viewer: </b><a href="https://github.com/pwmt/zathura" target="_blank">Zathura</a>
         </li>
       </ul>
+    </div>
+    <div id="miscellaneous">
+      <h3>Miscellaneous</h3>
+      Another QOL modification for me was disabling the rather obnoxious
+      startup sound present on all Macbooks. To do this, kernel must be
+      built with efivarfs support (<code>CONFIG_EFIVAR_FS</code>) and the
+      partition must be mounted at <code>/sys/firmware/efi/efivars/</code>.
+      Next, the following commands must be run as proper root, not just
+      with elevated permissions. Begin by removing the immutable flag from
+      the appropriate file. Mac's EFI terminal uses the bell code (<code>0x07</code>)
+      to audibly play system messages/warnings. It can be set to null character
+      to silence it. Lastly, replace the immutable flag.
+      <pre>
+chattr -i /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82
+printf "\x07\x00\x00\x00\x00" > /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82
+chattr +i /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82
+      </pre>
     </div>
     <div id="screenshots">
       <h3>Screenshots</h3>

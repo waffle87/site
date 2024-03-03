@@ -1,9 +1,174 @@
 <html lang="en">
   <head>
+    <meta charset="UTF-8">
     <title>Kernel Configuration</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+    code {
+      color: #505050;
+      border: 1px solid grey;
+      border-radius: 3px;
+      padding: 1.75px;
+    }
+
+    pre {
+      background: #f4f4f4;
+      color: #505050;
+      padding: 20px 0px 0px 20px;
+      overflow: auto;
+    }
+    </style>
   </head>
   <body>
-    foo
+    <h2>Kernel Configuration Pseudo Guide</h2>
+    <h4>Current base: <a href="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/?h=linux-6.7.y">Linux 6.7.y</a></h4>
+    This aims to be a guide for configuring a Linux kernel for a modern
+    x86_64 machine containing hardware commonly found in laptops, desktops,
+    and other consumer computers. Note, this guide will sway more minimally,
+    meaning some features that are not strictly required will not be enabled.
+    All features will be built directly into kernel, no modules. This article
+    will not attempt to cover all possible configuration options, as it omits
+    entire sections that are not relevant on such systems, as well as some
+    hardware-specific configuration. Please also refer to the kernel's help text
+    for further information on respective options. I am not a kernel developer
+    and nothing here is guaranteed to be functionally accurate. If you feel
+    anything mentioned is wrong or should be switched around, please contact
+    me. This article assumes some prior knowledge of your system (eg. lspci,
+    lscpu, lsusb, dmidecode, <code>/proc/devices</code>, etc.) and general
+    kernel configuration/installation, such as obtaining source, generating and
+    maintaining <code>.config</code>, methods of configuration, compilation,
+    and installation. Throughout, the following acronyms will be used
+    <ul>
+      <li>STD: recommended/standard feature that generally should be enabled</li>
+      <li>DEV: useful for kernel development/debugging. not for general user</li>
+      <li>VIRT: virtulalisation related options (vhost/vguest)</li>
+      <li>OLD: modern systems generally won't need these options</li>
+      <li>SEC: security related options that either implicate or strengthen system security</li>
+    </ul>
+    <a href="#general_setup">general setup</a><br>
+    <div id="general_setup">
+      <h3>General setup</h3>
+      <ul>
+        <li>Compile Also drivers which will not load (<code>CONFIG_COMPILE_TEST</code>): N, DEV</li>
+        <li>Compile the kernel with warnings as errors (<code>CONFIG_WERROR</code>): Y, STD</li>
+        <li>Local version - append to kernel release (<code>CONFIG_LOCALVERSION</code>): empty, useful for <a href="https://git-scm.com/docs/git-bisect">git bisect</a></li>
+        <li>Automatically append version information (<code>CONFIG_LOCALVERSION_AUTO</code>): N, DEV</li>
+        <li>Build ID Salt (<code>CONFIG_BUILD_SALT</code>): empty, SEC</li>
+        <li>Kernel compression mode: ZSTD or Gzip for compatibility</li>
+        <li>Default init path (<code>CONFIG_DEFAULT_INIT</code>): empty, EMB</li>
+        <li>Default hostnam (<code>CONFIG_DEFAULT_HOSTNAME</code>): empty, entre your machine's name if you'd like</li>
+        <li>System V IPC (<code>CONFIG_SYSVIPC</code>): Y, STD</li>
+        <li>POSIX Message Queues (<code>CONFIG_POSIX_MQUEUE</code>): N, not strictly necessary</li>
+        <li>General notification queue (<code>CONFIG_WATCH_QUEUE</code>): N, not strictly necessary</li>
+        <li>Enable process_vm_readv/writev syscalls (<code>CONFIG_CROSS_MEMORY_ATTACH</code>): N, not strictly necessary</li>
+        <li>uselib syscall (<code>CONFIG_USELIB</code>): N, OLD</li>
+        <li>Auditing support (<code>CONFIG_AUDIT</code>): N, not strictly necessary</li>
+        <li>
+          Timers subsystem
+          <ul>
+            <li>Timer tick handling: Idle dynticks system (tickless idle)</li>
+            <li>Old Idle dynticks config (<code>CONFIG_NO_HZ</code>): N, OLD</li>
+            <li>High Resolution Timer Support (<code>CONFIG_HIGH_RES_TIMERS</code>): Y, STD</li>
+            <li>Clocksource watchdog maximum allowable skew (<code>CONFIG_CLOCKSOURCE_WATCHDOG_MAX_SKEW_US</code>): 100</li>
+          </ul>
+        </li>
+        <li>
+          BPF subsystem
+          <ul>
+            <li>Enable bpf() system call (<code>CONFIG_BPF_SYSCALL</code>): N, not necessary if you do not have any programs that utilise</li>
+          </ul>
+        </li>
+        <li>Preemption Model: Preemptible Kernel (Low-Latency Desktop)</li>
+        <li>Preemption behaviour defined on boot (<code>CONFIG_PREEMPT_DYNAMIC</code>): N</li>
+        <li>Core Scheduling for SMT (<code>CONFIG_SCHED_CORE</code>): Y, STD</li>
+        <li>
+          CPU/Task time and stats accounting
+          <ul>
+            <li>Cputime accounting: Simple tick based cputime accounting</li>
+            <li>Ftine granularity task level IRQ time accounting (<code>CONFIG_IRQ_TIME_ACCOUNTING</code>): N, DEV</li>
+            <li>BSD Process Accounting (<code>CONFIG_BSD_PROCESS_ACCT</code>): N</li>
+            <li>Export task/process statistics through netlink (<code>CONFIG_TASKSTATS</code>): N</li>
+            <li>Pressure stall information tracking (<code>CONFIG_PSI</code>): N</li>
+          </ul>
+        </li>
+        <li>CPU isolation (<code>CONFIG_CPU_ISOLATION</code>): N, EMB</li>
+        <li>
+          RCU subsystem
+          <ul>
+            <li>Make expert-level adjustments to RCU configuration (<code>CONFIG_RCU_EXPERT</code>): N, DEV</li>
+          </ul>
+        </li>
+        <li>Kernel .config support (<code>CONFIG_IKCONFIG</code>): Y, STD</li>
+        <li>Enable access to .config through /proc/config.gz (<code>CONFIG_IKCONFIG_PROC</code>): Y, STD</li>
+        <li>Enable kernel headers through /sys/kernel/kheaders.tar.xz (<code>CONFIG_IKHEADERS</code>): N</li>
+        <li>Kernel log buffer size (<code>CONFIG_LOG_BUF_SHIFT</code>): 18</li>
+        <li>CPU kernel log buffer size contribution (<code>CONFIG_LOG_CPU_MAX_BUF_SHIFT</code>): 12</li>
+        <li>
+          Scheduler features
+          <ul>
+            <li>Enable utilization clamping for RT/FAIR tasks (<code>CONFIG_UCLAMP_TASK</code>): N, DEV</li>
+          </ul>
+        </li>
+        <li>
+          Control Group support (<code>CONFIG_CGROUPS</code>): Y, STD
+          <ul>
+            <li>Favor dynamic modification latency reduction (<code>CONFIG_CGROUP_FAVOR_DYNMODS</code>): N</li>
+            <li>Memory controller (<code>CONFIG_MEMCG</code>): Y, STD</li>
+            <li>IO controller (<code>CONFIG_BLK_CGROUP</code>): Y, STD</li>
+            <li>
+              CPU controller (<code>CONFIG_CGROUP_SCHED</code>): Y, STD
+              <ul>
+                <li>Group scheduling for SCHED_OTHER (<code>FAIR_GROUP_SCHED</code>): Y, STD</li>
+                <li>CPU bandwidth provisioning for FAIR_GROUP_SCHED (<code>CONFIG_CFS_BANDWIDTH</code>): N</li>
+                <li>Group scheduling for SCHED_RR/FIFO (<code>CONFIG_RT_GROUP_SCHED</code>): N</li>
+              </ul>
+            </li>
+            <li>PIDs controller (<code>CONFIG_CGROUP_PIDS</code>): N</li>
+            <li>RDMA controller (<code>CONFIG_CGROUP_RDMA</code>): N</li>
+            <li>Freezer controller (<code>CONFIG_CGROUP_FREEZER</code>): N</li>
+            <li>Cpuset controller (<code>CONFIG_CPUSETS</code>): N, only useful on NUMA machine</li>
+            <li>Device Controller (<code>CONFIG_CGROUP_DEVICE</code>): N</li>
+            <li>Simple CPU accounting controller (<code>CONFIG_CGROUP_CPUACCT</code>): Y, STD</li>
+            <li>Perf controller (<code>CONFIG_CGROUP_PERF</code>): N</li>
+            <li>Misc resource controller (<code>CONFIG_CGROUP_MISC</code>): Y</li>
+            <li>Debug controller (<code>CONFIG_CGROUP_DEBUG</code>): N, DEV</li>
+          </ul>
+        </li>
+        <li>
+          Namespaces support (<code>CONFIG_NAMESPACES</code>): Y, STD, used heavily by web browsers
+          <ul>
+            <li>UTS namespace (<code>CONFIG_UTS_NS</code>): Y</li>
+            <li>TIME namespace (<code>CONFIG_TIME_NS</code>): Y</li>
+            <li>IPC namespace (<code>CONFIG_IPC_NS</code>): Y</li>
+            <li>User namespace (<code>CONFIG_USER_NS</code>): Y</li>
+            <li>PID Namespaces (<code>CONFIG_PID_NS</code>): Y</li>
+            <li>Network namespace (<code>CONFIG_NET_NS</code>): Y</li>
+          </ul>
+        </li>
+        <li>Checkpoint/restore support (<code>CONFIG_CHECKPOINT_RESTORE</code>): N, VIRT</li>
+        <li>Automatic process group scheduling (<code>CONFIG_SCHED_AUTOGROUP</code>): N, OLD, Systemd/OpenRC handle this</li>
+        <li>Kernel -> userspace relay support (<code>CONFIG_RELAY</code>): Y, STD</li>
+        <li>Initial RAM filesystem and RAM disk (<code>CONFIG_BLK_DEV_INITRD</code>): N, not strictly necessary</li>
+        <li>Boot config support (<code>CONFIG_BOOT_CONFIG</code>): N, EMB</li>
+        <li>Preserve cpio archive mtimes in initramfs (<code>CONFIG_INITRAMFS_PRESERVE_MTIME</code>): N, without initramfs...</li>
+        <li>Compiler optimization level: Optimize for performance (-O2)</li>
+        <li>Configure standard kernel features (<code>CONFIG_EXPERT</code>): N, DEV/EMB, mostly syscalls</li>
+        <li>Enable kcmp() system call (<code>CONFIG_KCMP</code>): Y</li>
+        <li>Enable rseq() system call (<code>CONFIG_RSEQ</code>): Y</li>
+        <li>Enable cachestat() system call (<code>CONFIG_CACHESTAT_SYSCALL</code>): Y</li>
+        <li>Enabled debugging of rseq() system call (<code>CONFIG_DEBUG_RSEQ</code>): N, DEV</li>
+        <li>PC/104 support (<code>CONFIG_PC104</code>): N, EMB</li>
+        <li>
+          Kernel Performance Events and Counters
+          <ul>
+            <li>Kernel Performance events and counters (<code>CONFIG_PERF_EVENTS</code>): Y, STD</li>
+            <li>Debug: use vmalloc to back perf mmap() buffers (<code>CONFIG_DEBUG_PERF_USE_VMALLOC</code>): N, DEV</li>
+          </ul>
+        </li>
+        <li>Profiling support (<code>CONFIG_PROFILING</code>): N, DEV</li>
+        <li>Kexec and crash features: None</li>
+      </ul>
+    </div>
+    This is a WIP...
   </body>
 </html>

@@ -11,17 +11,3 @@ img {
   width: auto\9;
   margin: 8px 0px;
 }
-
-code {
-  color: #505050;
-  border: 1px solid grey;
-  border-radius: 3px;
-  padding: 1.75px;
-}
-
-pre {
-  background: #f4f4f4;
-  color: #505050;
-  padding: 20px 0px 0px 20px;
-  overflow: auto;
-}

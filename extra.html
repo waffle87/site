@@ -66,5 +66,32 @@ $ head -n 4 .gitconfig
 	email = Foo_Bar@baz
 	signingkey = FC53C827D09C7050
     </pre>
+    <h3>SSH agent for password-less login</h3>
+    I have four machines I frequently log in to and from via SSH. Typing
+    in a password every time is tiresome and a password-less key is not
+    an option. A solution is an SSH agent running in the background, which
+    prompts for a password once at log in, and stores it for the duration
+    of the session (until reboot). The following can live in your shell's
+    startup file (eg. <code>~/.zshrc</code>)
+    <pre>
+if [ ! -S ~/.ssh/ssh_auth_sock ]; then
+  eval "$(ssh-agent)"
+  ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
+fi
+export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+ssh-add -l > /dev/null || ssh-add
+    </pre>
+    <h3>Configuration file manager</h3>
+    Across the aforementioned four machines, I also have various configuration
+    files (dotfiles) that I like to keep track of for the sake of backing
+    them up incase of data loss. I use <a href="https://github.com/TheLocehiliosan/yadm" target="_blank">yadm</a>
+    to achieve this. Mostly for it's ease of use (yadm is quite simply
+    an alias for git) and minimal system footprint, which consists mostly
+    of a git directory living out of sight in <code>~/.local/share/yadm/repo.git</code>.
+    Since it's just Git under the hood, a standard <code>.gitignore</code>
+    file can be used to ignore which ever files you choose in your home directory.
+    By default, yadm only manages files within your home directory. While not
+    conventional, it can also be used to track system-level files by creating
+    an alias like <code>sysyadm="sudo yadm --yadm-dir /etc/yadm --yadm-data /etc/yadm/data"</code>.
   </body>
-</html>
+</html

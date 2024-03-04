@@ -11,13 +11,6 @@
       border-radius: 3px;
       padding: 1.75px;
     }
-
-    pre {
-      background: #f4f4f4;
-      color: #505050;
-      padding: 20px 0px 0px 20px;
-      overflow: auto;
-    }
     </style>
   </head>
   <body>
@@ -47,6 +40,7 @@
       <li>SEC: security related options that either implicate or strengthen system security</li>
     </ul>
     <a href="#general_setup">general setup</a><br>
+    <a href="#processor_type_feat">processor type and features</a><br>
     <div id="general_setup">
       <h3>General setup</h3>
       <ul>
@@ -168,6 +162,80 @@
         </li>
         <li>Profiling support (<code>CONFIG_PROFILING</code>): N, DEV</li>
         <li>Kexec and crash features: None</li>
+      </ul>
+    </div>
+    <div id="processor_type_feat">
+      <h3>Processor type and features</h3>
+      <ul>
+        <li>Symmetric multi-processing support (<code>CONFIG_SMP</code>): Y, STD, all modern CPUs are multi-core</li>
+        <li>Enable MPS table (<code>CONFIG_X86_MPARSE</code>): N, OLD </li>
+        <li>x86 CPU resource control support (<code>CONFIG_X86_CPU_RESCTRL</code>): N, VIRT</li>
+        <li>Support for extended (non-PC) x86 platforms (<code>CONFIG_X86_EXTENDED_PLATFORM</code>): N, EMB</li>
+        <li>Intel Low Power Subsystem Support (<code>CONFIG_X86_INTEL_LPSS</code>): Y, if you have Haswell and later CPU</li>
+        <li>AMD ACPI2Platform devices support (<code>CONFIG_X86_AMD_PLATFORM_DEVICE</code>): N</li>
+        <li>Intel SoC IOSF Sideband support (<code>CONFIG_IOSF_MBI</code>): Y, STD</li>
+        <li>Single-depth WCHAN output (<code>CONFIG_SCHED_OMIT_FRAME_POINTER</code>): Y, STD</li>
+        <li>Linux guest support (<code>CONFIG_HYPERVISOR_GUEST</code>): N, VIRT</li>
+        <li>Processor family: Core 2/newer Xeon (or Generic-x86-64 if unsure)</li>
+        <li>Supported processor vendors (<code>CONFIG_PROCESSOR_SELECT</code>): N, EMB</li>
+        <li>Enable DMI scanning (<code>CONFIG_DMI</code>): Y, STD</li>
+        <li>Old AMD GART IOMMU support (<code>CONFIG_GART_IOMMU</code>): N, OLD</li>
+        <li>Enable Maximum number of SMP Processors and NUMA Nodes (<code>CONFIG_MAXSMP</code>): N, DEV</li>
+        <li>Maximum number of CPUs (<code>CONFIG_NR_CPUS</code>): sockets * cores * threads</li>
+        <li>Cluster scheduler support (<code>CONFIG_SCHED_CLUSTER</code>): Y, STD</li>
+        <li>Multi-core scheduler support (<code>CONFIG_SCHED_MC</code>): Y, STD</li>
+        <li>CPU core priorities scheduler support (<code>CONFIG_SCHED_MC_PRIO</code>): Y, STD</li>
+        <li>Reroute for broken boot IRQs (<code>CONFIG_X86_REROUTE_FOR_BROKEN_BOOT_IRQS</code>): N, OLD</li>
+        <li>Machine Check / overheating reporting (<code>CONFIG_X86_MCE</code>): Y, STD</li>
+        <li>Support for deprecated /dev/mcelog character device (<code>CONFIG_X86_MCELOG_LEGACY</code>): N, OLD</li>
+        <li>Intel/AMD MCE features (<code>CONFIG_X86_MCE_INTEL/AMD</code>): Y, STD, choose based on your processor</li>
+        <li>
+          Performance monitoring
+          <ul>
+            <li>Intel uncore performance events (<code>CONFIG_PERF_EVENTS_INTEL_UNCORE</code>): Y, STD, for Intel</li>
+            <li>Intel/AMD rapl performance events (<code>CONFIG_PERF_EVENTS_INTEL_RAPL</code>): Y, STD</li>
+            <li>Intel cstate performance events (<code>CONFIG_PERF_EVENTS_INTEL_CSTATE</code>): Y, STD, for Intel</li>
+            <li>AMD Processor Power Reporting Mechanism (<code>CONFIG_PERF_EVENTS_AMD_POWER</code>): Y, STD, for AMD</li>
+            <li>AMD Uncore performance events (<code>CONFIG_PERF_EVENTS_AMD_POWER</code>): Y, STD, for AMD</li>
+          </ul>
+        </li>
+        <li>Enable vsyscall emulation (<code>CONFIG_X86_VSYSCALL_EMULATION</code>): N</li>
+        <li>IOPERM and IOPL Emulation (<code>CONFIG_X86_IOPL_IOPERM</code>): N, SEC, not strictly necessary</li>
+        <li>Late microcode loading (<code>CONFIG_MICROCODE_LATE_LOADING</code>): N</li>
+        <li>/dev/cpu/*/msr - Model-specific register support (<code>CONFIG_X86_MSR</code>): Y, STD</li>
+        <li>/dev/cpu/*/cpuid - CPU information support (<code>CONFIG_X86_CPUID</code>): Y, STD</li>
+        <li>Enable 5-level page tables support (<code>CONFIG_X86_5LEVEL</code>): N, for machines with large (TBs) amounts of memory</li>
+        <li>AMD Secure Memory Encryption (SME) support (<code>CONFIG_AMD_MEM_ENCRYPT</code>): Y, for AMD</li>
+        <li>NUMA Memory Allocation and Scheduler Support (<code>CONFIG_NUMA</code>): N, unless you have multi socket CPU</li>
+        <li>Check for low memory corruption (<code>CONFIG_X86_CHECK_BIOS_CORRUPTION</code>): N</li>
+        <li>MTRR (Memory Type Range Register) support (<code>CONFIG_MTRR</code>): Y, STD</li>
+        <li>MTRR cleanup support (<code>CONFIG_MTRR_SANITIZER</code>): Y, STD</li>
+        <li>MTRR cleanup enable value (0-1) (<code>CONFIG_MTRR_SANITIZER_ENABLE_DEFAULT</code>): 1, for true</li>
+        <li>MTRR cleanup spare reg num (0-7) (<code>CONFIG_MTRR_SANITIZER_SPARE_REG_NR_DEFAULT</code>): 1</li>
+        <li>x86 PAT support (<code>CONFIG_X86_PAT</code>): Y, STD</li>
+        <li>User Mode Instruction Prevention (<code>CONFIG_X86_UMIP</code>): Y</li>
+        <li>Indirect Branch Tracking (<code>CONFIG_X86_KERNEL_IBT</code>): N, SEC</li>
+        <li>Memory Protection Keys (<code>CONFIG_X86_INTEL_MEMORY_PROTECTION_KEYS</code>): Y, STD</li>
+        <li>TSX enable mode: auto</li>
+        <li>X86 userspace shadow stack (<code>CONFIG_X86_USER_SHADOW_STACK</code>): N, SEC</li>
+        <li>EFI runtime service support (<code>CONFIG_EFI</code>): Y, STD</li>
+        <li>EFI stub support (<code>CONFIG_EFI_STUB</code>): N, only if you boot kernel directly</li>
+        <li>EFI handover protocol (<code>CONFIG_EFI_HANDOVER_PROTOCOL</code>): N, OLD</li>
+        <li>EFI mixed-mode support (<code>CONFIG_EFI_MIXED</code>): N, only relevant (but still unneeded) on Apple hardware</li>
+        <li>Enable EFI fake memory map (<code>CONFIG_EFI_FAKE_MEMMAP</code>): N</li>
+        <li>Export EFI runtime maps to sysfs (<code>CONFIG_EFI_RUNTIME_MAP</code>): N</li>
+        <li>Timer frequency: 100 HZ for server, 300 HZ for laptop, 1000 HZ for low-latency requirements</li>
+        <li>Physical address where the kernel is loaded (<code>CONFIG_PHYSICAL_START</code>): 0x1000000</li>
+        <li>Build a relocatable kernel (<code>CONFIG_RELOCATABLE</code>): Y, STD</li>
+        <li>Randomize the address of the kernel image (KASLR) (<code>CONFIG_RANDOMIZE_BASE</code>): Y, SEC</li>
+        <li>Alignment value to which the kernel should be aligned (<code>CONFIG_PHYSICAL_ALIGN</code>): 0x200000</li>
+        <li>Randomize the kernel memory sections (<code>CONFIG_RANDOMIZE_BASE</code>): Y, SEC</li>
+        <li>Physcial memory mapping padding (<code>CONFIG_RANDOMIZE_MEMORY_PHYSICAL_PADDING</code>): 0x00</li>
+        <li>Linear Address Masking support (<code>CONFIG_ADDRESS_MASKING</code>): N</li>
+        <li>vsyscall table for legacy applications: None</li>
+        <li>Built-in kernel command line (<code>CONFIG_CMDLINE_BOOL</code>): N, unless booting kernel directly</li>
+        <li>Enable the LDT (local descriptor table) (<code>CONFIG_MODIFY_LDT_SYSCALL</code>): N, EMB</li>
+        <li>Enforce strict size checking for sigalstack (<code>CONFIG_STRICT_SIGALSTACK_SIZE</code>): N, DEV</li>
       </ul>
     </div>
     This is a WIP...

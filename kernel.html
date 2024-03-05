@@ -44,14 +44,14 @@
     <div id="general_setup">
       <h3>General setup</h3>
       <ul>
-        <li>Compile Also drivers which will not load (<code>CONFIG_COMPILE_TEST</code>): N, DEV</li>
+        <li>Compile also drivers which will not load (<code>CONFIG_COMPILE_TEST</code>): N, DEV</li>
         <li>Compile the kernel with warnings as errors (<code>CONFIG_WERROR</code>): Y, STD</li>
         <li>Local version - append to kernel release (<code>CONFIG_LOCALVERSION</code>): empty, useful for <a href="https://git-scm.com/docs/git-bisect">git bisect</a></li>
         <li>Automatically append version information (<code>CONFIG_LOCALVERSION_AUTO</code>): N, DEV</li>
         <li>Build ID Salt (<code>CONFIG_BUILD_SALT</code>): empty, SEC</li>
         <li>Kernel compression mode: ZSTD or Gzip for compatibility</li>
         <li>Default init path (<code>CONFIG_DEFAULT_INIT</code>): empty, EMB</li>
-        <li>Default hostnam (<code>CONFIG_DEFAULT_HOSTNAME</code>): empty, entre your machine's name if you'd like</li>
+        <li>Default hostname (<code>CONFIG_DEFAULT_HOSTNAME</code>): empty, entre your machine's name if you'd like</li>
         <li>System V IPC (<code>CONFIG_SYSVIPC</code>): Y, STD</li>
         <li>POSIX Message Queues (<code>CONFIG_POSIX_MQUEUE</code>): N, not strictly necessary</li>
         <li>General notification queue (<code>CONFIG_WATCH_QUEUE</code>): N, not strictly necessary</li>
@@ -80,7 +80,7 @@
           CPU/Task time and stats accounting
           <ul>
             <li>Cputime accounting: Simple tick based cputime accounting</li>
-            <li>Ftine granularity task level IRQ time accounting (<code>CONFIG_IRQ_TIME_ACCOUNTING</code>): N, DEV</li>
+            <li>Fine granularity task level IRQ time accounting (<code>CONFIG_IRQ_TIME_ACCOUNTING</code>): N, DEV</li>
             <li>BSD Process Accounting (<code>CONFIG_BSD_PROCESS_ACCT</code>): N</li>
             <li>Export task/process statistics through netlink (<code>CONFIG_TASKSTATS</code>): N</li>
             <li>Pressure stall information tracking (<code>CONFIG_PSI</code>): N</li>

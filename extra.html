@@ -34,8 +34,8 @@ bssid / freq / sig lvl / flags / ssid
 ...
 > add_network
 #
-> set_network # ssid "my network"
-> set_network # psk "my psswd"
+> set_network # ssid "network"
+> set_network # psk "psswd"
 # or if no password:
 > set_network # key_mgmt NONE
 > enable_network #
@@ -81,6 +81,7 @@ fi
 export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
 ssh-add -l > /dev/null || ssh-add
     </pre>
+    Then, just copy the needed key between machines with <code>ssh-copy-id -i ~/.ssh/id_xxx.pub name@host</code>
     <h3>Configuration file manager</h3>
     Across the aforementioned four machines, I also have various configuration
     files (dotfiles) that I like to keep track of for the sake of backing
@@ -92,6 +93,12 @@ ssh-add -l > /dev/null || ssh-add
     file can be used to ignore which ever files you choose in your home directory.
     By default, yadm only manages files within your home directory. While not
     conventional, it can also be used to track system-level files by creating
-    an alias like <code>sysyadm="sudo yadm --yadm-dir /etc/yadm --yadm-data /etc/yadm/data"</code>.
+    an alias like <code>sysyadm="sudo yadm --yadm-dir /etc/yadm --yadm-data /etc/yadm/data"</code>,
+    then used like normal.
+    <pre>
+# sysyadm init -w /
+# sysyadm add foo.conf
+# sysyadm commit -m "foo"
+    </pre>
   </body>
 </html

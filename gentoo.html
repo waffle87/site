@@ -302,6 +302,41 @@ pidfile="/run/keyd.pid"
         <li>
           <b>Document Viewer: </b><a href="https://github.com/pwmt/zathura" target="_blank">Zathura</a>
         </li>
+        <li>
+          <b>Privilege escalation: </b><a href="https://github.com/Duncaen/OpenDoas" target="_blank">doas sudo alternative</a>
+          is a utility originally written for BSD, but has been ported 
+          to Linux under the name OpenDoas. Comparatively, sudo contains
+          roughly 150,000 lines of code, while doas only contains about
+          4,000. For a personal computer like this, doas is more than
+          capable of achieving what I need it to. By default, the "persist"
+          feature is not enabled and must be set via <code>persist</code>
+          USE flag.
+        </li>
+        <li>
+          <b>Screenshots: </b><a href="https://sr.ht/~emersion/grim/" target="_blank">grim</a>
+          which can be used with <a href="https://github.com/emersion/slurp" target="_blank">slurp</a>
+          to allow to select specific regions. This can then be piped
+          to <a href="https://github.com/bugaevc/wl-clipboard" target="_blank">wl-copy</a>
+          to copy the image to your clipboard. I map this functionality
+          to keyboard input via Sway.
+          <pre>
+bindsym $mod+p exec       grim -g "$(slurp)" - | wl-copy
+bindsym $mod+Shift+p exec grim -g "$(slurp)"
+          </pre>
+        </li>
+        <li>
+          <b>Backlight: </b><a href="https://github.com/Hummer12007/brightnessctl" target="_blank">brightnessctl</a>
+          is used to control both screen brightness and keyboard backlight. This
+          package is now available in the GURU repository. Ensure <code>CONFIG_APPLE_BACKLIGHT</code>
+          and <code>CONFIG_SENSORS_APPLESMC</code> are set in the kernel.
+          This functionality can also be mapped to the keyboard using Sway.
+          <pre>
+bindsym XF86MonBrightnessDown exec brightnessctl -q set 10%-
+bindsym XF86MonBrightnessUp   exec brightnessctl -q set +10%
+bindsym XF86KbdBrightnessDown exec brightnessctl -q --device='smc::kbd_backlight' set 10%-
+bindsym XF86KbdBrightnessUp   exec brightnessctl -q --device='smc::kbd_backlight' set +10%
+          </pre>
+        </li>
       </ul>
     </div>
     <div id="miscellaneous">

@@ -14,6 +14,7 @@
     </style>
   </head>
   <body>
+    <a href="index.html"><--</a>
     <h2>Kernel Configuration Pseudo Guide</h2>
     <h4>Current base: <a href="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/?h=linux-6.7.y">Linux 6.7.y</a></h4>
     This aims to be a guide for configuring a Linux kernel for a modern
@@ -39,8 +40,23 @@
       <li>OLD: modern systems generally won't need these options</li>
       <li>SEC: security related options that either implicate or strengthen system security</li>
     </ul>
+    <a href="#top_level">top level options</a><br>
     <a href="#general_setup">general setup</a><br>
     <a href="#processor_type_feat">processor type and features</a><br>
+    <a href="#mitigations_vulnerability">mitigations for speculative execution vulnerabilities</a><br>
+    <a href="#power_management">power management and acpi options</a><br>
+    <div id="top_level">
+      <h3>Top Level Options</h3>
+      <ul>
+        <li>64-bit kernel (<code>CONFIG_64BIT</code>): Y, STD</li>
+        <li>Mitigations for speculative execution vulnerabilities (<code>CONFIG_SPECULATION_MITIGATIONS</code>): Y, STD</li>
+        <li>Virtualization (<code>CONFIG_VIRTUALIZATION</code>): N, VIRT, unless needed</li>
+        <li>Enable loadable module support (<code>CONFIG_MODULES</code>): N, everything built into kernel</li>
+        <li>Enable the block layer (<code>CONFIG_BLOCK</code>): Y, STD, need to mount disks</li>
+        <li>Networking support (<code>CONFIG_NET</code>): Y, unless no need for network</li>
+        <li>Cryptographic API (<code>CONFIG_CRYPTO</code>): Y, SEC</li>
+      </ul>
+    </div>
     <div id="general_setup">
       <h3>General setup</h3>
       <ul>
@@ -236,6 +252,74 @@
         <li>Built-in kernel command line (<code>CONFIG_CMDLINE_BOOL</code>): N, unless booting kernel directly</li>
         <li>Enable the LDT (local descriptor table) (<code>CONFIG_MODIFY_LDT_SYSCALL</code>): N, EMB</li>
         <li>Enforce strict size checking for sigalstack (<code>CONFIG_STRICT_SIGALSTACK_SIZE</code>): N, DEV</li>
+      </ul>
+    </div>
+    <div id="mitigations_vulnerability">
+      <h3>Mitigations for speculative execution vulnerabilities</h3>
+      <ul>
+        <li>Remove the kernel mapping in user mode (<code>CONFIG_PAGE_TABLE_ISOLATION</code>): Y</li>
+        <li>Avoid speculative indirect branches in kernel (<code>CONFIG_RETPOLINE</code>): Y</li>
+        <li>Enable return-thunks (<code>CONFIG_RETHUNK</code>): Y</li>
+        <li>Enable UNRET on kernel entry (<code>CONFIG_CPU_UNRET_ENTRY</code>): Y</li>
+        <li>Mitigate RSB underflow with call depth tracking (<code>CONFIG_CALL_DEPTH_TRACKING</code>): Y</li>
+        <li>Enable call thunks and call depth tracking debugging (<code>CONFIG_CALL_RETHUNKS_DEBUG</code>): N, DEV</li>
+        <li>Enable IBPB on kernel entry (<code>CONFIG_CPU_IBPB_ENTRY</code>): Y</li>
+        <li>Enable IBRS on kernel entry (<code>CONFIG_CPU_IBRS_ENTRY</code>): Y</li>
+        <li>Mitigate speculative RAS overflow (<code>CONFIG_CPU_SRSO</code>): Y, on AMD processors</li>
+        <li>Mitigate Straight-Line-Speculation (<code>CONFIG_SLS</code>): N</li>
+        <li>Force GDS Mitigation (<code>CONFIG_GDS_FORCE_MITIGATION</code>): N</li>
+      </ul>
+    </div>
+    <div id="power_management">
+      <h3>Power management and ACPI options</h3>
+      <ul>
+        <li>Suspend to RAM and standby (<code>CONFIG_SUSPEND</code>): Y, N for servers</li>
+        <li>Skip kernel's sys_sync() on suspend to RAM/standby (<code>CONFIG_SUSPEND_SKIP_SYNC</code>): N</li>
+        <li>Hibernation (aka 'suspend to disk') (<code>CONFIG_HIBERNATION</code>): Y, if desired. N for servers</li>
+        <li>Opportunistic sleep (<code>CONFIG_PM_SLEEP</code>): N, EMB</li>
+        <li>Userspace opportunistic sleep (<code>CONFIG_PM_USERSPACE_AUTOSLEEP</code>): N, EMB</li>
+        <li>User space wakeup sources interface (<code>CONFIG_PM_WAKELOCKS</code>): N, EMB</li>
+        <li>Device power management core functionality (<code>CONFIG_PM</code>): Y, STD</li>
+        <li>Power Management Debug Support (<code>CONFIG_PM_DEBUG</code>): N, DEV</li>
+        <li>Enable workqueue power-efficient mode by default (<code>CONFIG_WQ_POWER_EFFICIENT_DEFAULT</code>): N</li>
+        <li>Energy Model for devices with DVFS (<code>CONFIG_ENERGY_MODEL</code>): N</li>
+        <li>
+          ACPI Support (<code>CONFIG_ACPI</code>): Y, STD
+          <ul>
+            <li></li>
+          </ul>
+        </li>
+        <li>Power Management Timer Support (<code>CONFIG_X86_PM_TIMER</code>): Y, STD</li>
+        <li>
+          CPU Frequency scaling
+          <ul>
+            <li>CPU frequency transition statistics (<code>CONFIG_CPU_FREQ_STAT</code>): N, DEV</li>
+            <li>Default CPUFreq governor: performance</li>
+            <li>'performance' governor (<code>CONFIG_CPU_FREQ_GOV_PERFORMANCE</code>): Y</li>
+            <li>'powersave' governor (<code>CONFIG_CPU_FREQ_GOV_POWERSAVE</code>): N, not strictly necessary</li>
+            <li>'userspace' governor for userspace frequency scaling (<code>CONFIG_CPU_FREQ_GOV_USERSPACE</code>): N, not strictly necessary</li>
+            <li>'ondemand' cpufreq policy governor (<code>CONFIG_CPU_FREQ_GOV_ONDEMAND</code>): N</li>
+            <li>'conservative' cpufreq governor (<code>CONFIG_CPU_FREQ_GOV_CONSERVATIVE</code>): N</li>
+            <li>'schedutil' cpufreq policy governor (<code>CONFIG_CPU_FREQ_GOV_SCHEDUTIL</code>): Y</li>
+            <li>Intel P state control (<code>CONFIG_X86_INTEL_PSTATE</code>): Y, on Intel processors</li>
+            <li>Processor Clocking Control interface driver (<code>CONFIG_X86_PCC_CPUFREQ</code>): N, OLD</li>
+            <li>AMD Processor P-State driver (<code>CONFIG_X86_AMD_PSTATE</code>): Y, on AMD processors</li>
+            <li>selftest for AMD Processor P-State driver (<code>CONFIG_X86_AMD_PSTATE_UT</code>): N, DEV</li>
+            <li>ACPI Processor P-States driver (<code>CONFIG_X86_ACPI_CPUFREQ</code>): Y, STD</li>
+            <li>Intel Enhanced SpeedStep (<code>CONFIG_X86_SPEEDSTEP_CENTRINO</code>): N, OLD</li>
+            <li>Intel Pentium 4 clock modulation (<code>CONFIG_X86_P4_CLOCKMOD</code>): N, OLD</li>
+          </ul>
+        </li>
+        <li>
+          CPU Idle
+          <ul>
+            <li>CPU idle PM support (<code>CONFIG_CPU_IDLE</code>): Y, STD</li>
+            <li>Ladder governor (for periodic timer tick) (<code>CPU_IDLE_GOV_LADDER</code>): N</li>
+            <li>Menu governor (for tickless system) (<code>CPU_IDLE_GOV_MENU</code>): Y</li>
+            <li>Timer events oriented governor (<code>CONFIG_CPU_IDLE_GOV_TEO</code>): N</li>
+          </ul>
+        </li>
+        <li>Cpuidle Driver for Intel Processors (<code>CONFIG_INTEL_IDLE</code>): Y, on Intel processors </li>
       </ul>
     </div>
     This is a WIP...

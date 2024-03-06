@@ -147,6 +147,29 @@ auth include system-auth
     when needed to authenticate. <b>pinverification=0</b> disables the need
     to entre the passphrase associated with your security key. Note, this
     means your system can be accessed only with your key, and no password entry
-    of any type. Set the parameter to 1 if you'd like otherwise.
+    of any type. Set the parameter to 1 if you'd like otherwise. Another
+    thing of interest was locking/unlocking my system automatically when
+    the key is removed/inserted, respectively. This can be achieved via
+    a custom udev rule that executes a script when a device matching
+    our key's VID/PID is plugged in. This script will use <a href="https://pamtester.sourceforge.net" target="_blank">pamtester</a>
+    to test for authentication success.
+    <pre>
+#!/bin/bash
+if [ "$1" == "lock" ]; then
+    # lock system
+else
+    if [ echo "" | pamtester login <user> authenticate ]; then
+        # kill lock program
+    fi
+fi
+exit 0
+    </pre>
+    Now, a custom udev rule that lives in <code>/etc/udev/rules.d/70-solokey.rules</code>
+    and looks for a matching VID/PID and executes this script when
+    found with the appropriate argument.
+    <pre>
+ACTION::"remove", ENV{DEVTYPE}::"usb_device", ENV{PRODUCT}::"0483/a2Ca", RUN+:"/usr/local/sbin/keyauth.sh lock"
+ACTION::"add", ENV{DEVTYPE}::"usb_device", ENV{ID_BUS}::"usb", ENV{PRODUCT}::"0483/a2Ca", RUN+:"/usr/local/sbin/keyauth.sh unlock"
+    </pre>
   </body>
 </html>

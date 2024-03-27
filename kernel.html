@@ -45,6 +45,9 @@
     <a href="#processor_type_feat">processor type and features</a><br>
     <a href="#mitigations_vulnerability">mitigations for speculative execution vulnerabilities</a><br>
     <a href="#power_management">power management and acpi options</a><br>
+    <a href="#bus_options">bus options</a><br>
+    <a href="#binary_emulation">binary emulations</a><br>
+    <a href="#arch_dependent">general architecture-dependent options</a><br>
     <div id="top_level">
       <h3>Top Level Options</h3>
       <ul>
@@ -286,6 +289,39 @@
         <li>
           ACPI Support (<code>CONFIG_ACPI</code>): Y, STD
           <ul>
+            <li>AML debugger interface (<code>CONFIG_ACPI_DEBUGGER</code>): N DEV</li>
+            <li>ACPI Serial Port Console Redirection Support (<code>CONFIG_ACPI_SPCR_TABLE</code>): N, DEV</li>
+            <li>ACPI Firmware Performance Data Table (FPDT) support (<code>CONFIG_ACPI_FPDT</code>): Y, STD</li>
+            <li>Allow support ACPI revision to be overridden (<code>CONFIG_ACPI_REV_OVERRIDE_POSSIBLE</code>): N</li>
+            <li>EC read/write access through /sys/kernel/debug/ec (<code>CONFIG_ACPI_EC_DEBUGFS</code>): N, DEV</li>
+            <li>AC Adapater (<code>CONFIG_ACPI_AC</code>): Y, if present</li>
+            <li>Battery (<code>CONFIG_ACPI_BATTERY</code>): Y, on laptops</li>
+            <li>Button (<code>CONFIG_ACPI_BUTTON</code>): Y</li>
+            <li>Video (<code>CONFIG_ACPI_VIDEO</code>): Y</li>
+            <li>Fan (<code>CONFIG_ACPI_FAN</code>): Y</li>
+            <li>ACPI Time and Alarm (TAD) Device Support (<code>CONFIG_ACPI_TAD</code>): Y</li>
+            <li>Dock (<code>CONFIG_ACPI_DOCK</code>): Y, if using docking station</li>
+            <li>Processor (<code>CONFIG_ACPI_PROCESSOR</code>): Y</li>
+            <li>Processor Aggregator (<code>CONFIG_ACPI_PROCESSOR_AGGREGATOR</code>): Y</li>
+            <li>Thermal Zone (<code>CONFIG_ACPI_THERMAL</code>): Y</li>
+            <li>Custom DSDT Table file to include (<code>CONFIG_ACPI_CUSTOM_DSDT_FILE</code>): empty</li>
+            <li>Debug Statements (<code>CONFIG_ACPI_DEBUG</code>): N, DEV</li>
+            <li>PCI slot detection driver (<code>CONFIG_ACPI_PCI_SLOT</code>): N, DEV</li>
+            <li>Container and Module Devices (<code>CONFIG_ACPI_CONTAINER</code>): Y</li>
+            <li>Smart Battery System (<code>CONFIG_ACPI_SBS</code>): Y, on laptops</li>
+            <li>Hardware Error Device (<code>CONFIG_ACPI_HED</code>): Y</li>
+            <li>Boottime Graphics Resource Table support (<code>CONFIG_ACPI_BGRT</code>): N</li>
+            <li>Hardware-reduced ACPI support only (<code>CONFIG_ACPI_REDUCED_HARDWWARE_ONLY</code>): N</li>
+            <li>ACPI Platform Error Interface (APEI) (<code>CONFIG_ACPI_APEI</code>): Y</li>
+            <li>APEI Generic Hardware Error Source (<code>CONFIG_ACPI_APEI_GHES</code>): Y</li>
+            <li>APEI Error Record Serialization Table (ERST) Debug Support (<code>CONFIG_ACPI_APEI_ERST_DEBUG</code>): N, DEV</li>
+            <li>Intel DPTF (Dynamic Platform and Thermal Framework) (<code>CONFIG_ACPI_DPTF</code>): Y, on Intel processors</li>
+            <li>ACPI configfs support (<code>CONFIG_ACPI_CONFIGFS</code>): N</li>
+            <li>ACPI Platform Firmware Runtime Update and Telemetry (<code>CONFIG_ACPI_PFRUT</code>): N</li>
+            <li>ACPI PCC Address Space (<code>CONFIG_ACPI_PCC</code>): Y, STD, for UEFI</li>
+            <li>ACPI FFH Address Space (<code>CONFIG_ACPI_FFH</code>): N</li>
+            <li>PMIC (Power Management Integrated Circuit) operation region support (<code>CONFIG_PMIC_OPREGION</code>): N</li>
+            <li>Platform Runtime Mechanism Support (<code>CONFIG_ACPI_PRMT</code>): Y</li>
             <li></li>
           </ul>
         </li>
@@ -322,6 +358,33 @@
         <li>Cpuidle Driver for Intel Processors (<code>CONFIG_INTEL_IDLE</code>): Y, on Intel processors </li>
       </ul>
     </div>
-    This is a WIP...
+    <div id="bus_options">
+      <h3>Bus options (PCI etc.)</h3>
+      <li>Support mmconfig PCI space access (<code>PCI_MMCONFIG</code>): Y, STD</li>
+      <li>Read CNB20LE Host Bridge Windows (<code>CONFIG_PCI_CNB20LE_QUIRK</code>): N</li>
+      <li>ISA bus support on modern systems (<code>CONFIG_ISA_BUS</code>): N</li>
+      <li>ISA-style DMA support (<code>CONFIG_ISA_DMA_API</code>): N</li>
+    </div>
+    <div id="binary_emulation">
+      <h3>Binary Emulations</h3>
+      <li>IA32 Emulation (<code>CONFIG_IA32_EMULATION</code>): N, unless using 32-bit applications</li>
+    </div>
+    <div id="arch_dependent">
+      <h3>General architecture-dependent options</h3>
+      <li>Optimize very unlikely/likely branche (<code>CONFIG_JUMP_LABEL</code>): Y</li>
+      <li>Static key selftest (<code>CONFIG_STATIC_KEYS_SELFTEST</code>): N, DEV</li>
+      <li>Static call selftest (<code>CONFIG_STATIC_CALL_SELFTEST</code>): N, DEV</li>
+      <li>Enable seccomp to safely execute untrusted bytecode (<code>CONFIG_SECCOMP</code>): Y, STD</li>
+      <li>Show seccomp filter cache status in /proc/pid/seccomp_cache (<code>CONFIG_SECCOMP_CACHE_DEBUG</code>): N, DEV</li>
+      <li>Stack Protector buffer overflow detection (<code>CONFIG_STACKPROTECTOR</code>): Y, SEC</li>
+      <li>Strong Stack Protector (<code>CONFIG_STACKPROTECTOR_STRONG</code>): Y, SEC</li>
+      <li>Link Time Optimization (LTO): None</li>
+      <li>Number of bits to use for ASLR of mmap base address (<code>CONFIG_ARCH_MMAP_RND_BITS</code>): 28</li>
+      <li>Provide system calls for 32-bit time_t (<code>CONFIG_COMPAT_32BIT_TIME</code>): Y, STD</li>
+      <li>Use a virtually-mapped stack (<code>CONFIG_VMAP_STACK</code>): Y, SEC</li>
+      <li>Support for randomizing kernel stack offset on syscall entry (<code>CONFIG_RANDOMIZE_KSTACK_OFFSET</code>): Y, SEC</li>
+      <li>Default state of kernel stack offset randomization (<code>CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT</code>): Y, SEC</li>
+    </div>
+    <br>This is a WIP...
   </body>
 </html>

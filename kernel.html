@@ -48,6 +48,9 @@
     <a href="#bus_options">bus options</a><br>
     <a href="#binary_emulation">binary emulations</a><br>
     <a href="#arch_dependent">general architecture-dependent options</a><br>
+    <a href="#block_layer">enable the block layer</a><br>
+    <a href="#executable_file">executable file formats</a><br>
+    <a href="#memory_management">memory management options</a><br>
     <div id="top_level">
       <h3>Top Level Options</h3>
       <ul>
@@ -384,6 +387,88 @@
       <li>Use a virtually-mapped stack (<code>CONFIG_VMAP_STACK</code>): Y, SEC</li>
       <li>Support for randomizing kernel stack offset on syscall entry (<code>CONFIG_RANDOMIZE_KSTACK_OFFSET</code>): Y, SEC</li>
       <li>Default state of kernel stack offset randomization (<code>CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT</code>): Y, SEC</li>
+    </div>
+    <div id="block_layer">
+      <h3>Enable the block layer</h3>
+      <li>Legacy autoloading support (<code>CONFIG_BLOCK_LEGACY_AUTOLOAD</code>): N, OLD</li>
+      <li>Block layer SG support v4 helper lib (<code>CONFIG_BLK_DEV_BSGLIB</code>): N, auto enabled if needed</li>
+      <li>Block layer data integrity support (<code>CONFIG_BLK_DEV_INTEGRITY</code>): N</li>
+      <li>Allow writing to mounted block devices (<code>CONFIG_BLK_DEV_WRITE_MOUNTED</code>): Y, STD</li>
+      <li>Zoned block device support (<code>CONFIG_BLK_DEV_ZONED</code>): N</li>
+      <li>Block layer bio throttling support (<code>CONFIG_BLK_DEV_THROTTLING</code>): N, VIRT</li>
+      <li>Enable support for block device writeback throttling (<code>CONFIG_BLK_WBT</code>): Y</li>
+      <li>Enable writeback throttling by default (<code>CONFIG_BLK_WBT_MQ</code>): N</li>
+      <li>Enable support for latency based cgroup IO protection (<code>CONFIG_BLK_CGROUP_IOLATENCY</code>): N, VIRT</li>
+      <li>Enable support for cost model based cgroup IO controller (<code>CONFIG_BLK_CGROUP_IOCOST</code>): N, VIRT</li>
+      <li>Cgroup I/O controller for assigning an I/O priority class (<code>CONFIG_BLK_CGROUP_IOPRIO</code>): N, VIRT</li>
+      <li>Logic for interfacing with Opal enabled SEDs (<code>CONFIG_BLK_SED_OPAL</code>): N</li>
+      <li>Enable inline encryption support in block layer (<code>CONFIG_BLK_INLINE_ENCRYPTION</code>): N</li>
+      <li>Partition Types</li>
+      <ul>
+        <li>Advanced partition selection (<code>CONFIG_PARTITION_ADVANCED</code>): Y</li>
+        <li>PC BIOS (MSDOS partition tables) support (<code>CONFIG_MSDOS_PARTITION</code>): Y</li>
+        <li>EFI GUID Partition support (<code>CONFIG_EFI_PARTITION</code>): Y</li>
+        <li>Select others as needed...</li>
+      </ul>
+      <li>IO Schedulers</li>
+      <ul>
+        <li>MQ deadline I/O scheduler (<code>CONFIG_MQ_IOSCHED_DEADLINE</code>): N, if using cgroups</li>
+        <li>Kyber I/O scheduler (<code>CONFIG_MQ_IOSCHED_KYBER</code>): N</li>
+        <li>BFQ I/O scheduler (<code>CONFIG_IOSCHED_BFQ</code>): Y</li>
+        <li>BFQ hierarchical scheduling support (<code>CONFIG_BFQ_GROUP_IOSCHED</code>): Y, if using cgroups</li>
+        <li>BFQ IO controller debugging (<code>CONFIG_BFQ_CGROUP_DEBUG</code>): N, DEV</li>
+      </ul>
+    </div>
+    <div id="executable_file">
+      <h3>Executable file formats</h3>
+      <li>Kernel support for ELF binaries (<code>CONFIG_BINFMT_ELF</code>): Y, STD</li>
+      <li>Write ELF core dumps with partial segments (<code>CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS</code>): Y</li>
+      <li>Kernel support for scripts starting with #! (<code>CONFIG_BINFMT_SCRIPT</code>): Y, STD</li>
+      <li>Kernel support for MISC binaries (<code>CONFIG_BINFMT_MISC</code>): N, SEC</li>
+      <li>Enable core dump support (<code>CONFIG_COREDUMP</code>): Y</li>
+    </div>
+    <div id="memory_management">
+      <h3>Memory Management options</h3>
+      <li>Support for paging of anonymous memory (swap) (<code>CONFIG_SWAP</code>): Y, STD</li>
+      <li>Slab allocator options</li>
+      <ul>
+        <li>Configure for minimal memory footprint (<code>CONFIG_SLUB_TINY</code>): N, EMB</li>
+        <li>Allow slab caches to be merged (<code>CONFIG_SLAB_MERGE_DEFAULT</code>): Y</li>
+        <li>Randomize slab freelist (<code>CONFIG_SLAB_FREELIST_RANDOM</code>): Y, SEC</li>
+        <li>Harden slab freelist metadata (<code>CONFIG_SLAB_FREELIST_HARDENED</code>): Y, SEC</li>
+        <li>Enable performance statistics (<code>CONFIG_SLUB_STATS</code>): N, DEV</li>
+        <li>Enable per cpu partial caches (<code>CONFIG_SLUB_CPU_PARTIAL</code>): Y, on multicore systems...</li>
+        <li>Randomize slab caches for normal kmalloc (<code>CONFIG_RANDOM_KMALLOC_CACHES</code>): N, SEC</li>
+      </ul>
+      <li>Page allocator randomization (<code>CONFIG_SHUFFLE_PAGE_ALLOCATOR</code>): Y, SEC</li>
+      <li>Disable heap randomization (<code>CONFIG_COMPAT_BRK</code>): N, OLD</li>
+      <li>Sparse Memory virtual memmap (<code>CONFIG_SPARSE_VMEMMAP</code>): Y, STD</li>
+      <li>Memory hotplug (<code>MEMORY_HOTPLUG</code>): N, VIRT</li>
+      <li>Allow for memory compaction (<code>CONFIG_COMPACTION</code>): Y, STD</li>
+      <li>Free page reporting (<code>CONFIG_PAGE_REPORTING</code>): N, VIRT</li>
+      <li>Page migration (<code>CONFIG_MIGRATION</code>): Y, auto enabled if needed</li>
+      <li>Maximum scale factor of PCP (Per-CPU pageset) batch allocate/free (<code>CONFIG_PCP_BATCH_SCALE_MAX</code>): 5</li>
+      <li>Enable KSM for page merging (<code>CONFIG_KSM</code>): N, VIRT</li>
+      <li>Low address space to protect from user allocation (<code>CONFIG_DEFAULT_MMAP_ADDR</code>): 65536</li>
+      <li>Enable recovery from hardware memory errors (<code>CONFIG_MEMORY_FAILURE</code>): N, unless you have ECC memory</li>
+      <li>Transparent Hugepage Support (<code>CONFIG_TRANSPARENT_HUGEPAGE</code>): N, unless you have large amounts of memory</li>
+      <li>Contiguous Memory Allocator (<code>CONFIG_CMA</code>): N</li>
+      <li>Defer initialisation of struct pages to kthreads (<code>CONFIG_DEFERRED_PAGE_INIT</code>): N</li>
+      <li>Enable idle page tracking (<code>CONFIG_IDLE_PAGE_TRACKING</code>): N</li>
+      <li>Support DMA zone (<code>ZONE_DMA</code>): Y</li>
+      <li>Support DMA32 zone (<code>ZONE_DMA32</code>): Y</li>
+      <li>Enable VM event counters /proc/vmstat (<code>CONFIG_VM_EVENT_COUNTERS</code>): Y</li>
+      <li>Collect percpu memory statistics (<code>CONFIG_PERCPU_STATS</code>): N, DEV</li>
+      <li>Enable a module to run time tests on dma_pool (<code>CONFIG_DMAPOOL_TEST</code>): N, DEV</li>
+      <li>Enable memfd_create() system call (<code>MEMFD_CREATE</code>): Y</li>
+      <li>Enable memfd_secreat() system call (<code>CONFIG_SECRETMEM</code>): Y</li>
+      <li>Anonymous VMA name support (<code>CONFIG_ANON_VMA_NAME</code>): N, SEC</li>
+      <li>Enable userfaultfd() system call (<code>CONFIG_USERFAULTFD</code>): N, VIRT</li>
+      <li>Multi-Gen LRU (<code>CONFIG_LRU_GEN</code>): N</li>
+      <li>Data Access Monitoring</li>
+      <ul>
+        <li>DAMON: Data Access Monitoring Framework (<code>CONFIG_DAMON</code>): N</li>
+      </ul>
     </div>
     <br>This is a WIP...
   </body>

@@ -16,7 +16,7 @@
   <body>
     <a style="text-decoration: none;" href="index.html"><--</a>
     <h2>Kernel Configuration Pseudo Guide</h2>
-    <h4>Current base: <a href="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/?h=linux-6.7.y">Linux 6.7.y</a></h4>
+    <h4>Current base: <a href="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/?h=linux-6.7.y" target="_blank">Linux 6.7.y</a></h4>
     This aims to be a guide for configuring a Linux kernel for a modern
     x86_64 machine containing hardware commonly found in laptops, desktops,
     and other consumer computers. Note, this guide will sway more minimally,
@@ -51,6 +51,7 @@
     <a href="#block_layer">enable the block layer</a><br>
     <a href="#executable_file">executable file formats</a><br>
     <a href="#memory_management">memory management options</a><br>
+    <a href="#networking_support">networking support</a><br>
     <div id="top_level">
       <h3>Top Level Options</h3>
       <ul>
@@ -469,6 +470,67 @@
       <ul>
         <li>DAMON: Data Access Monitoring Framework (<code>CONFIG_DAMON</code>): N</li>
       </ul>
+    </div>
+    <div id="networking_support">
+      <h3>Network support</h3>
+      <li>Networking options</li>
+      <ul>
+        <li></li>
+      </ul>
+      <li>Amateur Radio support (<code>CONIG_HAMRADIO</code>): N</li>
+      <li>CAN bus subsystem support (<code>CONFIG_CAN</code>): N, used in vehicles</li>
+      <li>Bluetooth subsystem support (<code>CONFIG_BT</code>): Y, if desired</li>
+      <ul>
+        <li>Bluetooth Classic (BR/EDR) features (<code>CONFIG_BT_BREDR</code>): Y</li>
+        <li>RFCOMM protocol support (<code>CONFIG_BT_RFCOMM</code>): Y</li>
+        <li>RFCOMM TTY support (<code>CONFIG_BT_RFCOMM_TTY</code>): N</li>
+        <li>BNEP protocol support (<code>CONFIG_BT_BNEP</code>): N</li>
+        <li>HIDP protocol support (<code>CONFIG_BT_HIDP</code>): Y, for input devices</li>
+        <li>Bluetooth High Speed (HS) features (<code>CONFIG_BT_HS</code>): Y</li>
+        <li>Bluetooth Low Energy (LE) features (<code>CONFIG_BT_LE</code>): Y</li>
+        <li>Bluetooth L2CAP Enhanced Credit Flow Control (<code>CONFIG_BT_LE_L2CAP_ECRED</code>): Y</li>
+        <li>Enable LED triggers (<code>CONFIG_BT_LEDS</code>): N</li>
+        <li>Enable Microsoft extensions (<code>CONFIG_BT_MSFTEXT</code>): N</li>
+        <li>Enable Android Open Source Project extensions (<code>CONFIG_BT_AOSPEXT</code>): N</li>
+        <li>Bluetooth self testing support (<code>CONFIG_BT_SELFTEST</code>): N, DEV</li>
+        <li>Enable runtime option for debugging statements (<code>CONFIG_BT_FEATURE_DEBUG</code>): N, DEV</li>
+        <li>Bluetooth device drivers</li>
+        <ul>
+          <li>HCI USB driver (<code>CONFIG_BT_HCIBTUSB</code>): Y, most bt cards are attached via usb</li>
+          <li>Enable USB poll_sync for Bluetooth USB devices by default (<code>CONFIG_BT_HCIBTUSB_POLL_SYNC</code>): Y, STD</li>
+          <li>Enable others based on hardware...</li>
+        </ul>
+      </ul>
+      <li>RxRPC session sockets (<code>CONFIG_AF_RXRPC</code>): N</li>
+      <li>KCM sockets (<code>CONFIG_AF_KCM</code>): N</li>
+      <li>MCTP core protocol support (<code>CONFIG_MCTP</code>): N</li>
+      <li>Wireless (<code>WIRELESS</code>): Y, if needed</li>
+      <ul>
+        <li>cfg80211 - wireless configuration API (<code>CONFIG_CFG80211</code>): Y, STD</li>
+        <li>nl80211 testmode command (<code>CONFIG_NL80211_TESTMODE</code>): N, DEV</li>
+        <li>enable developer warnings (<code>CONFIG_CFG80211_DEVELOPER_WARNINGS</code>): N, DEV</li>
+        <li>cfg80211 certification onus (<code>CONFIG_CFG80211_CERTIFICATION_ONUS</code>): N</li>
+        <li>enable powersave by default (<code>CONFIG_CFG80211_DEFAULT_PS</code>): Y</li>
+        <li>support CRDA (<code>CONFIG_CFG80211_CRDA_SUPPORT</code>): Y</li>
+        <li>cfg80211 wireless extensions compatibility (<code>CONFIG_CFG80211_WEXT</code>): N</li>
+        <li>Generic IEEE 802.11 Networking Stack (mac80211) (<code>CONFIG_MAC80211</code>): Y, STD</li>
+        <li>Minstrel (<code>CONFIG_MAC80211_RC_MINSTREL</code>): Y</li>
+        <li>Default rate control algorithm: Minstrel</li>
+        <li>Enable mac80211 mesh networking support (<code>CONFIG_MAC80211_MESH</code>): N, OLD</li>
+        <li>Enable LED triggers (<code>CONFIG_MAC80211_LEDS</code>): N</li>
+        <li>Trace all mac80211 debug messages (<code>CONFIG_MAC80211_MESSAGE_TRACING</code>): N, DEV</li>
+        <li>Select mac80211 debugging features (<code>CONFIG_MAC80211_DEBUG_MENU</code>): N, DEV</li>
+      </ul>
+      <li>RF switch subsystem support (<code>CONFIG_RFKILL</code>): N, may be needed for some network/bt cards</li>
+      <li>Plan 9 Resource Sharing Support (9P2000) (<code>CONFIG_NET_9P</code>): N, VIRT</li>
+      <li>CAIF support (<code>CONFIG_CAIF</code>): N</li>
+      <li>Ceph core library (<code>CONFIG_CEPH_LIB</code>): N</li>
+      <li>NFC subsystem support (<code>CONFIG_NFC</code>): N, EMB</li>
+      <li>Packet-sampling netlink channel (<code>CONFIG_PSAMPLE</code>): N</li>
+      <li>Inter-FE based on IETF ForCES InterFE LFB (<code>CONFIG_NET_IFE</code>): N</li>
+      <li>Network light weight tunnels (<code>CONFIG_LWTUNNEL</code>): N</li>
+      <li>Generic failover module (<code>CONFIG_FAILOVER</code>): N, VIRT</li>
+      <li>Netlink interface for ethtool (<code>CONFIG_ETHTOOL_NETLINK</code>): N</li>
     </div>
     <br>This is a WIP...
   </body>

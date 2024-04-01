@@ -2,10 +2,154 @@
   <head>
     <title>Personal Projects</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+    code {
+      color: #505050;
+      font-size: 10px;
+      border: 1px solid grey;
+      border-radius: 3px;
+      padding: 1.75px;
+    }
+
+    pre {
+      background: #f4f4f4;
+      color: #505050;
+      padding: 20px 0px 0px 20px;
+      overflow: auto;
+    }
+    </style>
   </head>
   <body>
     <a style="text-decoration: none;" href="index.html"><--</a>
     <h2>Personal Projects</h2>
-    soon...
+    <h3>Synacor Challenge</h3>
+    After participating in <a href="https://adventofcode.com" target="_blank">Advent of Code</a>
+    for a few years now, I have grown a fan of Eric Wastl's puzzles. This
+    is a multi-part challenge that involves implementing a virtual machine
+    to interpret and run the supplied binary file. You are also given a
+    document outlining the <a href="https://raw.githubusercontent.com/waffle87/synacor_challenge/master/arch-spec" target="_blank">architecture specification</a>
+    of the machine that can run the binary file. Once completed and the self-tests
+    are passed, you're taken on an adventure as the program runs, that is very similar
+    to AoC stories. The goal is to find 8 codes while completing various tasks in
+    the program. Before the original <a href="https://challenge.synacor.com" target="_blank">site</a>
+    was taken down (pretty sure Eric doesn't work at Synacor anymore), you could validate the
+    codes found on the site, but since it is no longer up, The codes can be manually verified.
+    Thanks to <a href="https://github.com/Aneurysm9/vm_challenge" target="_blank">Aneurysm9/vm_challenge</a>
+    for providing a binary file and matching checksums for the codes. I wrote a <a href="https://raw.githubusercontent.com/waffle87/synacor_challenge/master/validate.sh" target="_blank">small script</a>
+    to validate them from a text file. I chose to implement my solution in C with a simple stack
+    data structure, as that seems most fitting for the task at hand. My implementation can
+    be found <a href="https://github.com/waffle87/synacor_challenge" target="_blank">here</a>
+    for those interested. The rest of what's here is likely to be spoilers...
+    <h4>Code 1</h4>
+    This one is found in plain text in the <code>arch-spec</code> file.
+    <pre>
+== hints ==
+- Start with operations 0, 19, and 21.
+- Here's a code for the challenge website: &ltCODE&gt
+    </pre>
+    <h4>Code 2</h4>
+    After implementing a basic interpreter that supports the first subset of
+    opcodes, this one is found in the output.
+    <pre>
+Welcome to the Synacor OSCON 2012 Challenge!
+Please record your progress by putting codes like
+this one into the challenge website: &ltCODE&gt
+    </pre>
+    <h4>Code 3</h4>
+    To retrieve this code, the interpreter must be fully implemented and must
+    pass the initial self-tests. If those conditions are met, the third code
+    is printed.
+    <pre>
+Executing self-test...
+
+self-test complete, all tests pass
+The self-test completion code is: &ltCODE&gt
+    </pre>
+    <h4>Code 4</h4>
+    Now, the adventure aspect of the challenge begins. From the prompts, you
+    should take the tablet using <code>take tablet</code>, then use it.
+    <pre>
+Taken.
+
+What do you do?
+use tablet
+
+You find yourself writing &ltCODE&gt on the tablet.  Perhaps it's some 
+kind of code?
+    </pre>
+    <h4>Code 5</h4>
+    This puzzle appears to be a maze after several entries of south, north,
+    west, etc. I believe the intention was to write a script to solve it for you,
+    but I chose to draw a map instead.
+    <!--<img src="data/projects/map.png" alt="maze map">-->
+    I did also make note of all the inputs used for this binary file <a href="https://raw.githubusercontent.com/waffle87/synacor_challenge/master/input.txt" target="_blank">here</a>.
+    After far too many attempts, you will reach the solution.
+    <pre>
+What do you do?
+north
+
+Chiseled on the wall of one of the passageways, you see:
+
+    &ltCODE&gt
+    </pre>
+    <h4>Code 6</h4>
+    The next puzzle is a maths problem. There will be some coins that you
+    should take/use; each will have a numeric value. The coins need to be
+    arranged to solve this equation.
+    <pre>
+There is a strange monument in the center of the hall with circula
+r slots and unusual symbols.  It reads:
+
+_ + _ * _^2 + _^3 - _ = 399
+    </pre>
+    <ul>
+      <li>Red coin: 2</li>
+      <li>Blue coin: 9</li>
+      <li>Shiny coin: 5</li>
+      <li>Concave coin: 7</li>
+      <li>Corroded coin: 3</li>
+    </ul>
+    After completing this, a previously locked door opens and our next code
+    is revealed.
+    <pre>
+What do you do?
+use teleporter
+
+You activate the teleporter!  As you spiral through time and space, you thi
+nk you see a pattern in the stars...
+
+    &ltCODE&gt
+    </pre>
+    <h4>Code 7</h4>
+    This is by far the most clever puzzle in this challenge. There's a
+    strange book that you should take and look at. The logging facilities
+    I implemented are crucial for this. After reading, it appears we must
+    set the 8th register to a certain value, find the value by reverse
+    engineering the confirmation mechanism, and then disabling it. We can
+    set the register to a non-zero value to progress in the program, but
+    it will not provide the correct code, thus we need find the correct
+    value. The underlying algorithm is a variation of the <a href="https://en.wikipedia.org/wiki/Ackermann_function" target="_blank">Ackermann function</a>.
+    Finally the code can be obtained.
+    <pre>
+You wake up on a sandy beach with a slight headache.  The last thing you remember is activating that teleporter... but now you can't find it anywhere in your pack.  Someone seems to have drawn a message in the sand here:
+
+    &ltCODE&gt
+
+It begins to rain. The message washes away. You take a deep breath and feel firmly grounded in reality as the effects of the teleportation wear off.
+    </pre>
+    <h4>Code 8</h4>
+    This is a BFS application consisting of numbers and arithmetic functions
+    shown on tiles. You must find the shortest path to given result by applying
+    these operations. More in depth information is found in the journal you pick up.
+    After completing this, the final code is shown in a mirror. It's then entered in
+    reverse of course.
+    <pre>
+You gaze into the mirror, and you see yourself gazing back.
+But wait!
+It looks like someone wrote on your face while you were unconscious on the beach!
+Through the mirror, you see &ltCODE&gt scrawled in charcoal on your forehead.
+
+Congratulations; you have reached the end of the challenge!
+    </pre>
   </body>
 </html>

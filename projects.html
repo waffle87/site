@@ -29,15 +29,15 @@
     to interpret and run the supplied binary file. You are also given a
     document outlining the <a href="https://raw.githubusercontent.com/waffle87/synacor_challenge/master/arch-spec" target="_blank">architecture specification</a>
     of the machine that can run the binary file. Once completed and the self-tests
-    are passed, you're taken on an adventure as the program runs, that is very similar
-    to AoC stories. The goal is to find 8 codes while completing various tasks in
+    are passed, you're taken on text-based adventure as the program runs, that is very similar
+    to AoC stories. The goal is to find 8 codes while completing various puzzles in
     the program. Before the original <a href="https://challenge.synacor.com" target="_blank">site</a>
     was taken down (pretty sure Eric doesn't work at Synacor anymore), you could validate the
     codes found on the site, but since it is no longer up, The codes can be manually verified.
     Thanks to <a href="https://github.com/Aneurysm9/vm_challenge" target="_blank">Aneurysm9/vm_challenge</a>
-    for providing a binary file and matching checksums for the codes. I wrote a <a href="https://raw.githubusercontent.com/waffle87/synacor_challenge/master/validate.sh" target="_blank">small script</a>
+    for providing a binary file and matching checksums for the codes. I wrote a <a href="https://github.com/waffle87/synacor_challenge/blob/master/tools/validate.py" target="_blank">small script</a>
     to validate them from a text file. I chose to implement my solution in C with a simple stack
-    data structure, as that seems most fitting for the task at hand. My implementation can
+    data structure, as that seems most fitting for the task at hand. My implementation and related tools can
     be found <a href="https://github.com/waffle87/synacor_challenge" target="_blank">here</a>
     for those interested. The rest of what's here is likely to be spoilers...
     <h4>Code 1</h4>
@@ -49,11 +49,18 @@
     </pre>
     <h4>Code 2</h4>
     After implementing a basic interpreter that supports the first subset of
-    opcodes, this one is found in the output.
+    opcodes (<code>out</code>, <code>noop</code>, and <code>halt</code>), this one is found in the output.
     <pre>
 Welcome to the Synacor OSCON 2012 Challenge!
 Please record your progress by putting codes like
 this one into the challenge website: &ltCODE&gt
+    </pre>
+    Just for fun, this one can also be spotted early on in the hexdump of the binary file:
+    <pre>
+00000210  13 00 20 00 13 00 49 00  13 00 6d 00 13 00 6f 00  |.. ...I...m...o.|
+00000220  13 00 46 00 13 00 7a 00  13 00 74 00 13 00 57 00  |..F...z...t...W.|
+00000230  13 00 51 00 13 00 43 00  13 00 76 00 13 00 78 00  |..Q...C...v...x.|
+00000240  13 00 6a 00 13 00 0a 00  13 00 0a 00 13 00 45 00  |..j.............|
     </pre>
     <h4>Code 3</h4>
     To retrieve this code, the interpreter must be fully implemented and must
@@ -66,9 +73,13 @@ self-test complete, all tests pass
 The self-test completion code is: &ltCODE&gt
     </pre>
     <h4>Code 4</h4>
-    Now, the adventure aspect of the challenge begins. From the prompts, you
-    should take the tablet using <code>take tablet</code>, then use it.
+    Now, the adventure aspect of the challenge begins. Pay attention to the things
+    of interest, and <code>take</code>/<code>use</code> them as needed, like the
+    tablet here.
     <pre>
+What do you do?
+take tablet
+
 Taken.
 
 What do you do?
@@ -79,26 +90,23 @@ kind of code?
     </pre>
     <h4>Code 5</h4>
     This puzzle appears to be a maze after several entries of south, north,
-    west, etc. I believe the intention was to write a script to solve it for you,
-    but I chose to draw a map instead.
-    <!--<img src="data/projects/map.png" alt="maze map">-->
-    I did also make note of all the inputs used for this binary file <a href="https://raw.githubusercontent.com/waffle87/synacor_challenge/master/input.txt" target="_blank">here</a>.
-    After far too many attempts, you will reach the solution.
+    west, etc. I decided to map my steps with pen and paper. After not too
+    long, I arrive at the next code, but not without getting lost and
+    eaten by grues numerous times.
     <pre>
 What do you do?
-north
+east
 
 Chiseled on the wall of one of the passageways, you see:
 
     &ltCODE&gt
     </pre>
     <h4>Code 6</h4>
-    The next puzzle is a maths problem. There will be some coins that you
-    should take/use; each will have a numeric value. The coins need to be
-    arranged to solve this equation.
+    The next puzzle is a maths problem. There will be some coins each with
+    a numeric value that you can inspect to see. The coins must be arranged
+    in a specific order to satisfy the equation on the wall.
     <pre>
-There is a strange monument in the center of the hall with circula
-r slots and unusual symbols.  It reads:
+There is a strange monument in the center of the hall with circular slots and unusual symbols.  It reads:
 
 _ + _ * _^2 + _^3 - _ = 399
     </pre>
@@ -109,27 +117,29 @@ _ + _ * _^2 + _^3 - _ = 399
       <li>Concave coin: 7</li>
       <li>Corroded coin: 3</li>
     </ul>
-    After completing this, a previously locked door opens and our next code
-    is revealed.
+    This is easy enough to be by hand, but why not make another <a href="https://github.com/waffle87/synacor_challenge/blob/master/tools/coin.py" target="_blank">script</a>
+    to do it. Looks like <code>9 + 2*5^2 + 7^3 - 3 = 399</code>
+    will do it, so arrange the coins in order blue, red, shiny, concave, corroded.
+    After completing this, a previously locked door opens and our next code is revealed.
     <pre>
 What do you do?
 use teleporter
 
-You activate the teleporter!  As you spiral through time and space, you thi
-nk you see a pattern in the stars...
+You activate the teleporter!  As you spiral through time and space, you think you see a pattern in the stars...
 
     &ltCODE&gt
     </pre>
     <h4>Code 7</h4>
     This is by far the most clever puzzle in this challenge. There's a
-    strange book that you should take and look at. The logging facilities
-    I implemented are crucial for this. After reading, it appears we must
-    set the 8th register to a certain value, find the value by reverse
-    engineering the confirmation mechanism, and then disabling it. We can
-    set the register to a non-zero value to progress in the program, but
-    it will not provide the correct code, thus we need find the correct
-    value. The underlying algorithm is a variation of the <a href="https://en.wikipedia.org/wiki/Ackermann_function" target="_blank">Ackermann function</a>.
-    Finally the code can be obtained.
+    strange book that contains some information about using the teleporter.
+    Some provision to log instructions and register values is crucial
+    for this puzzle. It appears we must set the 8th register to a certain
+    value. We can set the register to a non-zero value to progress in the
+    program, but it will not provide the correct code, thus we need to find
+    the correct value. The underlying algorithm is a variation of the <a href="https://en.wikipedia.org/wiki/Ackermann_function" target="_blank">Ackermann function</a>.
+    The modified function can be found in the <a href="https://github.com/waffle87/synacor_challenge/blob/master/tools/ackermann.c" target="_blank">program</a>
+    used to find the register value. Python proved to be a bit too slow to compute this.
+    Once set to the correct value (25734 in my case), the sevent code is shown.
     <pre>
 You wake up on a sandy beach with a slight headache.  The last thing you remember is activating that teleporter... but now you can't find it anywhere in your pack.  Someone seems to have drawn a message in the sand here:
 
@@ -138,11 +148,13 @@ You wake up on a sandy beach with a slight headache.  The last thing you remembe
 It begins to rain. The message washes away. You take a deep breath and feel firmly grounded in reality as the effects of the teleportation wear off.
     </pre>
     <h4>Code 8</h4>
-    This is a BFS application consisting of numbers and arithmetic functions
-    shown on tiles. You must find the shortest path to given result by applying
-    these operations. More in depth information is found in the journal you pick up.
-    After completing this, the final code is shown in a mirror. It's then entered in
-    reverse of course.
+    This looks to be some sort of arrangement of tiles, each with a
+    number of arithmetic operation. By moving from one tile to another,
+    you are constructing an expression that must evaluate to the number
+    on the door: 30. This is a BFS application to construct the shortest
+    path to the door. I made another <a href="https://github.com/waffle87/synacor_challenge/blob/master/tools/orb_maze.py" target="_blank">script</a>
+    to achieve this. After inputting the appropriate cardinal directions,
+    we see the final code in a mirror. Of course, it is entered in reverse.
     <pre>
 You gaze into the mirror, and you see yourself gazing back.
 But wait!

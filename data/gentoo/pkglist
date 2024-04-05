@@ -9,7 +9,6 @@ app-portage/gentoolkit
 app-shells/zoxide
 app-shells/zsh
 app-shells/zsh-completions
-app-text/tree
 app-text/zathura
 app-text/zathura-pdf-mupdf
 dev-debug/gdb
@@ -28,6 +27,7 @@ gui-wm/sway
 media-fonts/noto
 media-fonts/noto-emoji
 media-gfx/imv
+media-libs/harfbuzz
 media-libs/libsdl
 media-video/ffmpeg
 net-im/discord
@@ -36,11 +36,13 @@ net-misc/chrony
 net-misc/rclone
 net-wireless/wpa_supplicant
 sys-apps/bat
-sys-apps/eza
+sys-apps/lsd
 sys-apps/ripgrep
+sys-auth/pam_u2f
 sys-boot/efibootmgr
 sys-devel/clang
 sys-firmware/intel-microcode
+sys-kernel/gentoo-sources
 sys-kernel/linux-firmware
 sys-power/acpi
 sys-power/thermald

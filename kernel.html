@@ -69,6 +69,8 @@
     <a href="#memory_management">memory management options</a><br />
     <a href="#networking_support">networking support</a><br />
     <a href="#file_systems">file systems</a><br />
+    <a href="#security_options">security options</a><br />
+    <a href="#cryptographic_api"></a><br />
     <div id="top_level">
       <h3>Top Level Options</h3>
       <ul>
@@ -1774,6 +1776,332 @@
           UTF-8 normalization and casefolding support
           (<code>CONFIG_UNICODE</code>): N
         </li>
+      </ul>
+    </div>
+    <div id="security_options">
+      <h3>Security Options</h3>
+      <ul>
+        <li>
+          Enable access key retention support (<code>CONFIG_KEYS</code>): Y
+        </li>
+        <li>
+          Enable temporary caching of the last request_key() result
+          (<code>CONFIG_KEYS_REQUEST_CACHE</code>): N
+        </li>
+        <li>
+          Enable register of persistent per-UID keyrings
+          (<code>CONFIG_PERSISTENT_KEYRINGS</code>): N
+        </li>
+        <li>TRUSTED KEYS (<code>CONFIG_TRUSTED_KEYS</code>): N, SEC</li>
+        <li>ENCRYPTED KEYS (<code>CONFIG_ENCRYPTED_KEYS</code>): N, SEC</li>
+        <li>
+          Diffie-Hellman operations on retained keys
+          (<code>CONFIG_KEY_DH_OPERATIONS</code>): N
+        </li>
+        <li>
+          Restrict unprivileged access to the kernel syslog
+          (<code>CONFIG_SECURITY_DMESG_RESTRICT</code>): N, unless you limit
+          dmesg access
+        </li>
+        <li>
+          Enable different security models (<code>CONFIG_SECURITY</code>): N,
+          SEC
+        </li>
+        <li>
+          Enable the securityfs filesystem (<code>CONFIG_SECURITYFS</code>): N
+        </li>
+        <li>
+          Enable Intel(R) Trusted Execution Technology
+          (<code>CONFIG_INTEL_TXT</code>): N
+        </li>
+        <li>
+          Harden memory copies between kernel and userspace
+          (<code>CONFIG_HARDENED_USERCOPY</code>): Y, SEC
+        </li>
+        <li>
+          Harden common str/mem functions against buffer overflows
+          (<code>CONFIG_FORTIFY_SOURCE</code>): Y, SEC
+        </li>
+        <li>
+          Force all usermode helper calls through a single binary
+          (<code>CONFIG_STATIC_USERMODEHELPER</code>): N
+        </li>
+        <li>
+          First legacy 'major LSM' to be initialized: Unix Discretionary Access
+          Controls (<code>DEFAULT_SECURITY_DAC</code>)
+        </li>
+        <li>
+          Ordered list of enabled LSMs (<code>LSM</code>):
+          yama,loadpin,safesetid,integrity
+        </li>
+        <li>Kernel hardening options</li>
+        <ul>
+          <li>Hardening of kernel data structures</li>
+          <ul>
+            <li>
+              Check integrity of linked list manipulation
+              (<code>CONFIG_LIST_HARDENED</code>): Y
+            </li>
+            <li>
+              Trigger a BUG when data corruption is detected
+              (<code>CONFIG_BUG_ON_DATA_CORRUPTION</code>): Y
+            </li>
+          </ul>
+          <li>
+            Randomize layout of sensitive kernel structures: Disable structure
+            layout randomization (<code>RANDSTRUCT_NONE</code>)
+          </li>
+        </ul>
+      </ul>
+    </div>
+    <div id="cryptographic_api">
+      <h3>Cryptographic API</h3>
+      <ul>
+        <li>Crypto core or helper</li>
+        <ul>
+          <li>
+            Cryptographic algorithm manager
+            (<code>CONFIG_CRYPTO_MANAGER</code>): Y, STD
+          </li>
+          <li>
+            Userspace cryptographic algorithm configuration
+            (<code>CONFIG_CRYPTO_USER</code>): N
+          </li>
+          <li>
+            Disable run-time self tests
+            (<code>CONFIG_CRYPTO_MANAGER_DISABLE_TESTS</code>): Y
+          </li>
+          <li>Null algorithms (<code>CONFIG_CRYPTO_NULL</code>): Y</li>
+          <li>Parallel crypto engine (<code>CONFIG_CRYPTO_PCRYPT</code>): N</li>
+          <li>
+            Software async crypto daemon (<code>CONFIG_CRYPTO_CRYPTD</code>): N
+          </li>
+          <li>Authenc support (<code>CONFIG_CRYPTO_AUTHENC</code>): Y</li>
+          <li>Testing module (<code>CONFIG_CRYPTO_TEST</code>): N, DEV</li>
+        </ul>
+        <li>Public-key cryptography</li>
+        <ul>
+          <li>
+            RSA (Rivest-Shamir-Adleman) (<code>CONFIG_CRYPTO_RSA</code>): Y, STD
+          </li>
+          <li>DH (Diffie-Hellman) (<code>CONFIG_CRYPTO_DH</code>): N</li>
+          <li>
+            ECDH (Elliptic Curve Diffie-Hellman)
+            (<code>CONFIG_CRYPTO_ECDH</code>): Y
+          </li>
+          <li>
+            ECDSA (Elliptic Curve Digital Signature Algorithm)
+            (<code>CONFIG_CRYPTO_ECDSA</code>): N
+          </li>
+          <li>
+            EC-RDSA (Elliptic Curve Russian Digital Signature Algorithm)
+            (<code>CONFIG_CRYPTO_ECRDSA</code>): N
+          </li>
+          <li>SM2 (ShangMi 2) (<code>CONFIG_CRYPTO_SM2</code>): N</li>
+          <li>Curve25519 (<code>CONFIG_CRYPTO_CURVE25519</code>): N</li>
+        </ul>
+        <li>Block ciphers</li>
+        <ul>
+          <li>
+            AES (Advanced Encryption Standard) (<code>CONFIG_CRYPTO_AES</code>):
+            Y, STD
+          </li>
+          <li>
+            AES (Advanced Encryption standard) (fixed time)
+            (<code>CONFIG_CRYPTO_AES_TI</code>): N
+          </li>
+          <li>ARIA (<code>CONFIG_CRYPTO_ARIA</code>): N</li>
+          <li>Blowfish (<code>CONFIG_CRYPTO_BLOWFISH</code>): N</li>
+          <li>Camellia (<code>CONFIG_CRYPTO_CAMELLIA</code>): N</li>
+          <li>CAST5 (CAST-128) (<code>CONFIG_CRYPTO_CAST5</code>): N</li>
+          <li>CAST6 (CAST-256) (<code>CONFIG_CRYPTO_CAST6</code>): N</li>
+          <li>DES and Triple DES EDE (<code>CONFIG_CRYPTO_DES</code>): N</li>
+          <li>FCrypt (<code>CONFIG_CRYPTO_FCRYPT</code>): N</li>
+          <li>Serpent (<code>CONFIG_CRYPTO_SEPRENT</code>): N</li>
+          <li>SM4 (ShangMi 4) (<code>CONFIG_CRYPTO_SM4_GENERIC</code>): N</li>
+          <li>Twofish (<code>CONFIG_CRYPTO_TWOFISH</code>): N</li>
+        </ul>
+        <li>Length-preserving ciphers and modes</li>
+        <ul>
+          <li>Adiantum (<code>CONFIG_CRYPTO_ADIANTUM</code>): N</li>
+          <li>ChaCha (<code>CONFIG_CRYPTO_CHACHA20</code>): N</li>
+          <li>
+            CBC (Cipher Block Chaining) (<code>CONFIG_CRYPTO_CBC</code>): Y, STD
+          </li>
+          <li>CTR (Counter) (<code>CONFIG_CRYPTO_CTR</code>): Y, STD</li>
+          <li>
+            CTS (Cipher Text Stealing) (<code>CONFIG_CRYPTO_CTS</code>): N
+          </li>
+          <li>
+            ECB (Electronic Codebook) (<code>CONFIG_CRYPTO_ECB</code>): Y, STD
+          </li>
+          <li>HCTR2 (<code>CONFIG_CRYPTO_HCTR2</code>): N</li>
+          <li>KW (AES Key Wrap) (<code>CONFIG_CRYPTO_KEYWRAP</code>): N</li>
+          <li>
+            PCBC (Propagating Cipher Block Chaining)
+            (<code>CONFIG_CRYPTO_PCBC</code>): N
+          </li>
+          <li>
+            XTS (XOR Encrypt XOR with ciphertext stealing)
+            (<code>CONFIG_CRYPTO_XTS</code>): N
+          </li>
+        </ul>
+        <li>AEAD (authenticated encryption with associated data) ciphers</li>
+        <ul>
+          <li>AEGIS-128 (<code>CONFIG_CRYPTO_AEGIS128</code>): N</li>
+          <li>
+            ChaCha20-Poly1305 (<code>CONFIG_CRYPTO_CHACHA20POLY1305</code>): N
+          </li>
+          <li>
+            CCM (Counter with Cipher Block Chaining-MAC)
+            (<code>CONFIG_CRYPTO_CCM</code>): Y
+          </li>
+          <li>
+            GCM (Galois/Counter Mode) and GMAC (GCM MAC)
+            (<code>CONFIG_CRYPTO_GCM</code>): Y
+          </li>
+          <li>
+            Sequence Number IV Generator (<code>CONFIG_CRYPTO_SEQIV</code>): Y
+          </li>
+          <li>
+            Encrypted Chain IV Generator (<code>CONFIG_CRYPTO_ECHAINIV</code>):
+            Y
+          </li>
+          <li>
+            Encrypted Salt-Sector IV Generator
+            (<code>CONFIG_CRYPTO_ESSIV</code>): N
+          </li>
+        </ul>
+        <li>Hashes, digests, and MACs</li>
+        <ul>
+          <li>
+            BLAKE2b (<code>CONFIG_CRYPTO_BLAKE2B</code>): N, unless using btrfs
+          </li>
+          <li>CMAC (Cipher-based MAC) (<code>CONFIG_CRYPTO_CMAC</code>): Y</li>
+          <li>GHASH (<code>CONFIG_CRYPTO_GHASH</code>): Y</li>
+          <li>HMAC (Keyed-Hash MAC) (<code>CONFIG_CRYPTO_HMAC</code>): Y</li>
+          <li>MD4 (<code>CONFIG_CRYPTO_MD4</code>): N, OLD</li>
+          <li>MD5 (<code>CONFIG_CRYPTO_MD5</code>): Y</li>
+          <li>Miachel MIC (<code>CONFIG_CRYPTO_MICHAEL_MIC</code>): N</li>
+          <li>Poly1305 (<code>CONFIG_CRYPTO_POLY1305</code>): N</li>
+          <li>RIPEMD-160 (<code>CONFIG_CRYPTO_RMD160</code>): N</li>
+          <li>SHA-1 (<code>CONFIG_CRYPTO_SHA1</code>): N</li>
+          <li>SHA-224 and SHA-256 (<code>CONFIG_CRYPTO_SHA256</code>): Y</li>
+          <li>SHA-384 and SHA-512 (<code>CONFIG_CRYPTO_SHA512</code>): Y</li>
+          <li>SHA-3 (<code>CONFIG_CRYPTO_SHA3</code>): Y</li>
+          <li>SM3 (ShangMi 3) (<code>CONFIG_CRYPTO_SM3_GENERIC</code>): N</li>
+          <li>Streebog (<code>CONFIG_CRYPTO_STREEBOG</code>): N</li>
+          <li>VMAC (<code>CONFIG_CRYPTO_VMAC</code>): N</li>
+          <li>Whirlpool (<code>CONFIG_CRYPTO_WP512</code>): N</li>
+          <li>
+            XCBC-MAC (Extended Cipher Block Chaining MAC)
+            (<code>CONFIG_CRYPTO_XCBC</code>): N
+          </li>
+          <li>
+            xxHash (<code>CONFIG_CRYPTO_XXHASH</code>): N, unless using btrfs
+          </li>
+        </ul>
+        <li>CRCs (cyclic redundancy checks)</li>
+        <ul>
+          <li>
+            CRC32c (<code>CONFIG_CRYPTO_CRC32C</code>): Y, used by many
+            filesystems
+          </li>
+          <li>CRC32 (<code>CONFIG_CRYPTO_CRC32</code>): N</li>
+          <li>CRCT10DIF (<code>CONFIG_CRYPTO_CRCT10DIF</code>): N</li>
+          <li>
+            CRC64 based on Rocksoft Model algorithm
+            (<code>CONFIG_CRYPTO_CRC64_ROCKSOFT</code>): Y
+          </li>
+        </ul>
+        <li>Compression</li>
+        <ul>
+          <li>Deflate (<code>CONFIG_CRYPTO_DEFLATE</code>): N</li>
+          <li>LZO (<code>CONFIG_CRYPTO_LZO</code>): N</li>
+          <li>842 (<code>CONFIG_CRYPTO_842</code>): N</li>
+          <li>LZ4 (<code>CONFIG_CRYPTO_LZ4</code>): N</li>
+          <li>LZ4HC (<code>CONFIG_CRYPTO_LZ4HC</code>): N</li>
+          <li>Zstd (<code>CONFIG_CRYPTO_ZSTD</code>): Y</li>
+        </ul>
+        <li>Random number generation</li>
+        <ul>
+          <li>
+            ANSI PRNG (Pseudo Random Number Generator)
+            (<code>CONFIG_CRYPTO_ANSI_CPRNG</code>): N
+          </li>
+          <li>
+            NIST SP800-90A DRBG (Deterministic Random Bit Generator)
+            (<code>CONFIG_CRYPTO_DRBG_MENU</code>): Y
+          </li>
+          <li>
+            CPU Jitter: Non-Deterministic RNG (Random Number Generator)
+            (<code>CONFIG_CRYPTO_JITTERENTROPY</code>): Y
+          </li>
+        </ul>
+        <li>Userspace interface</li>
+        <ul>
+          <li>None</li>
+        </ul>
+        <li>Accelerated Cryptographic Algorithms for CPU (x86)</li>
+        <ul>
+          <li>None</li>
+        </ul>
+        <li>
+          Hardware crypto devices (<code>CONFIG_CRYPTO_HW</code>): N, unless
+          present
+        </li>
+        <li>Asymmetric (public-key cryptographic) key type</li>
+        <ul>
+          <li>
+            Asymmetric public-key crypto algorithm subtype
+            (<code>CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE</code>): Y
+          </li>
+          <li>
+            X.509 certificate parser
+            (<code>CONFIG_X509_CERTIFICATE_PARSER</code>): Y
+          </li>
+          <li>
+            PKCS#8 private key parser
+            (<code>CONFIG_PKCS8_PRIVATE_KEY_PARSER</code>): N
+          </li>
+          <li>
+            PKCS#7 message parser (<code>CONFIG_PKCS7_MESSAGE_PARSER</code>): Y
+          </li>
+          <li>
+            PKCS#7 testing key type (<code>CONFIG_PKCS7_TEST_KEY</code>): N
+          </li>
+          <li>
+            Support for PE file signature verification
+            (<code>CONFG_SIGNED_PE_FILE_VERIFICATION</code>): N
+          </li>
+          <li>
+            Run FIPS selftests on the X.509+PKCS7 signature verification
+            (<code>CONFIG_FIPS_SIGNATURE_SELFTEST</code>): N
+          </li>
+        </ul>
+        <li>Certificates for signature checking</li>
+        <ul>
+          <li>
+            Provide system-wide ring of trusted keys
+            (<code>CONFIG_SYSTEM_TRUSTED_KEYRING</code>): Y
+          </li>
+          <li>
+            Additional X.509 keys for default system keyring
+            (<code>CONFIG_SYSTEM_TRUSTED_KEYS</code>): N
+          </li>
+          <li>
+            Reserve area for inserting a certificate without recompiling
+            (<code>CONFIG_SYSTEM_EXTRA_CERTIFICATE</code>): N
+          </li>
+          <li>
+            Provide a keyring to which extra trustable keys may be added
+            (<code>CONFIG_SECONDARY_TRUSTED_KEYRING</code>): N
+          </li>
+          <li>
+            Provide system-wide ring of blacklisted keys
+            (<code>CONFIG_SYSTEM_BLACKLIST_KEYRING</code>): N
+          </li>
+        </ul>
       </ul>
     </div>
     <br />This is a WIP...

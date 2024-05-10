@@ -1,58 +1,69 @@
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Gentoo</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <style>
-    code {
-      color: #505050;
-      font-size: 10px;
-      border: 1px solid grey;
-      border-radius: 3px;
-      padding: 1.75px;
-    }
+      code {
+        color: #505050;
+        font-size: 10px;
+        border: 1px solid grey;
+        border-radius: 3px;
+        padding: 1.75px;
+      }
 
-    pre {
-      background: #f4f4f4;
-      color: #505050;
-      padding: 20px 0px 0px 20px;
-      overflow: auto;
-    }
+      pre {
+        background: #f4f4f4;
+        color: #505050;
+        padding: 20px 0px 0px 20px;
+        overflow: auto;
+      }
     </style>
   </head>
   <body>
-    <a style="text-decoration: none;" href="index.html"><--</a>
+    <a style="text-decoration: none" href="index.html"><--</a>
     <h2>Gentoo Linux on Macbook Air</h2>
-    This page covers various features, nuances, notes, etc. of my
-    Gentoo system running on a 2012 Macbook Air. This laptop was
-    initially bought as a tinkering project for $150USD. While this
-    is not the most powerful device, it is suitable for all the work
-    I encounter on a daily basis and is used as my primary system. My
-    intentions for this system are reliability and speed most importantly.
-    With this comes a tidy OS with quite few kernel parameters set, 
-    fine-tuned USE flags, and a usable system that I'm very familiar with.
-    All my configuration can be found on my <a href="https://github.com/waffle87/dots/tree/xena" target="_blank">Github</a>.
-    <br><br>
-    <img src="data/gentoo/laptop.jpg" alt="laptop image">
-    <img src="data/gentoo/laptop_open.jpg" alt="laptop open image">
-    <br><br>
-    <a href="#hardware_features">hardware features</a><br>
-    <a href="#kernel">kernel</a><br>
-    <a href="#bootloader">bootloader</a><br>
-    <a href="#portage">portage</a><br>
-    <a href="#applications">applications</a><br>
-    <a href="#miscellaneous">miscellaneous</a><br>
+    This page covers various features, nuances, notes, etc. of my Gentoo system
+    running on a 2012 Macbook Air. This laptop was initially bought as a
+    tinkering project for $150USD. While this is not the most powerful device,
+    it is suitable for all the work I encounter on a daily basis and is used as
+    my primary system. My intentions for this system are reliability and speed
+    most importantly. With this comes a tidy OS with quite few kernel parameters
+    set, fine-tuned USE flags, and a usable system that I'm very familiar with.
+    All my configuration can be found on my
+    <a href="https://github.com/waffle87/dots/tree/xena" target="_blank"
+      >Github</a
+    >. <br /><br />
+    <img src="data/gentoo/laptop.jpg" alt="laptop image" />
+    <img src="data/gentoo/laptop_open.jpg" alt="laptop open image" />
+    <br /><br />
+    <a href="#hardware_features">hardware features</a><br />
+    <a href="#kernel">kernel</a><br />
+    <a href="#bootloader">bootloader</a><br />
+    <a href="#portage">portage</a><br />
+    <a href="#applications">applications</a><br />
+    <a href="#miscellaneous">miscellaneous</a><br />
     <a href="#screenshots">screenshots</a>
 
     <div id="hardware_features">
       <h3>Hardware Features</h3>
-      This is a Macbook Air 5,2 (EMC 2559) fit with the following (see <a href="data/gentoo/lspci" target="_blank">lspci</a>, <a href="data/gentoo/lsusb" target="_blank">lsusb</a>)
+      This is a Macbook Air 5,2 (EMC 2559) fit with the following (see
+      <a href="data/gentoo/lspci" target="_blank">lspci</a>,
+      <a href="data/gentoo/lsusb" target="_blank">lsusb</a>)
       <ul>
-        <li>Intel i7 3667U at 3.2 GHz with 4 cores (<a href="data/gentoo/lscpu" target="_blank">lscpu</a>)</li>
-        <li>8 GB RAM </li>
+        <li>
+          Intel i7 3667U at 3.2 GHz with 4 cores (<a
+            href="data/gentoo/lscpu"
+            target="_blank"
+            >lscpu</a
+          >)
+        </li>
+        <li>8 GB RAM</li>
         <li>1 TB NVMe Samsung 970 SSD (used adapter)</li>
         <li>Intel 3rd gen graphics</li>
-        <li>Broadcom BCM43224 802.11 Network Controller (bcma-pci-bridge driver)</li>
+        <li>
+          Broadcom BCM43224 802.11 Network Controller (bcma-pci-bridge driver)
+        </li>
         <li>Broadcom BCM2046 Bluetooth</li>
         <li>Broadcom BCM5974 Touchpad</li>
         <li>Keyboard with backlight</li>
@@ -60,36 +71,55 @@
         <li>2x USB 2.0, SD card reader, & Thunderbolt port</li>
       </ul>
       <h4>Modifications</h4>
-      Since 2010, Apple Macbooks have used their proprietary SSDs
-      with non-standard connectors. When I bought this machine, it
-      came with a 128 GB Samgsung "blade" SSD which I was not very
-      keen on keeping. Luckily, there exists <a href="https://www.microconnectors.com/macbook-m-2-nvme-upgrade-adapter/" target="_blank">adapters</a>
+      Since 2010, Apple Macbooks have used their proprietary SSDs with
+      non-standard connectors. When I bought this machine, it came with a 128 GB
+      Samgsung "blade" SSD which I was not very keen on keeping. Luckily, there
+      exists
+      <a
+        href="https://www.microconnectors.com/macbook-m-2-nvme-upgrade-adapter/"
+        target="_blank"
+        >adapters</a
+      >
       which simply act as a bridge between a standard M.2 SSD and Apple's
-      connector. Installation was quite easy and the adapter has been
-      reliable since. This laptop also came with what I presume was the
-      original battery, as it lasted about 15 minutes after being charged
-      and would lose power randomly. A suitable <a href="https://www.amazon.com/Replacement-Battery-MacBook-7200mAh-Laptop/dp/B07SDBKDDK" target="_blank">replacement</a>
-      can be found roughly $50USD. With this, I get about 5 hours on
-      a full charge, mostly thanks to <a href="https://github.com/linrunner/TLP" target="_blank">TLP</a>
-      and thermald. Now, if only the memory wasn't soldered directly to
-      the motherboard, or I could find the courage to <a href="https://www.youtube.com/watch?v=aH4n9xBaWxg" target="_blank">replace it</a>.
+      connector. Installation was quite easy and the adapter has been reliable
+      since. This laptop also came with what I presume was the original battery,
+      as it lasted about 15 minutes after being charged and would lose power
+      randomly. A suitable
+      <a
+        href="https://www.amazon.com/Replacement-Battery-MacBook-7200mAh-Laptop/dp/B07SDBKDDK"
+        target="_blank"
+        >replacement</a
+      >
+      can be found roughly $50USD. With this, I get about 5 hours on a full
+      charge, mostly thanks to
+      <a href="https://github.com/linrunner/TLP" target="_blank">TLP</a> and
+      thermald. Now, if only the memory wasn't soldered directly to the
+      motherboard, or I could find the courage to
+      <a href="https://www.youtube.com/watch?v=aH4n9xBaWxg" target="_blank"
+        >replace it</a
+      >.
     </div>
     <div id="kernel">
       <h3>Kernel</h3>
-      After spending many hours narrowing down kernel options enabled,
-      I have a 7.8 MB kernel image with ~4000 parameters set. Note,
-      this configuration is very hardware and user specific. I opted
-      for absolutely zero modules since I don't need any out-of-tree
-      hardware support. I also did not configure anything very drastically
-      in either direction, like extreme security, sacraficing usability, etc.
-      I chose to use <a href="https://packages.gentoo.org/packages/sys-kernel/gentoo-sources" target="_blank">gentoo-sources</a>
-      to provide kernel source as it contains some handy patches and is easy
-      to obtain via emerge. A base 6.7 kernel builds locally (remember, 4 
-      cores) in approximately 17 minutes, which is not too much of a pain
-      when troubleshooting on bare metal. I also chose to omit an initramfs,
-      which means CPU microcode can/should be built directly into the kernel.
-      This can be achieved by first installing <code>sys-firmware/intel-microcode</code>.
-      This is also a good time to add microcode signature to <code>/etc/portage/make.conf</code>
+      After spending many hours narrowing down kernel options enabled, I have a
+      7.8 MB kernel image with ~4000 parameters set. Note, this configuration is
+      very hardware and user specific. I opted for absolutely zero modules since
+      I don't need any out-of-tree hardware support. I also did not configure
+      anything very drastically in either direction, like extreme security,
+      sacraficing usability, etc. I chose to use
+      <a
+        href="https://packages.gentoo.org/packages/sys-kernel/gentoo-sources"
+        target="_blank"
+        >gentoo-sources</a
+      >
+      to provide kernel source as it contains some handy patches and is easy to
+      obtain via emerge. A base 6.7 kernel builds locally (remember, 4 cores) in
+      approximately 17 minutes, which is not too much of a pain when
+      troubleshooting on bare metal. I also chose to omit an initramfs, which
+      means CPU microcode can/should be built directly into the kernel. This can
+      be achieved by first installing <code>sys-firmware/intel-microcode</code>.
+      This is also a good time to add microcode signature to
+      <code>/etc/portage/make.conf</code>
       <pre>
 $ iucode_tool -S -l /lib/firmware/intel-ucode/*
 iucode_tool: system has processor(s) with signature 0x000306a9
@@ -98,33 +128,36 @@ selected microcodes:
   001/001: sig 0x000306a9, pf_mask 0x12, 2019-02-13, rev 0x0021, size 14336
 # echo 'MICROCODE_SIGNATURES="-s 0x000306a9"' >> /etc/portage/make.conf
       </pre>
-      CPU's signature is found in bundle 1, so the filename to use is <code>/lib/firmware/intel-ucode/06-3a-09</code>.
-      Ensure the following kernel options are set approximately, where the argument
-      passed to <code>CONFIG_EXTRA_FIRMWARE</code> is the filename of our microcode
+      CPU's signature is found in bundle 1, so the filename to use is
+      <code>/lib/firmware/intel-ucode/06-3a-09</code>. Ensure the following
+      kernel options are set approximately, where the argument passed to
+      <code>CONFIG_EXTRA_FIRMWARE</code> is the filename of our microcode
       <pre>
 CONFIG_MICROCODE=y
 CONFIG_FW_LOADER=y
 CONFIG_EXTRA_FIRMWARE="intel-ucode/06-3a-09"
 CONFIG_EXTRA_FIRMWARE_DIR="/lib/firmware"
       </pre>
-      Check dmesg for microcode output to ensure all was successful.
-      My specific configuation for this machine can be found at
-      <a href="https://raw.githubusercontent.com/waffle87/dots/xena/.config/kernel.config">6.7.4 .config</a>
+      Check dmesg for microcode output to ensure all was successful. My specific
+      configuation for this machine can be found at
+      <a
+        href="https://raw.githubusercontent.com/waffle87/dots/xena/.config/kernel.config"
+        >6.7.4 .config</a
+      >
 
-      For
-      some more kernel related stuff, see <a href="kernel.html">here</a>.
+      For some more kernel related stuff, see <a href="kernel.html">here</a>.
     </div>
     <div id="bootloader">
       <h3>Bootloader</h3>
-      Spoiler: there is none. For the duration of my time using Linux, I have used GRUB as my
-      bootloader across various systems. In my experience, it's been
-      ok, it does what it needs to, allows for extensive configuration
-      like theming and requiring a password. However, some time ago it
-      went kaput and despite manually setting the root partition in
-      <code>/boot/grub/grub.cfg</code>, it seems the incorrect value
-      was passed to the kernel at boot and the partition could not be found.
-      Every time I would reboot I would have to manually set it (which
-      is a handy trick to know nonetheless)
+      Spoiler: there is none. For the duration of my time using Linux, I have
+      used GRUB as my bootloader across various systems. In my experience, it's
+      been ok, it does what it needs to, allows for extensive configuration like
+      theming and requiring a password. However, some time ago it went kaput and
+      despite manually setting the root partition in
+      <code>/boot/grub/grub.cfg</code>, it seems the incorrect value was passed
+      to the kernel at boot and the partition could not be found. Every time I
+      would reboot I would have to manually set it (which is a handy trick to
+      know nonetheless)
       <pre>
 grub> ls
 (hd0) (hd0,gpt0) (hd0,gpt1) (hd0,gpt2)
@@ -134,20 +167,19 @@ grub> root=(hd0,gpt1)
 grub> linux /boot/vmlinuz root=/dev/sda3
 grub> boot
       </pre>
-      Since this isn't a multiboot machine or anything, I can simply omit
-      GRUB and expose the kernel image as an EFI stub. First, the
-      following kernel options must be set
+      Since this isn't a multiboot machine or anything, I can simply omit GRUB
+      and expose the kernel image as an EFI stub. First, the following kernel
+      options must be set
       <pre>
 CONFIG_EFI=y
 CONFIG_EFI_STUB=y
 CONFIG_CMDLINE_BOOL=y
 CONFIG_CMDLINE="root=PARTUUID=... ro"
       </pre>
-      The root must be set to the <code>PARTUUID</code> value
-      of the root partition. Use <code>blkid</code> to obtain this
-      Once kernel has been recompiled, copy the image to the EFI partition
-      and create a new boot entry. It is also wise to remove unneeded entries
-      to conserve space
+      The root must be set to the <code>PARTUUID</code> value of the root
+      partition. Use <code>blkid</code> to obtain this Once kernel has been
+      recompiled, copy the image to the EFI partition and create a new boot
+      entry. It is also wise to remove unneeded entries to conserve space
       <pre>
 # efibootmgr -b 1 -B
 # cp arch/x86/boot/bzImage /boot/efi/gentoo/bzImage-x.y.z.efi
@@ -158,11 +190,10 @@ CONFIG_CMDLINE="root=PARTUUID=... ro"
     <div id="portage">
       <h3>Portage</h3>
       <h4>Profile</h4>
-      When initially setting this up, I opted for a multilib system as
-      I was still using some 32-bit programs at the time. Since, I have
-      switched to a no-multilib profile. Unlike adding multilib support
-      to a 64-bit only system, going from multilib to no-multilib is
-      quite easy.
+      When initially setting this up, I opted for a multilib system as I was
+      still using some 32-bit programs at the time. Since, I have switched to a
+      no-multilib profile. Unlike adding multilib support to a 64-bit only
+      system, going from multilib to no-multilib is quite easy.
       <pre>
 # eselect profile list
   ...
@@ -172,12 +203,13 @@ CONFIG_CMDLINE="root=PARTUUID=... ro"
 # emerge -auDN @world
 # emerge --depclean
       </pre>
-      It was pleasant to see 60+ packages removed after the switch. And
-      have much reduced overhead in my system overall.
+      It was pleasant to see 60+ packages removed after the switch. And have
+      much reduced overhead in my system overall.
       <h4>Compiler</h4>
       As Clang/LLVM has become more and more stable and is able to compile all
-      packages installed, I chose to switch the default compiler, linker
-      and other bits over from GCC. This is easy enough in <code>/etc/portage/make.conf</code>.
+      packages installed, I chose to switch the default compiler, linker and
+      other bits over from GCC. This is easy enough in
+      <code>/etc/portage/make.conf</code>.
       <pre>
 CC="clang"
 CXX="clang++"
@@ -185,11 +217,11 @@ AR="llvm-ar"
 NM="llvm-nm"
 RANLIB="llvm-ranlib"
       </pre>
-      If needed, a GCC fallback environment can be made containing the
-      previous variables, then applied to certain packages which may fail
-      under Clang via adding an entry in <code>/etc/portage/package.env</code>.
-      Some advantagees of using Clang over GCC are slightly faster compilation
-      times and reduced memory usage, and potentially safer binaries overall.
+      If needed, a GCC fallback environment can be made containing the previous
+      variables, then applied to certain packages which may fail under Clang via
+      adding an entry in <code>/etc/portage/package.env</code>. Some advantagees
+      of using Clang over GCC are slightly faster compilation times and reduced
+      memory usage, and potentially safer binaries overall.
       <h4>USE Flags</h4>
       My USE flags and related options are quite minimal. Global flags include
       <pre>
@@ -198,23 +230,27 @@ USE="alsa bluetooth clang dbus elogind gles2 jpeg png \
 ACCEPT_LICENSE="*"
 ACCEPT_KEYWORDS="~amd64"
       </pre>
-      For reference, some primary features used on this system are
-      Wayland, Pipewire, elogind, and OpenRC. Since no-multilib already
-      has very few things enabled, not many flags needed to be disabled.
+      For reference, some primary features used on this system are Wayland,
+      Pipewire, elogind, and OpenRC. Since no-multilib already has very few
+      things enabled, not many flags needed to be disabled.
     </div>
     <div id="applications">
       <h3>Applications</h3>
-      Packages in my world file can be found in <a href="data/gentoo/pkglist" target="_blank">package list</a>,
-      and list of all system packages in <a href="data/gentoo/pkglist_full" target="_blank">full package list</a>.
+      Packages in my world file can be found in
+      <a href="data/gentoo/pkglist" target="_blank">package list</a>, and list
+      of all system packages in
+      <a href="data/gentoo/pkglist_full" target="_blank">full package list</a>.
       Some notable utilities I use are below.
       <ul>
         <li>
-          <b>Window Manager: </b><a href="https://github.com/swaywm/sway" target="_blank">Sway</a><br>
-            To omit the need for a display manager and launch directly
-            from a tty, the <code>XDG_RUNTIME_DIR</code> variable needs
-            to be manually set in shell startup file (<code>~/.zshrc</code>)
-            Then to launch Sway, simply add the following as well.
-            <pre>
+          <b>Window Manager: </b
+          ><a href="https://github.com/swaywm/sway" target="_blank">Sway</a
+          ><br />
+          To omit the need for a display manager and launch directly from a tty,
+          the <code>XDG_RUNTIME_DIR</code> variable needs to be manually set in
+          shell startup file (<code>~/.zshrc</code>) Then to launch Sway, simply
+          add the following as well.
+          <pre>
 if test -z "${XDG_RUNTIME_DIR}"; then
     export XDG_RUNTIME_DIR=/tmp/${UID}-runtime-dir
     if ! test -d "${XDG_RUNTIME_DIR}"; then
@@ -226,110 +262,166 @@ fi
 if [ "$(tty)" = "/dev/tty1" ]; then
   exec dbus-run-session sway
 fi
-            </pre>
+            </pre
+          >
         </li>
         <li>
-          <b>Bar: </b><a href="https://github.com/Alexays/Waybar" target="_blank">Waybar</a>
+          <b>Bar: </b
+          ><a href="https://github.com/Alexays/Waybar" target="_blank"
+            >Waybar</a
+          >
         </li>
         <li>
-          <b>Launcher: </b><a href="https://hg.sr.ht/~scoopta/wofi" target="_blank">Wofi</a>
+          <b>Launcher: </b
+          ><a href="https://hg.sr.ht/~scoopta/wofi" target="_blank">Wofi</a>
         </li>
         <li>
-          <b>Notifications: </b><a href="https://github.com/emersion/mako" target="_blank">Mako</a><br>
-            Requires <code>x11-libs/libnotify</code> and to be manually
-            launched via Sway configuration.
+          <b>Notifications: </b
+          ><a href="https://github.com/emersion/mako" target="_blank">Mako</a
+          ><br />
+          Requires <code>x11-libs/libnotify</code> and to be manually launched
+          via Sway configuration.
         </li>
         <li>
-          <b>Lock Screen: </b><a href="https://github.com/jovanlanik/gtklock" target="_blank">gtklock</a>
+          <b>Lock Screen: </b
+          ><a href="https://github.com/jovanlanik/gtklock" target="_blank"
+            >gtklock</a
+          >
         </li>
         <li>
-          <b>Keyboard Manager: </b><a href="https://github.com/rvaiya/keyd" target="_blank">Keyd</a><br>
-            For many months, I used <a href="https://github.com/kmonad/kmonad" target="_blank">KMonad</a>,
-            which was suitable for most of what I needed, but lacked a couple
-            things, namely key combos. I stumbled across Keyd which to my
-            surprise did in fact support combos. The <a href="https://raw.githubusercontent.com/waffle87/dots/xena/.config/keyd.conf" target="_blank">configuration syntax</a>
-            is also incredibly simple. After creating an OpenRC service
-            script, it was ready for use. Putting this here as I'm sure
-            I'll need to reference it sometime in the future.
-            <pre>
+          <b>Keyboard Manager: </b
+          ><a href="https://github.com/rvaiya/keyd" target="_blank">Keyd</a
+          ><br />
+          For many months, I used
+          <a href="https://github.com/kmonad/kmonad" target="_blank">KMonad</a>,
+          which was suitable for most of what I needed, but lacked a couple
+          things, namely key combos. I stumbled across Keyd which to my surprise
+          did in fact support combos. The
+          <a
+            href="https://raw.githubusercontent.com/waffle87/dots/xena/.config/keyd.conf"
+            target="_blank"
+            >configuration syntax</a
+          >
+          is also incredibly simple. After creating an OpenRC service script, it
+          was ready for use. Putting this here as I'm sure I'll need to
+          reference it sometime in the future.
+          <pre>
 #!/sbin/openrc-run
 command=/usr/bin/keyd
 command_background="true"
 pidfile="/run/keyd.pid"
-            </pre>
+            </pre
+          >
         </li>
         <li>
-          <b>Terminal: </b><a href="https://github.com/waffle87/st" target="_blank">st (fork)</a>
+          <b>Terminal: </b
+          ><a href="https://github.com/waffle87/st" target="_blank"
+            >st (fork)</a
+          >
         </li>
         <li>
-          <b>Shell: </b><a href="https://github.com/zsh-users/zsh" target="_blank">ZSH</a><br>
-            Some command line tools I used along with ZSH include
-            <ul>
-              <li>
-                <a href="https://github.com/starship/starship" target="_blank">starship prompt</a>
-                which provides some useful UI tools like Git repository status.
-              </li>
-              <li>
-                <a href="https://github.com/ajeetdsouza/zoxide" target="_blank">zoxide cd replacement</a>
-                which has auto-jump functionality meaning <code>cd very/long/long/path</code>
-                can be simplified to <code>cd path</code>.
-              </li>
-              <li>
-                <a href="https://github.com/lsd-rs/lsd" target="_blank">lsd ls replacement</a>
-                which mostly offers useful UI improvments like file
-                type icons and empty directories, and extensive configuration.
-              </li>
-              <li>
-                <a href="https://github.com/sharkdp/bat" target="_blank">bat cat replacement</a>
-                also mostly consists of UI features like syntax
-                highlighting and line numbers.
-              </li>
-              <li>
-                <a href="https://github.com/zsh-users/zsh-autosuggestions" target="_blank">autosuggestions</a>
-                which allows past-run long commands to be completed by
-                tapping right arrow key.
-              </li>
+          <b>Shell: </b
+          ><a href="https://github.com/zsh-users/zsh" target="_blank">ZSH</a
+          ><br />
+          Some command line tools I used along with ZSH include
+          <ul>
             <li>
-              <a href="https://github.com/zsh-users/zsh-syntax-highlighting" target="_blank">syntax highlighting</a>
-              does exactly as the name suggests; colours available commands
-              in green, underlines valid paths, etc.
+              <a href="https://github.com/starship/starship" target="_blank"
+                >starship prompt</a
+              >
+              which provides some useful UI tools like Git repository status.
             </li>
-            </ul>
+            <li>
+              <a href="https://github.com/ajeetdsouza/zoxide" target="_blank"
+                >zoxide cd replacement</a
+              >
+              which has auto-jump functionality meaning
+              <code>cd very/long/long/path</code> can be simplified to
+              <code>cd path</code>.
+            </li>
+            <li>
+              <a href="https://github.com/lsd-rs/lsd" target="_blank"
+                >lsd ls replacement</a
+              >
+              which mostly offers useful UI improvments like file type icons and
+              empty directories, and extensive configuration.
+            </li>
+            <li>
+              <a href="https://github.com/sharkdp/bat" target="_blank"
+                >bat cat replacement</a
+              >
+              also mostly consists of UI features like syntax highlighting and
+              line numbers.
+            </li>
+            <li>
+              <a
+                href="https://github.com/zsh-users/zsh-autosuggestions"
+                target="_blank"
+                >autosuggestions</a
+              >
+              which allows past-run long commands to be completed by tapping
+              right arrow key.
+            </li>
+            <li>
+              <a
+                href="https://github.com/zsh-users/zsh-syntax-highlighting"
+                target="_blank"
+                >syntax highlighting</a
+              >
+              does exactly as the name suggests; colours available commands in
+              green, underlines valid paths, etc.
+            </li>
+          </ul>
         </li>
         <li>
-          <b>Editor: </b><a href="https://github.com/neovim/neovim" target="_blank">Neovim</a>
+          <b>Editor: </b
+          ><a href="https://github.com/neovim/neovim" target="_blank">Neovim</a>
         </li>
         <li>
-          <b>Document Viewer: </b><a href="https://github.com/pwmt/zathura" target="_blank">Zathura</a>
+          <b>Document Viewer: </b
+          ><a href="https://github.com/pwmt/zathura" target="_blank">Zathura</a>
         </li>
         <li>
-          <b>Privilege escalation: </b><a href="https://github.com/Duncaen/OpenDoas" target="_blank">doas sudo alternative</a>
-          is a utility originally written for BSD, but has been ported 
-          to Linux under the name OpenDoas. Comparatively, sudo contains
-          roughly 150,000 lines of code, while doas only contains about
-          4,000. For a personal computer like this, doas is more than
-          capable of achieving what I need it to. By default, the "persist"
-          feature is not enabled and must be set via <code>persist</code>
+          <b>Privilege escalation: </b
+          ><a href="https://github.com/Duncaen/OpenDoas" target="_blank"
+            >doas sudo alternative</a
+          >
+          is a utility originally written for BSD, but has been ported to Linux
+          under the name OpenDoas. Comparatively, sudo contains roughly 150,000
+          lines of code, while doas only contains about 4,000. For a personal
+          computer like this, doas is more than capable of achieving what I need
+          it to. By default, the "persist" feature is not enabled and must be
+          set via <code>persist</code>
           USE flag.
         </li>
         <li>
-          <b>Screenshots: </b><a href="https://sr.ht/~emersion/grim/" target="_blank">grim</a>
-          which can be used with <a href="https://github.com/emersion/slurp" target="_blank">slurp</a>
-          to allow to select specific regions. This can then be piped
-          to <a href="https://github.com/bugaevc/wl-clipboard" target="_blank">wl-copy</a>
-          to copy the image to your clipboard. I map this functionality
-          to keyboard input via Sway.
+          <b>Screenshots: </b
+          ><a href="https://sr.ht/~emersion/grim/" target="_blank">grim</a>
+          which can be used with
+          <a href="https://github.com/emersion/slurp" target="_blank">slurp</a>
+          to allow to select specific regions. This can then be piped to
+          <a href="https://github.com/bugaevc/wl-clipboard" target="_blank"
+            >wl-copy</a
+          >
+          to copy the image to your clipboard. I map this functionality to
+          keyboard input via Sway.
           <pre>
 bindsym $mod+p exec       grim -g "$(slurp)" - | wl-copy
 bindsym $mod+Shift+p exec grim -g "$(slurp)"
           </pre>
         </li>
         <li>
-          <b>Backlight: </b><a href="https://github.com/Hummer12007/brightnessctl" target="_blank">brightnessctl</a>
+          <b>Backlight: </b
+          ><a
+            href="https://github.com/Hummer12007/brightnessctl"
+            target="_blank"
+            >brightnessctl</a
+          >
           is used to control both screen brightness and keyboard backlight. This
-          package is now available in the GURU repository. Ensure <code>CONFIG_APPLE_BACKLIGHT</code>
-          and <code>CONFIG_SENSORS_APPLESMC</code> are set in the kernel.
-          This functionality can also be mapped to the keyboard using Sway.
+          package is now available in the GURU repository. Ensure
+          <code>CONFIG_APPLE_BACKLIGHT</code> and
+          <code>CONFIG_SENSORS_APPLESMC</code> are set in the kernel. This
+          functionality can also be mapped to the keyboard using Sway.
           <pre>
 bindsym XF86MonBrightnessDown exec brightnessctl -q set 10%-
 bindsym XF86MonBrightnessUp   exec brightnessctl -q set +10%
@@ -341,15 +433,15 @@ bindsym XF86KbdBrightnessUp   exec brightnessctl -q --device='smc::kbd_backlight
     </div>
     <div id="miscellaneous">
       <h3>Miscellaneous</h3>
-      Another QOL modification for me was disabling the rather obnoxious
-      startup sound present on all Macbooks. To do this, kernel must be
-      built with efivarfs support (<code>CONFIG_EFIVAR_FS</code>) and the
-      partition must be mounted at <code>/sys/firmware/efi/efivars/</code>.
-      Next, the following commands must be run as proper root, not just
-      with elevated permissions. Begin by removing the immutable flag from
-      the appropriate file. Mac's EFI terminal uses the bell code (<code>0x07</code>)
-      to audibly play system messages/warnings. It can be set to null character
-      to silence it. Lastly, replace the immutable flag.
+      Another QOL modification for me was disabling the rather obnoxious startup
+      sound present on all Macbooks. To do this, kernel must be built with
+      efivarfs support (<code>CONFIG_EFIVAR_FS</code>) and the partition must be
+      mounted at <code>/sys/firmware/efi/efivars/</code>. Next, the following
+      commands must be run as proper root, not just with elevated permissions.
+      Begin by removing the immutable flag from the appropriate file. Mac's EFI
+      terminal uses the bell code (<code>0x07</code>) to audibly play system
+      messages/warnings. It can be set to null character to silence it. Lastly,
+      replace the immutable flag.
       <pre>
 chattr -i /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82
 printf "\x07\x00\x00\x00\x00" > /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82
@@ -358,12 +450,12 @@ chattr +i /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe
     </div>
     <div id="screenshots">
       <h3>Screenshots</h3>
-      <img src="data/gentoo/fetch.png" alt="fetch image">
-      <img src="data/gentoo/nvim.png" alt="neovim image">
-      <img src="data/gentoo/gotop.png" alt="gotop image">
-      <img src="data/gentoo/wofi.png" alt="wofi image">
-      <img src="data/gentoo/zathura.png" alt="zathura image">
-      <img src="data/gentoo/lockscreen.png" alt="gtklock image">
+      <img src="data/gentoo/fetch.png" alt="fetch image" />
+      <img src="data/gentoo/nvim.png" alt="neovim image" />
+      <img src="data/gentoo/gotop.png" alt="gotop image" />
+      <img src="data/gentoo/wofi.png" alt="wofi image" />
+      <img src="data/gentoo/zathura.png" alt="zathura image" />
+      <img src="data/gentoo/lockscreen.png" alt="gtklock image" />
     </div>
   </body>
 </html>

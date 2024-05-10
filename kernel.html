@@ -1,159 +1,283 @@
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Kernel Configuration</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <style>
-    code {
-      color: #505050;
-      font-size: 10px;
-      border: 1px solid grey;
-      border-radius: 3px;
-      padding: 1.75px;
-    }
+      code {
+        color: #505050;
+        font-size: 10px;
+        border: 1px solid grey;
+        border-radius: 3px;
+        padding: 1.75px;
+      }
     </style>
   </head>
   <body>
-    <a style="text-decoration: none;" href="index.html"><--</a>
+    <a style="text-decoration: none" href="index.html"><--</a>
     <h2>Kernel Configuration Pseudo Guide</h2>
-    <h4>Current base: <a href="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/?h=linux-6.7.y" target="_blank">Linux 6.7.y</a></h4>
-    This aims to be a guide for configuring a Linux kernel for a modern
-    x86_64 machine containing hardware commonly found in laptops, desktops,
-    and other consumer computers. Note, this guide will sway more minimally,
-    meaning some features that are not strictly required will not be enabled.
-    All features will be built directly into kernel, no modules. This article
-    will not attempt to cover all possible configuration options, as it omits
-    entire sections that are not relevant on such systems, as well as some
+    <h4>
+      Current base:
+      <a
+        href="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/log/?h=linux-6.9.y"
+        target="_blank"
+        >Linux 6.9.y</a
+      >
+    </h4>
+    This aims to be a guide for configuring a Linux kernel for a modern x86_64
+    machine containing hardware commonly found in laptops, desktops, and other
+    consumer computers. Note, this guide will sway more minimally, meaning some
+    features that are not strictly required will not be enabled. All features
+    will be built directly into kernel, no modules. This article will not
+    attempt to cover all possible configuration options, as it omits entire
+    sections that are not relevant on such systems, as well as some
     hardware-specific configuration. Please also refer to the kernel's help text
     for further information on respective options. I am not a kernel developer
     and nothing here is guaranteed to be functionally accurate. If you feel
-    anything mentioned is wrong or should be switched around, please contact
-    me. This article assumes some prior knowledge of your system (eg. lspci,
-    lscpu, lsusb, dmidecode, <code>/proc/devices</code>, etc.) and general
-    kernel configuration/installation, such as obtaining source, generating and
-    maintaining <code>.config</code>, methods of configuration, compilation,
-    and installation. Throughout, the following acronyms will be used
+    anything mentioned is wrong or should be switched around, please contact me.
+    This article assumes some prior knowledge of your system (eg. lspci, lscpu,
+    lsusb, dmidecode, <code>/proc/devices</code>, etc.) and general kernel
+    configuration/installation, such as obtaining source, generating and
+    maintaining <code>.config</code>, methods of configuration, compilation, and
+    installation. Throughout, the following acronyms will be used
     <ul>
-      <li>STD: recommended/standard feature that generally should be enabled</li>
-      <li>DEV: useful for kernel development/debugging. not for general user</li>
+      <li>
+        STD: recommended/standard feature that generally should be enabled
+      </li>
+      <li>
+        DEV: useful for kernel development/debugging. not for general user
+      </li>
       <li>VIRT: virtulalisation related options (vhost/vguest)</li>
       <li>OLD: modern systems generally won't need these options</li>
-      <li>SEC: security related options that either implicate or strengthen system security</li>
+      <li>
+        SEC: security related options that either implicate or strengthen system
+        security
+      </li>
     </ul>
-    <a href="#top_level">top level options</a><br>
-    <a href="#general_setup">general setup</a><br>
-    <a href="#processor_type_feat">processor type and features</a><br>
-    <a href="#mitigations_vulnerability">mitigations for speculative execution vulnerabilities</a><br>
-    <a href="#power_management">power management and acpi options</a><br>
-    <a href="#bus_options">bus options</a><br>
-    <a href="#binary_emulation">binary emulations</a><br>
-    <a href="#arch_dependent">general architecture-dependent options</a><br>
-    <a href="#block_layer">enable the block layer</a><br>
-    <a href="#executable_file">executable file formats</a><br>
-    <a href="#memory_management">memory management options</a><br>
-    <a href="#networking_support">networking support</a><br>
+    <a href="#top_level">top level options</a><br />
+    <a href="#general_setup">general setup</a><br />
+    <a href="#processor_type_feat">processor type and features</a><br />
+    <a href="#mitigations_vulnerability"
+      >mitigations for speculative execution vulnerabilities</a
+    ><br />
+    <a href="#power_management">power management and acpi options</a><br />
+    <a href="#bus_options">bus options</a><br />
+    <a href="#binary_emulation">binary emulations</a><br />
+    <a href="#arch_dependent">general architecture-dependent options</a><br />
+    <a href="#block_layer">enable the block layer</a><br />
+    <a href="#executable_file">executable file formats</a><br />
+    <a href="#memory_management">memory management options</a><br />
+    <a href="#networking_support">networking support</a><br />
+    <a href="#file_systems">file systems</a><br />
     <div id="top_level">
       <h3>Top Level Options</h3>
       <ul>
         <li>64-bit kernel (<code>CONFIG_64BIT</code>): Y, STD</li>
-        <li>Mitigations for speculative execution vulnerabilities (<code>CONFIG_SPECULATION_MITIGATIONS</code>): Y, STD</li>
-        <li>Virtualization (<code>CONFIG_VIRTUALIZATION</code>): N, VIRT, unless needed</li>
-        <li>Enable loadable module support (<code>CONFIG_MODULES</code>): N, everything built into kernel</li>
-        <li>Enable the block layer (<code>CONFIG_BLOCK</code>): Y, STD, need to mount disks</li>
-        <li>Networking support (<code>CONFIG_NET</code>): Y, unless no need for network</li>
+        <li>
+          Mitigations for speculative execution vulnerabilities
+          (<code>CONFIG_SPECULATION_MITIGATIONS</code>): Y, STD
+        </li>
+        <li>
+          Virtualization (<code>CONFIG_VIRTUALIZATION</code>): N, VIRT, unless
+          needed
+        </li>
+        <li>
+          Enable loadable module support (<code>CONFIG_MODULES</code>): N,
+          everything built into kernel
+        </li>
+        <li>
+          Enable the block layer (<code>CONFIG_BLOCK</code>): Y, STD, need to
+          mount disks
+        </li>
+        <li>
+          Networking support (<code>CONFIG_NET</code>): Y, unless no need for
+          network
+        </li>
         <li>Cryptographic API (<code>CONFIG_CRYPTO</code>): Y, SEC</li>
       </ul>
     </div>
     <div id="general_setup">
       <h3>General setup</h3>
       <ul>
-        <li>Compile also drivers which will not load (<code>CONFIG_COMPILE_TEST</code>): N, DEV</li>
-        <li>Compile the kernel with warnings as errors (<code>CONFIG_WERROR</code>): Y, STD</li>
-        <li>Local version - append to kernel release (<code>CONFIG_LOCALVERSION</code>): empty, useful for <a href="https://git-scm.com/docs/git-bisect">git bisect</a></li>
-        <li>Automatically append version information (<code>CONFIG_LOCALVERSION_AUTO</code>): N, DEV</li>
+        <li>
+          Compile also drivers which will not load
+          (<code>CONFIG_COMPILE_TEST</code>): N, DEV
+        </li>
+        <li>
+          Compile the kernel with warnings as errors
+          (<code>CONFIG_WERROR</code>): Y, STD
+        </li>
+        <li>
+          Local version - append to kernel release
+          (<code>CONFIG_LOCALVERSION</code>): empty, useful for
+          <a href="https://git-scm.com/docs/git-bisect">git bisect</a>
+        </li>
+        <li>
+          Automatically append version information
+          (<code>CONFIG_LOCALVERSION_AUTO</code>): N, DEV
+        </li>
         <li>Build ID Salt (<code>CONFIG_BUILD_SALT</code>): empty, SEC</li>
         <li>Kernel compression mode: ZSTD or Gzip for compatibility</li>
-        <li>Default init path (<code>CONFIG_DEFAULT_INIT</code>): empty, EMB</li>
-        <li>Default hostname (<code>CONFIG_DEFAULT_HOSTNAME</code>): empty, entre your machine's name if you'd like</li>
+        <li>
+          Default init path (<code>CONFIG_DEFAULT_INIT</code>): empty, EMB
+        </li>
+        <li>
+          Default hostname (<code>CONFIG_DEFAULT_HOSTNAME</code>): empty, entre
+          your machine's name if you'd like
+        </li>
         <li>System V IPC (<code>CONFIG_SYSVIPC</code>): Y, STD</li>
-        <li>POSIX Message Queues (<code>CONFIG_POSIX_MQUEUE</code>): N, not strictly necessary</li>
-        <li>General notification queue (<code>CONFIG_WATCH_QUEUE</code>): N, not strictly necessary</li>
-        <li>Enable process_vm_readv/writev syscalls (<code>CONFIG_CROSS_MEMORY_ATTACH</code>): N, not strictly necessary</li>
+        <li>
+          POSIX Message Queues (<code>CONFIG_POSIX_MQUEUE</code>): N, not
+          strictly necessary
+        </li>
+        <li>
+          General notification queue (<code>CONFIG_WATCH_QUEUE</code>): N, not
+          strictly necessary
+        </li>
+        <li>
+          Enable process_vm_readv/writev syscalls
+          (<code>CONFIG_CROSS_MEMORY_ATTACH</code>): N, not strictly necessary
+        </li>
         <li>uselib syscall (<code>CONFIG_USELIB</code>): N, OLD</li>
-        <li>Auditing support (<code>CONFIG_AUDIT</code>): N, not strictly necessary</li>
+        <li>
+          Auditing support (<code>CONFIG_AUDIT</code>): N, not strictly
+          necessary
+        </li>
         <li>
           Timers subsystem
           <ul>
             <li>Timer tick handling: Idle dynticks system (tickless idle)</li>
-            <li>Old Idle dynticks config (<code>CONFIG_NO_HZ</code>): N, OLD</li>
-            <li>High Resolution Timer Support (<code>CONFIG_HIGH_RES_TIMERS</code>): Y, STD</li>
-            <li>Clocksource watchdog maximum allowable skew (<code>CONFIG_CLOCKSOURCE_WATCHDOG_MAX_SKEW_US</code>): 100</li>
+            <li>
+              Old Idle dynticks config (<code>CONFIG_NO_HZ</code>): N, OLD
+            </li>
+            <li>
+              High Resolution Timer Support
+              (<code>CONFIG_HIGH_RES_TIMERS</code>): Y, STD
+            </li>
+            <li>
+              Clocksource watchdog maximum allowable skew
+              (<code>CONFIG_CLOCKSOURCE_WATCHDOG_MAX_SKEW_US</code>): 100
+            </li>
           </ul>
         </li>
         <li>
           BPF subsystem
           <ul>
-            <li>Enable bpf() system call (<code>CONFIG_BPF_SYSCALL</code>): N, not necessary if you do not have any programs that utilise</li>
+            <li>
+              Enable bpf() system call (<code>CONFIG_BPF_SYSCALL</code>): N, not
+              necessary if you do not have any programs that utilise
+            </li>
           </ul>
         </li>
         <li>Preemption Model: Preemptible Kernel (Low-Latency Desktop)</li>
-        <li>Preemption behaviour defined on boot (<code>CONFIG_PREEMPT_DYNAMIC</code>): N</li>
-        <li>Core Scheduling for SMT (<code>CONFIG_SCHED_CORE</code>): Y, STD</li>
+        <li>
+          Preemption behaviour defined on boot
+          (<code>CONFIG_PREEMPT_DYNAMIC</code>): N
+        </li>
+        <li>
+          Core Scheduling for SMT (<code>CONFIG_SCHED_CORE</code>): Y, STD
+        </li>
         <li>
           CPU/Task time and stats accounting
           <ul>
             <li>Cputime accounting: Simple tick based cputime accounting</li>
-            <li>Fine granularity task level IRQ time accounting (<code>CONFIG_IRQ_TIME_ACCOUNTING</code>): N, DEV</li>
-            <li>BSD Process Accounting (<code>CONFIG_BSD_PROCESS_ACCT</code>): N</li>
-            <li>Export task/process statistics through netlink (<code>CONFIG_TASKSTATS</code>): N</li>
-            <li>Pressure stall information tracking (<code>CONFIG_PSI</code>): N</li>
+            <li>
+              Fine granularity task level IRQ time accounting
+              (<code>CONFIG_IRQ_TIME_ACCOUNTING</code>): N, DEV
+            </li>
+            <li>
+              BSD Process Accounting (<code>CONFIG_BSD_PROCESS_ACCT</code>): N
+            </li>
+            <li>
+              Export task/process statistics through netlink
+              (<code>CONFIG_TASKSTATS</code>): N
+            </li>
+            <li>
+              Pressure stall information tracking (<code>CONFIG_PSI</code>): N
+            </li>
           </ul>
         </li>
         <li>CPU isolation (<code>CONFIG_CPU_ISOLATION</code>): N, EMB</li>
         <li>
           RCU subsystem
           <ul>
-            <li>Make expert-level adjustments to RCU configuration (<code>CONFIG_RCU_EXPERT</code>): N, DEV</li>
+            <li>
+              Make expert-level adjustments to RCU configuration
+              (<code>CONFIG_RCU_EXPERT</code>): N, DEV
+            </li>
           </ul>
         </li>
         <li>Kernel .config support (<code>CONFIG_IKCONFIG</code>): Y, STD</li>
-        <li>Enable access to .config through /proc/config.gz (<code>CONFIG_IKCONFIG_PROC</code>): Y, STD</li>
-        <li>Enable kernel headers through /sys/kernel/kheaders.tar.xz (<code>CONFIG_IKHEADERS</code>): N</li>
+        <li>
+          Enable access to .config through /proc/config.gz
+          (<code>CONFIG_IKCONFIG_PROC</code>): Y, STD
+        </li>
+        <li>
+          Enable kernel headers through /sys/kernel/kheaders.tar.xz
+          (<code>CONFIG_IKHEADERS</code>): N
+        </li>
         <li>Kernel log buffer size (<code>CONFIG_LOG_BUF_SHIFT</code>): 18</li>
-        <li>CPU kernel log buffer size contribution (<code>CONFIG_LOG_CPU_MAX_BUF_SHIFT</code>): 12</li>
+        <li>
+          CPU kernel log buffer size contribution
+          (<code>CONFIG_LOG_CPU_MAX_BUF_SHIFT</code>): 12
+        </li>
         <li>
           Scheduler features
           <ul>
-            <li>Enable utilization clamping for RT/FAIR tasks (<code>CONFIG_UCLAMP_TASK</code>): N, DEV</li>
+            <li>
+              Enable utilization clamping for RT/FAIR tasks
+              (<code>CONFIG_UCLAMP_TASK</code>): N, DEV
+            </li>
           </ul>
         </li>
         <li>
           Control Group support (<code>CONFIG_CGROUPS</code>): Y, STD
           <ul>
-            <li>Favor dynamic modification latency reduction (<code>CONFIG_CGROUP_FAVOR_DYNMODS</code>): N</li>
+            <li>
+              Favor dynamic modification latency reduction
+              (<code>CONFIG_CGROUP_FAVOR_DYNMODS</code>): N
+            </li>
             <li>Memory controller (<code>CONFIG_MEMCG</code>): Y, STD</li>
             <li>IO controller (<code>CONFIG_BLK_CGROUP</code>): Y, STD</li>
             <li>
               CPU controller (<code>CONFIG_CGROUP_SCHED</code>): Y, STD
               <ul>
-                <li>Group scheduling for SCHED_OTHER (<code>FAIR_GROUP_SCHED</code>): Y, STD</li>
-                <li>CPU bandwidth provisioning for FAIR_GROUP_SCHED (<code>CONFIG_CFS_BANDWIDTH</code>): N</li>
-                <li>Group scheduling for SCHED_RR/FIFO (<code>CONFIG_RT_GROUP_SCHED</code>): N</li>
+                <li>
+                  Group scheduling for SCHED_OTHER
+                  (<code>FAIR_GROUP_SCHED</code>): Y, STD
+                </li>
+                <li>
+                  CPU bandwidth provisioning for FAIR_GROUP_SCHED
+                  (<code>CONFIG_CFS_BANDWIDTH</code>): N
+                </li>
+                <li>
+                  Group scheduling for SCHED_RR/FIFO
+                  (<code>CONFIG_RT_GROUP_SCHED</code>): N
+                </li>
               </ul>
             </li>
             <li>PIDs controller (<code>CONFIG_CGROUP_PIDS</code>): N</li>
             <li>RDMA controller (<code>CONFIG_CGROUP_RDMA</code>): N</li>
             <li>Freezer controller (<code>CONFIG_CGROUP_FREEZER</code>): N</li>
-            <li>Cpuset controller (<code>CONFIG_CPUSETS</code>): N, only useful on NUMA machine</li>
+            <li>
+              Cpuset controller (<code>CONFIG_CPUSETS</code>): N, only useful on
+              NUMA machine
+            </li>
             <li>Device Controller (<code>CONFIG_CGROUP_DEVICE</code>): N</li>
-            <li>Simple CPU accounting controller (<code>CONFIG_CGROUP_CPUACCT</code>): Y, STD</li>
+            <li>
+              Simple CPU accounting controller
+              (<code>CONFIG_CGROUP_CPUACCT</code>): Y, STD
+            </li>
             <li>Perf controller (<code>CONFIG_CGROUP_PERF</code>): N</li>
-            <li>Misc resource controller (<code>CONFIG_CGROUP_MISC</code>): Y</li>
+            <li>
+              Misc resource controller (<code>CONFIG_CGROUP_MISC</code>): Y
+            </li>
             <li>Debug controller (<code>CONFIG_CGROUP_DEBUG</code>): N, DEV</li>
           </ul>
         </li>
         <li>
-          Namespaces support (<code>CONFIG_NAMESPACES</code>): Y, STD, used heavily by web browsers
+          Namespaces support (<code>CONFIG_NAMESPACES</code>): Y, STD, used
+          heavily by web browsers
           <ul>
             <li>UTS namespace (<code>CONFIG_UTS_NS</code>): Y</li>
             <li>TIME namespace (<code>CONFIG_TIME_NS</code>): Y</li>
@@ -163,24 +287,55 @@
             <li>Network namespace (<code>CONFIG_NET_NS</code>): Y</li>
           </ul>
         </li>
-        <li>Checkpoint/restore support (<code>CONFIG_CHECKPOINT_RESTORE</code>): N, VIRT</li>
-        <li>Automatic process group scheduling (<code>CONFIG_SCHED_AUTOGROUP</code>): N, OLD, Systemd/OpenRC handle this</li>
-        <li>Kernel -> userspace relay support (<code>CONFIG_RELAY</code>): Y, STD</li>
-        <li>Initial RAM filesystem and RAM disk (<code>CONFIG_BLK_DEV_INITRD</code>): N, not strictly necessary</li>
+        <li>
+          Checkpoint/restore support (<code>CONFIG_CHECKPOINT_RESTORE</code>):
+          N, VIRT
+        </li>
+        <li>
+          Automatic process group scheduling
+          (<code>CONFIG_SCHED_AUTOGROUP</code>): N, OLD, Systemd/OpenRC handle
+          this
+        </li>
+        <li>
+          Kernel -> userspace relay support (<code>CONFIG_RELAY</code>): Y, STD
+        </li>
+        <li>
+          Initial RAM filesystem and RAM disk
+          (<code>CONFIG_BLK_DEV_INITRD</code>): N, not strictly necessary
+        </li>
         <li>Boot config support (<code>CONFIG_BOOT_CONFIG</code>): N, EMB</li>
-        <li>Preserve cpio archive mtimes in initramfs (<code>CONFIG_INITRAMFS_PRESERVE_MTIME</code>): N, without initramfs...</li>
+        <li>
+          Preserve cpio archive mtimes in initramfs
+          (<code>CONFIG_INITRAMFS_PRESERVE_MTIME</code>): N, without
+          initramfs...
+        </li>
         <li>Compiler optimization level: Optimize for performance (-O2)</li>
-        <li>Configure standard kernel features (<code>CONFIG_EXPERT</code>): N, DEV/EMB, mostly syscalls</li>
+        <li>
+          Configure standard kernel features (<code>CONFIG_EXPERT</code>): N,
+          DEV/EMB, mostly syscalls
+        </li>
         <li>Enable kcmp() system call (<code>CONFIG_KCMP</code>): Y</li>
         <li>Enable rseq() system call (<code>CONFIG_RSEQ</code>): Y</li>
-        <li>Enable cachestat() system call (<code>CONFIG_CACHESTAT_SYSCALL</code>): Y</li>
-        <li>Enabled debugging of rseq() system call (<code>CONFIG_DEBUG_RSEQ</code>): N, DEV</li>
+        <li>
+          Enable cachestat() system call
+          (<code>CONFIG_CACHESTAT_SYSCALL</code>): Y
+        </li>
+        <li>
+          Enabled debugging of rseq() system call
+          (<code>CONFIG_DEBUG_RSEQ</code>): N, DEV
+        </li>
         <li>PC/104 support (<code>CONFIG_PC104</code>): N, EMB</li>
         <li>
           Kernel Performance Events and Counters
           <ul>
-            <li>Kernel Performance events and counters (<code>CONFIG_PERF_EVENTS</code>): Y, STD</li>
-            <li>Debug: use vmalloc to back perf mmap() buffers (<code>CONFIG_DEBUG_PERF_USE_VMALLOC</code>): N, DEV</li>
+            <li>
+              Kernel Performance events and counters
+              (<code>CONFIG_PERF_EVENTS</code>): Y, STD
+            </li>
+            <li>
+              Debug: use vmalloc to back perf mmap() buffers
+              (<code>CONFIG_DEBUG_PERF_USE_VMALLOC</code>): N, DEV
+            </li>
           </ul>
         </li>
         <li>Profiling support (<code>CONFIG_PROFILING</code>): N, DEV</li>
@@ -190,314 +345,1165 @@
     <div id="processor_type_feat">
       <h3>Processor type and features</h3>
       <ul>
-        <li>Symmetric multi-processing support (<code>CONFIG_SMP</code>): Y, STD, all modern CPUs are multi-core</li>
-        <li>Enable MPS table (<code>CONFIG_X86_MPARSE</code>): N, OLD </li>
-        <li>x86 CPU resource control support (<code>CONFIG_X86_CPU_RESCTRL</code>): N, VIRT</li>
-        <li>Support for extended (non-PC) x86 platforms (<code>CONFIG_X86_EXTENDED_PLATFORM</code>): N, EMB</li>
-        <li>Intel Low Power Subsystem Support (<code>CONFIG_X86_INTEL_LPSS</code>): Y, if you have Haswell and later CPU</li>
-        <li>AMD ACPI2Platform devices support (<code>CONFIG_X86_AMD_PLATFORM_DEVICE</code>): N</li>
-        <li>Intel SoC IOSF Sideband support (<code>CONFIG_IOSF_MBI</code>): Y, STD</li>
-        <li>Single-depth WCHAN output (<code>CONFIG_SCHED_OMIT_FRAME_POINTER</code>): Y, STD</li>
-        <li>Linux guest support (<code>CONFIG_HYPERVISOR_GUEST</code>): N, VIRT</li>
-        <li>Processor family: Core 2/newer Xeon (or Generic-x86-64 if unsure)</li>
-        <li>Supported processor vendors (<code>CONFIG_PROCESSOR_SELECT</code>): N, EMB</li>
+        <li>
+          Symmetric multi-processing support (<code>CONFIG_SMP</code>): Y, STD,
+          all modern CPUs are multi-core
+        </li>
+        <li>Enable MPS table (<code>CONFIG_X86_MPARSE</code>): N, OLD</li>
+        <li>
+          x86 CPU resource control support
+          (<code>CONFIG_X86_CPU_RESCTRL</code>): N, VIRT
+        </li>
+        <li>
+          Support for extended (non-PC) x86 platforms
+          (<code>CONFIG_X86_EXTENDED_PLATFORM</code>): N, EMB
+        </li>
+        <li>
+          Intel Low Power Subsystem Support
+          (<code>CONFIG_X86_INTEL_LPSS</code>): Y, if you have Haswell and later
+          CPU
+        </li>
+        <li>
+          AMD ACPI2Platform devices support
+          (<code>CONFIG_X86_AMD_PLATFORM_DEVICE</code>): N
+        </li>
+        <li>
+          Intel SoC IOSF Sideband support (<code>CONFIG_IOSF_MBI</code>): Y, STD
+        </li>
+        <li>
+          Single-depth WCHAN output
+          (<code>CONFIG_SCHED_OMIT_FRAME_POINTER</code>): Y, STD
+        </li>
+        <li>
+          Linux guest support (<code>CONFIG_HYPERVISOR_GUEST</code>): N, VIRT
+        </li>
+        <li>
+          Processor family: Core 2/newer Xeon (or Generic-x86-64 if unsure)
+        </li>
+        <li>
+          Supported processor vendors (<code>CONFIG_PROCESSOR_SELECT</code>): N,
+          EMB
+        </li>
         <li>Enable DMI scanning (<code>CONFIG_DMI</code>): Y, STD</li>
-        <li>Old AMD GART IOMMU support (<code>CONFIG_GART_IOMMU</code>): N, OLD</li>
-        <li>Enable Maximum number of SMP Processors and NUMA Nodes (<code>CONFIG_MAXSMP</code>): N, DEV</li>
-        <li>Maximum number of CPUs (<code>CONFIG_NR_CPUS</code>): sockets * cores * threads</li>
-        <li>Cluster scheduler support (<code>CONFIG_SCHED_CLUSTER</code>): Y, STD</li>
-        <li>Multi-core scheduler support (<code>CONFIG_SCHED_MC</code>): Y, STD</li>
-        <li>CPU core priorities scheduler support (<code>CONFIG_SCHED_MC_PRIO</code>): Y, STD</li>
-        <li>Reroute for broken boot IRQs (<code>CONFIG_X86_REROUTE_FOR_BROKEN_BOOT_IRQS</code>): N, OLD</li>
-        <li>Machine Check / overheating reporting (<code>CONFIG_X86_MCE</code>): Y, STD</li>
-        <li>Support for deprecated /dev/mcelog character device (<code>CONFIG_X86_MCELOG_LEGACY</code>): N, OLD</li>
-        <li>Intel/AMD MCE features (<code>CONFIG_X86_MCE_INTEL/AMD</code>): Y, STD, choose based on your processor</li>
+        <li>
+          Old AMD GART IOMMU support (<code>CONFIG_GART_IOMMU</code>): N, OLD
+        </li>
+        <li>
+          Enable Maximum number of SMP Processors and NUMA Nodes
+          (<code>CONFIG_MAXSMP</code>): N, DEV
+        </li>
+        <li>
+          Maximum number of CPUs (<code>CONFIG_NR_CPUS</code>): sockets * cores
+          * threads
+        </li>
+        <li>
+          Cluster scheduler support (<code>CONFIG_SCHED_CLUSTER</code>): Y, STD
+        </li>
+        <li>
+          Multi-core scheduler support (<code>CONFIG_SCHED_MC</code>): Y, STD
+        </li>
+        <li>
+          CPU core priorities scheduler support
+          (<code>CONFIG_SCHED_MC_PRIO</code>): Y, STD
+        </li>
+        <li>
+          Reroute for broken boot IRQs
+          (<code>CONFIG_X86_REROUTE_FOR_BROKEN_BOOT_IRQS</code>): N, OLD
+        </li>
+        <li>
+          Machine Check / overheating reporting (<code>CONFIG_X86_MCE</code>):
+          Y, STD
+        </li>
+        <li>
+          Support for deprecated /dev/mcelog character device
+          (<code>CONFIG_X86_MCELOG_LEGACY</code>): N, OLD
+        </li>
+        <li>
+          Intel/AMD MCE features (<code>CONFIG_X86_MCE_INTEL/AMD</code>): Y,
+          STD, choose based on your processor
+        </li>
         <li>
           Performance monitoring
           <ul>
-            <li>Intel uncore performance events (<code>CONFIG_PERF_EVENTS_INTEL_UNCORE</code>): Y, STD, for Intel</li>
-            <li>Intel/AMD rapl performance events (<code>CONFIG_PERF_EVENTS_INTEL_RAPL</code>): Y, STD</li>
-            <li>Intel cstate performance events (<code>CONFIG_PERF_EVENTS_INTEL_CSTATE</code>): Y, STD, for Intel</li>
-            <li>AMD Processor Power Reporting Mechanism (<code>CONFIG_PERF_EVENTS_AMD_POWER</code>): Y, STD, for AMD</li>
-            <li>AMD Uncore performance events (<code>CONFIG_PERF_EVENTS_AMD_POWER</code>): Y, STD, for AMD</li>
+            <li>
+              Intel uncore performance events
+              (<code>CONFIG_PERF_EVENTS_INTEL_UNCORE</code>): Y, STD, for Intel
+            </li>
+            <li>
+              Intel/AMD rapl performance events
+              (<code>CONFIG_PERF_EVENTS_INTEL_RAPL</code>): Y, STD
+            </li>
+            <li>
+              Intel cstate performance events
+              (<code>CONFIG_PERF_EVENTS_INTEL_CSTATE</code>): Y, STD, for Intel
+            </li>
+            <li>
+              AMD Processor Power Reporting Mechanism
+              (<code>CONFIG_PERF_EVENTS_AMD_POWER</code>): Y, STD, for AMD
+            </li>
+            <li>
+              AMD Uncore performance events
+              (<code>CONFIG_PERF_EVENTS_AMD_POWER</code>): Y, STD, for AMD
+            </li>
           </ul>
         </li>
-        <li>Enable vsyscall emulation (<code>CONFIG_X86_VSYSCALL_EMULATION</code>): N</li>
-        <li>IOPERM and IOPL Emulation (<code>CONFIG_X86_IOPL_IOPERM</code>): N, SEC, not strictly necessary</li>
-        <li>Late microcode loading (<code>CONFIG_MICROCODE_LATE_LOADING</code>): N</li>
-        <li>/dev/cpu/*/msr - Model-specific register support (<code>CONFIG_X86_MSR</code>): Y, STD</li>
-        <li>/dev/cpu/*/cpuid - CPU information support (<code>CONFIG_X86_CPUID</code>): Y, STD</li>
-        <li>Enable 5-level page tables support (<code>CONFIG_X86_5LEVEL</code>): N, for machines with large (TBs) amounts of memory</li>
-        <li>AMD Secure Memory Encryption (SME) support (<code>CONFIG_AMD_MEM_ENCRYPT</code>): Y, for AMD</li>
-        <li>NUMA Memory Allocation and Scheduler Support (<code>CONFIG_NUMA</code>): N, unless you have multi socket CPU</li>
-        <li>Check for low memory corruption (<code>CONFIG_X86_CHECK_BIOS_CORRUPTION</code>): N</li>
-        <li>MTRR (Memory Type Range Register) support (<code>CONFIG_MTRR</code>): Y, STD</li>
-        <li>MTRR cleanup support (<code>CONFIG_MTRR_SANITIZER</code>): Y, STD</li>
-        <li>MTRR cleanup enable value (0-1) (<code>CONFIG_MTRR_SANITIZER_ENABLE_DEFAULT</code>): 1, for true</li>
-        <li>MTRR cleanup spare reg num (0-7) (<code>CONFIG_MTRR_SANITIZER_SPARE_REG_NR_DEFAULT</code>): 1</li>
+        <li>
+          Enable vsyscall emulation
+          (<code>CONFIG_X86_VSYSCALL_EMULATION</code>): N
+        </li>
+        <li>
+          IOPERM and IOPL Emulation (<code>CONFIG_X86_IOPL_IOPERM</code>): N,
+          SEC, not strictly necessary
+        </li>
+        <li>
+          Late microcode loading (<code>CONFIG_MICROCODE_LATE_LOADING</code>): N
+        </li>
+        <li>
+          /dev/cpu/*/msr - Model-specific register support
+          (<code>CONFIG_X86_MSR</code>): Y, STD
+        </li>
+        <li>
+          /dev/cpu/*/cpuid - CPU information support
+          (<code>CONFIG_X86_CPUID</code>): Y, STD
+        </li>
+        <li>
+          Enable 5-level page tables support (<code>CONFIG_X86_5LEVEL</code>):
+          N, for machines with large (TBs) amounts of memory
+        </li>
+        <li>
+          AMD Secure Memory Encryption (SME) support
+          (<code>CONFIG_AMD_MEM_ENCRYPT</code>): Y, for AMD
+        </li>
+        <li>
+          NUMA Memory Allocation and Scheduler Support
+          (<code>CONFIG_NUMA</code>): N, unless you have multi socket CPU
+        </li>
+        <li>
+          Check for low memory corruption
+          (<code>CONFIG_X86_CHECK_BIOS_CORRUPTION</code>): N
+        </li>
+        <li>
+          MTRR (Memory Type Range Register) support (<code>CONFIG_MTRR</code>):
+          Y, STD
+        </li>
+        <li>
+          MTRR cleanup support (<code>CONFIG_MTRR_SANITIZER</code>): Y, STD
+        </li>
+        <li>
+          MTRR cleanup enable value (0-1)
+          (<code>CONFIG_MTRR_SANITIZER_ENABLE_DEFAULT</code>): 1, for true
+        </li>
+        <li>
+          MTRR cleanup spare reg num (0-7)
+          (<code>CONFIG_MTRR_SANITIZER_SPARE_REG_NR_DEFAULT</code>): 1
+        </li>
         <li>x86 PAT support (<code>CONFIG_X86_PAT</code>): Y, STD</li>
-        <li>User Mode Instruction Prevention (<code>CONFIG_X86_UMIP</code>): Y</li>
-        <li>Indirect Branch Tracking (<code>CONFIG_X86_KERNEL_IBT</code>): N, SEC</li>
-        <li>Memory Protection Keys (<code>CONFIG_X86_INTEL_MEMORY_PROTECTION_KEYS</code>): Y, STD</li>
+        <li>
+          User Mode Instruction Prevention (<code>CONFIG_X86_UMIP</code>): Y
+        </li>
+        <li>
+          Indirect Branch Tracking (<code>CONFIG_X86_KERNEL_IBT</code>): N, SEC
+        </li>
+        <li>
+          Memory Protection Keys
+          (<code>CONFIG_X86_INTEL_MEMORY_PROTECTION_KEYS</code>): Y, STD
+        </li>
         <li>TSX enable mode: auto</li>
-        <li>X86 userspace shadow stack (<code>CONFIG_X86_USER_SHADOW_STACK</code>): N, SEC</li>
+        <li>
+          X86 userspace shadow stack
+          (<code>CONFIG_X86_USER_SHADOW_STACK</code>): N, SEC
+        </li>
         <li>EFI runtime service support (<code>CONFIG_EFI</code>): Y, STD</li>
-        <li>EFI stub support (<code>CONFIG_EFI_STUB</code>): N, only if you boot kernel directly</li>
-        <li>EFI handover protocol (<code>CONFIG_EFI_HANDOVER_PROTOCOL</code>): N, OLD</li>
-        <li>EFI mixed-mode support (<code>CONFIG_EFI_MIXED</code>): N, only relevant (but still unneeded) on Apple hardware</li>
-        <li>Enable EFI fake memory map (<code>CONFIG_EFI_FAKE_MEMMAP</code>): N</li>
-        <li>Export EFI runtime maps to sysfs (<code>CONFIG_EFI_RUNTIME_MAP</code>): N</li>
-        <li>Timer frequency: 100 HZ for server, 300 HZ for laptop, 1000 HZ for low-latency requirements</li>
-        <li>Physical address where the kernel is loaded (<code>CONFIG_PHYSICAL_START</code>): 0x1000000</li>
-        <li>Build a relocatable kernel (<code>CONFIG_RELOCATABLE</code>): Y, STD</li>
-        <li>Randomize the address of the kernel image (KASLR) (<code>CONFIG_RANDOMIZE_BASE</code>): Y, SEC</li>
-        <li>Alignment value to which the kernel should be aligned (<code>CONFIG_PHYSICAL_ALIGN</code>): 0x200000</li>
-        <li>Randomize the kernel memory sections (<code>CONFIG_RANDOMIZE_BASE</code>): Y, SEC</li>
-        <li>Physcial memory mapping padding (<code>CONFIG_RANDOMIZE_MEMORY_PHYSICAL_PADDING</code>): 0x00</li>
-        <li>Linear Address Masking support (<code>CONFIG_ADDRESS_MASKING</code>): N</li>
+        <li>
+          EFI stub support (<code>CONFIG_EFI_STUB</code>): N, only if you boot
+          kernel directly
+        </li>
+        <li>
+          EFI handover protocol (<code>CONFIG_EFI_HANDOVER_PROTOCOL</code>): N,
+          OLD
+        </li>
+        <li>
+          EFI mixed-mode support (<code>CONFIG_EFI_MIXED</code>): N, only
+          relevant (but still unneeded) on Apple hardware
+        </li>
+        <li>
+          Enable EFI fake memory map (<code>CONFIG_EFI_FAKE_MEMMAP</code>): N
+        </li>
+        <li>
+          Export EFI runtime maps to sysfs
+          (<code>CONFIG_EFI_RUNTIME_MAP</code>): N
+        </li>
+        <li>
+          Timer frequency: 100 HZ for server, 300 HZ for laptop, 1000 HZ for
+          low-latency requirements
+        </li>
+        <li>
+          Physical address where the kernel is loaded
+          (<code>CONFIG_PHYSICAL_START</code>): 0x1000000
+        </li>
+        <li>
+          Build a relocatable kernel (<code>CONFIG_RELOCATABLE</code>): Y, STD
+        </li>
+        <li>
+          Randomize the address of the kernel image (KASLR)
+          (<code>CONFIG_RANDOMIZE_BASE</code>): Y, SEC
+        </li>
+        <li>
+          Alignment value to which the kernel should be aligned
+          (<code>CONFIG_PHYSICAL_ALIGN</code>): 0x200000
+        </li>
+        <li>
+          Randomize the kernel memory sections
+          (<code>CONFIG_RANDOMIZE_BASE</code>): Y, SEC
+        </li>
+        <li>
+          Physcial memory mapping padding
+          (<code>CONFIG_RANDOMIZE_MEMORY_PHYSICAL_PADDING</code>): 0x00
+        </li>
+        <li>
+          Linear Address Masking support (<code>CONFIG_ADDRESS_MASKING</code>):
+          N
+        </li>
         <li>vsyscall table for legacy applications: None</li>
-        <li>Built-in kernel command line (<code>CONFIG_CMDLINE_BOOL</code>): N, unless booting kernel directly</li>
-        <li>Enable the LDT (local descriptor table) (<code>CONFIG_MODIFY_LDT_SYSCALL</code>): N, EMB</li>
-        <li>Enforce strict size checking for sigalstack (<code>CONFIG_STRICT_SIGALSTACK_SIZE</code>): N, DEV</li>
+        <li>
+          Built-in kernel command line (<code>CONFIG_CMDLINE_BOOL</code>): N,
+          unless booting kernel directly
+        </li>
+        <li>
+          Enable the LDT (local descriptor table)
+          (<code>CONFIG_MODIFY_LDT_SYSCALL</code>): N, EMB
+        </li>
+        <li>
+          Enforce strict size checking for sigalstack
+          (<code>CONFIG_STRICT_SIGALSTACK_SIZE</code>): N, DEV
+        </li>
       </ul>
     </div>
     <div id="mitigations_vulnerability">
       <h3>Mitigations for speculative execution vulnerabilities</h3>
       <ul>
-        <li>Remove the kernel mapping in user mode (<code>CONFIG_PAGE_TABLE_ISOLATION</code>): Y</li>
-        <li>Avoid speculative indirect branches in kernel (<code>CONFIG_RETPOLINE</code>): Y</li>
+        <li>
+          Remove the kernel mapping in user mode
+          (<code>CONFIG_PAGE_TABLE_ISOLATION</code>): Y
+        </li>
+        <li>
+          Avoid speculative indirect branches in kernel
+          (<code>CONFIG_RETPOLINE</code>): Y
+        </li>
         <li>Enable return-thunks (<code>CONFIG_RETHUNK</code>): Y</li>
-        <li>Enable UNRET on kernel entry (<code>CONFIG_CPU_UNRET_ENTRY</code>): Y</li>
-        <li>Mitigate RSB underflow with call depth tracking (<code>CONFIG_CALL_DEPTH_TRACKING</code>): Y</li>
-        <li>Enable call thunks and call depth tracking debugging (<code>CONFIG_CALL_RETHUNKS_DEBUG</code>): N, DEV</li>
-        <li>Enable IBPB on kernel entry (<code>CONFIG_CPU_IBPB_ENTRY</code>): Y</li>
-        <li>Enable IBRS on kernel entry (<code>CONFIG_CPU_IBRS_ENTRY</code>): Y</li>
-        <li>Mitigate speculative RAS overflow (<code>CONFIG_CPU_SRSO</code>): Y, on AMD processors</li>
+        <li>
+          Enable UNRET on kernel entry (<code>CONFIG_CPU_UNRET_ENTRY</code>): Y
+        </li>
+        <li>
+          Mitigate RSB underflow with call depth tracking
+          (<code>CONFIG_CALL_DEPTH_TRACKING</code>): Y
+        </li>
+        <li>
+          Enable call thunks and call depth tracking debugging
+          (<code>CONFIG_CALL_RETHUNKS_DEBUG</code>): N, DEV
+        </li>
+        <li>
+          Enable IBPB on kernel entry (<code>CONFIG_CPU_IBPB_ENTRY</code>): Y
+        </li>
+        <li>
+          Enable IBRS on kernel entry (<code>CONFIG_CPU_IBRS_ENTRY</code>): Y
+        </li>
+        <li>
+          Mitigate speculative RAS overflow (<code>CONFIG_CPU_SRSO</code>): Y,
+          on AMD processors
+        </li>
         <li>Mitigate Straight-Line-Speculation (<code>CONFIG_SLS</code>): N</li>
-        <li>Force GDS Mitigation (<code>CONFIG_GDS_FORCE_MITIGATION</code>): N</li>
+        <li>
+          Force GDS Mitigation (<code>CONFIG_GDS_FORCE_MITIGATION</code>): N
+        </li>
       </ul>
     </div>
     <div id="power_management">
       <h3>Power management and ACPI options</h3>
       <ul>
-        <li>Suspend to RAM and standby (<code>CONFIG_SUSPEND</code>): Y, N for servers</li>
-        <li>Skip kernel's sys_sync() on suspend to RAM/standby (<code>CONFIG_SUSPEND_SKIP_SYNC</code>): N</li>
-        <li>Hibernation (aka 'suspend to disk') (<code>CONFIG_HIBERNATION</code>): Y, if desired. N for servers</li>
+        <li>
+          Suspend to RAM and standby (<code>CONFIG_SUSPEND</code>): Y, N for
+          servers
+        </li>
+        <li>
+          Skip kernel's sys_sync() on suspend to RAM/standby
+          (<code>CONFIG_SUSPEND_SKIP_SYNC</code>): N
+        </li>
+        <li>
+          Hibernation (aka 'suspend to disk') (<code>CONFIG_HIBERNATION</code>):
+          Y, if desired. N for servers
+        </li>
         <li>Opportunistic sleep (<code>CONFIG_PM_SLEEP</code>): N, EMB</li>
-        <li>Userspace opportunistic sleep (<code>CONFIG_PM_USERSPACE_AUTOSLEEP</code>): N, EMB</li>
-        <li>User space wakeup sources interface (<code>CONFIG_PM_WAKELOCKS</code>): N, EMB</li>
-        <li>Device power management core functionality (<code>CONFIG_PM</code>): Y, STD</li>
-        <li>Power Management Debug Support (<code>CONFIG_PM_DEBUG</code>): N, DEV</li>
-        <li>Enable workqueue power-efficient mode by default (<code>CONFIG_WQ_POWER_EFFICIENT_DEFAULT</code>): N</li>
-        <li>Energy Model for devices with DVFS (<code>CONFIG_ENERGY_MODEL</code>): N</li>
+        <li>
+          Userspace opportunistic sleep
+          (<code>CONFIG_PM_USERSPACE_AUTOSLEEP</code>): N, EMB
+        </li>
+        <li>
+          User space wakeup sources interface
+          (<code>CONFIG_PM_WAKELOCKS</code>): N, EMB
+        </li>
+        <li>
+          Device power management core functionality (<code>CONFIG_PM</code>):
+          Y, STD
+        </li>
+        <li>
+          Power Management Debug Support (<code>CONFIG_PM_DEBUG</code>): N, DEV
+        </li>
+        <li>
+          Enable workqueue power-efficient mode by default
+          (<code>CONFIG_WQ_POWER_EFFICIENT_DEFAULT</code>): N
+        </li>
+        <li>
+          Energy Model for devices with DVFS (<code>CONFIG_ENERGY_MODEL</code>):
+          N
+        </li>
         <li>
           ACPI Support (<code>CONFIG_ACPI</code>): Y, STD
           <ul>
-            <li>AML debugger interface (<code>CONFIG_ACPI_DEBUGGER</code>): N DEV</li>
-            <li>ACPI Serial Port Console Redirection Support (<code>CONFIG_ACPI_SPCR_TABLE</code>): N, DEV</li>
-            <li>ACPI Firmware Performance Data Table (FPDT) support (<code>CONFIG_ACPI_FPDT</code>): Y, STD</li>
-            <li>Allow support ACPI revision to be overridden (<code>CONFIG_ACPI_REV_OVERRIDE_POSSIBLE</code>): N</li>
-            <li>EC read/write access through /sys/kernel/debug/ec (<code>CONFIG_ACPI_EC_DEBUGFS</code>): N, DEV</li>
+            <li>
+              AML debugger interface (<code>CONFIG_ACPI_DEBUGGER</code>): N DEV
+            </li>
+            <li>
+              ACPI Serial Port Console Redirection Support
+              (<code>CONFIG_ACPI_SPCR_TABLE</code>): N, DEV
+            </li>
+            <li>
+              ACPI Firmware Performance Data Table (FPDT) support
+              (<code>CONFIG_ACPI_FPDT</code>): Y, STD
+            </li>
+            <li>
+              Allow support ACPI revision to be overridden
+              (<code>CONFIG_ACPI_REV_OVERRIDE_POSSIBLE</code>): N
+            </li>
+            <li>
+              EC read/write access through /sys/kernel/debug/ec
+              (<code>CONFIG_ACPI_EC_DEBUGFS</code>): N, DEV
+            </li>
             <li>AC Adapater (<code>CONFIG_ACPI_AC</code>): Y, if present</li>
             <li>Battery (<code>CONFIG_ACPI_BATTERY</code>): Y, on laptops</li>
             <li>Button (<code>CONFIG_ACPI_BUTTON</code>): Y</li>
             <li>Video (<code>CONFIG_ACPI_VIDEO</code>): Y</li>
             <li>Fan (<code>CONFIG_ACPI_FAN</code>): Y</li>
-            <li>ACPI Time and Alarm (TAD) Device Support (<code>CONFIG_ACPI_TAD</code>): Y</li>
-            <li>Dock (<code>CONFIG_ACPI_DOCK</code>): Y, if using docking station</li>
+            <li>
+              ACPI Time and Alarm (TAD) Device Support
+              (<code>CONFIG_ACPI_TAD</code>): Y
+            </li>
+            <li>
+              Dock (<code>CONFIG_ACPI_DOCK</code>): Y, if using docking station
+            </li>
             <li>Processor (<code>CONFIG_ACPI_PROCESSOR</code>): Y</li>
-            <li>Processor Aggregator (<code>CONFIG_ACPI_PROCESSOR_AGGREGATOR</code>): Y</li>
+            <li>
+              Processor Aggregator
+              (<code>CONFIG_ACPI_PROCESSOR_AGGREGATOR</code>): Y
+            </li>
             <li>Thermal Zone (<code>CONFIG_ACPI_THERMAL</code>): Y</li>
-            <li>Custom DSDT Table file to include (<code>CONFIG_ACPI_CUSTOM_DSDT_FILE</code>): empty</li>
+            <li>
+              Custom DSDT Table file to include
+              (<code>CONFIG_ACPI_CUSTOM_DSDT_FILE</code>): empty
+            </li>
             <li>Debug Statements (<code>CONFIG_ACPI_DEBUG</code>): N, DEV</li>
-            <li>PCI slot detection driver (<code>CONFIG_ACPI_PCI_SLOT</code>): N, DEV</li>
-            <li>Container and Module Devices (<code>CONFIG_ACPI_CONTAINER</code>): Y</li>
-            <li>Smart Battery System (<code>CONFIG_ACPI_SBS</code>): Y, on laptops</li>
+            <li>
+              PCI slot detection driver (<code>CONFIG_ACPI_PCI_SLOT</code>): N,
+              DEV
+            </li>
+            <li>
+              Container and Module Devices (<code>CONFIG_ACPI_CONTAINER</code>):
+              Y
+            </li>
+            <li>
+              Smart Battery System (<code>CONFIG_ACPI_SBS</code>): Y, on laptops
+            </li>
             <li>Hardware Error Device (<code>CONFIG_ACPI_HED</code>): Y</li>
-            <li>Boottime Graphics Resource Table support (<code>CONFIG_ACPI_BGRT</code>): N</li>
-            <li>Hardware-reduced ACPI support only (<code>CONFIG_ACPI_REDUCED_HARDWWARE_ONLY</code>): N</li>
-            <li>ACPI Platform Error Interface (APEI) (<code>CONFIG_ACPI_APEI</code>): Y</li>
-            <li>APEI Generic Hardware Error Source (<code>CONFIG_ACPI_APEI_GHES</code>): Y</li>
-            <li>APEI Error Record Serialization Table (ERST) Debug Support (<code>CONFIG_ACPI_APEI_ERST_DEBUG</code>): N, DEV</li>
-            <li>Intel DPTF (Dynamic Platform and Thermal Framework) (<code>CONFIG_ACPI_DPTF</code>): Y, on Intel processors</li>
-            <li>ACPI configfs support (<code>CONFIG_ACPI_CONFIGFS</code>): N</li>
-            <li>ACPI Platform Firmware Runtime Update and Telemetry (<code>CONFIG_ACPI_PFRUT</code>): N</li>
-            <li>ACPI PCC Address Space (<code>CONFIG_ACPI_PCC</code>): Y, STD, for UEFI</li>
+            <li>
+              Boottime Graphics Resource Table support
+              (<code>CONFIG_ACPI_BGRT</code>): N
+            </li>
+            <li>
+              Hardware-reduced ACPI support only
+              (<code>CONFIG_ACPI_REDUCED_HARDWWARE_ONLY</code>): N
+            </li>
+            <li>
+              ACPI Platform Error Interface (APEI)
+              (<code>CONFIG_ACPI_APEI</code>): Y
+            </li>
+            <li>
+              APEI Generic Hardware Error Source
+              (<code>CONFIG_ACPI_APEI_GHES</code>): Y
+            </li>
+            <li>
+              APEI Error Record Serialization Table (ERST) Debug Support
+              (<code>CONFIG_ACPI_APEI_ERST_DEBUG</code>): N, DEV
+            </li>
+            <li>
+              Intel DPTF (Dynamic Platform and Thermal Framework)
+              (<code>CONFIG_ACPI_DPTF</code>): Y, on Intel processors
+            </li>
+            <li>
+              ACPI configfs support (<code>CONFIG_ACPI_CONFIGFS</code>): N
+            </li>
+            <li>
+              ACPI Platform Firmware Runtime Update and Telemetry
+              (<code>CONFIG_ACPI_PFRUT</code>): N
+            </li>
+            <li>
+              ACPI PCC Address Space (<code>CONFIG_ACPI_PCC</code>): Y, STD, for
+              UEFI
+            </li>
             <li>ACPI FFH Address Space (<code>CONFIG_ACPI_FFH</code>): N</li>
-            <li>PMIC (Power Management Integrated Circuit) operation region support (<code>CONFIG_PMIC_OPREGION</code>): N</li>
-            <li>Platform Runtime Mechanism Support (<code>CONFIG_ACPI_PRMT</code>): Y</li>
+            <li>
+              PMIC (Power Management Integrated Circuit) operation region
+              support (<code>CONFIG_PMIC_OPREGION</code>): N
+            </li>
+            <li>
+              Platform Runtime Mechanism Support
+              (<code>CONFIG_ACPI_PRMT</code>): Y
+            </li>
             <li></li>
           </ul>
         </li>
-        <li>Power Management Timer Support (<code>CONFIG_X86_PM_TIMER</code>): Y, STD</li>
+        <li>
+          Power Management Timer Support (<code>CONFIG_X86_PM_TIMER</code>): Y,
+          STD
+        </li>
         <li>
           CPU Frequency scaling
           <ul>
-            <li>CPU frequency transition statistics (<code>CONFIG_CPU_FREQ_STAT</code>): N, DEV</li>
+            <li>
+              CPU frequency transition statistics
+              (<code>CONFIG_CPU_FREQ_STAT</code>): N, DEV
+            </li>
             <li>Default CPUFreq governor: performance</li>
-            <li>'performance' governor (<code>CONFIG_CPU_FREQ_GOV_PERFORMANCE</code>): Y</li>
-            <li>'powersave' governor (<code>CONFIG_CPU_FREQ_GOV_POWERSAVE</code>): N, not strictly necessary</li>
-            <li>'userspace' governor for userspace frequency scaling (<code>CONFIG_CPU_FREQ_GOV_USERSPACE</code>): N, not strictly necessary</li>
-            <li>'ondemand' cpufreq policy governor (<code>CONFIG_CPU_FREQ_GOV_ONDEMAND</code>): N</li>
-            <li>'conservative' cpufreq governor (<code>CONFIG_CPU_FREQ_GOV_CONSERVATIVE</code>): N</li>
-            <li>'schedutil' cpufreq policy governor (<code>CONFIG_CPU_FREQ_GOV_SCHEDUTIL</code>): Y</li>
-            <li>Intel P state control (<code>CONFIG_X86_INTEL_PSTATE</code>): Y, on Intel processors</li>
-            <li>Processor Clocking Control interface driver (<code>CONFIG_X86_PCC_CPUFREQ</code>): N, OLD</li>
-            <li>AMD Processor P-State driver (<code>CONFIG_X86_AMD_PSTATE</code>): Y, on AMD processors</li>
-            <li>selftest for AMD Processor P-State driver (<code>CONFIG_X86_AMD_PSTATE_UT</code>): N, DEV</li>
-            <li>ACPI Processor P-States driver (<code>CONFIG_X86_ACPI_CPUFREQ</code>): Y, STD</li>
-            <li>Intel Enhanced SpeedStep (<code>CONFIG_X86_SPEEDSTEP_CENTRINO</code>): N, OLD</li>
-            <li>Intel Pentium 4 clock modulation (<code>CONFIG_X86_P4_CLOCKMOD</code>): N, OLD</li>
+            <li>
+              'performance' governor
+              (<code>CONFIG_CPU_FREQ_GOV_PERFORMANCE</code>): Y
+            </li>
+            <li>
+              'powersave' governor (<code>CONFIG_CPU_FREQ_GOV_POWERSAVE</code>):
+              N, not strictly necessary
+            </li>
+            <li>
+              'userspace' governor for userspace frequency scaling
+              (<code>CONFIG_CPU_FREQ_GOV_USERSPACE</code>): N, not strictly
+              necessary
+            </li>
+            <li>
+              'ondemand' cpufreq policy governor
+              (<code>CONFIG_CPU_FREQ_GOV_ONDEMAND</code>): N
+            </li>
+            <li>
+              'conservative' cpufreq governor
+              (<code>CONFIG_CPU_FREQ_GOV_CONSERVATIVE</code>): N
+            </li>
+            <li>
+              'schedutil' cpufreq policy governor
+              (<code>CONFIG_CPU_FREQ_GOV_SCHEDUTIL</code>): Y
+            </li>
+            <li>
+              Intel P state control (<code>CONFIG_X86_INTEL_PSTATE</code>): Y,
+              on Intel processors
+            </li>
+            <li>
+              Processor Clocking Control interface driver
+              (<code>CONFIG_X86_PCC_CPUFREQ</code>): N, OLD
+            </li>
+            <li>
+              AMD Processor P-State driver (<code>CONFIG_X86_AMD_PSTATE</code>):
+              Y, on AMD processors
+            </li>
+            <li>
+              selftest for AMD Processor P-State driver
+              (<code>CONFIG_X86_AMD_PSTATE_UT</code>): N, DEV
+            </li>
+            <li>
+              ACPI Processor P-States driver
+              (<code>CONFIG_X86_ACPI_CPUFREQ</code>): Y, STD
+            </li>
+            <li>
+              Intel Enhanced SpeedStep
+              (<code>CONFIG_X86_SPEEDSTEP_CENTRINO</code>): N, OLD
+            </li>
+            <li>
+              Intel Pentium 4 clock modulation
+              (<code>CONFIG_X86_P4_CLOCKMOD</code>): N, OLD
+            </li>
           </ul>
         </li>
         <li>
           CPU Idle
           <ul>
             <li>CPU idle PM support (<code>CONFIG_CPU_IDLE</code>): Y, STD</li>
-            <li>Ladder governor (for periodic timer tick) (<code>CPU_IDLE_GOV_LADDER</code>): N</li>
-            <li>Menu governor (for tickless system) (<code>CPU_IDLE_GOV_MENU</code>): Y</li>
-            <li>Timer events oriented governor (<code>CONFIG_CPU_IDLE_GOV_TEO</code>): N</li>
+            <li>
+              Ladder governor (for periodic timer tick)
+              (<code>CPU_IDLE_GOV_LADDER</code>): N
+            </li>
+            <li>
+              Menu governor (for tickless system)
+              (<code>CPU_IDLE_GOV_MENU</code>): Y
+            </li>
+            <li>
+              Timer events oriented governor
+              (<code>CONFIG_CPU_IDLE_GOV_TEO</code>): N
+            </li>
           </ul>
         </li>
-        <li>Cpuidle Driver for Intel Processors (<code>CONFIG_INTEL_IDLE</code>): Y, on Intel processors </li>
+        <li>
+          Cpuidle Driver for Intel Processors (<code>CONFIG_INTEL_IDLE</code>):
+          Y, on Intel processors
+        </li>
       </ul>
     </div>
     <div id="bus_options">
       <h3>Bus options (PCI etc.)</h3>
-      <li>Support mmconfig PCI space access (<code>PCI_MMCONFIG</code>): Y, STD</li>
-      <li>Read CNB20LE Host Bridge Windows (<code>CONFIG_PCI_CNB20LE_QUIRK</code>): N</li>
-      <li>ISA bus support on modern systems (<code>CONFIG_ISA_BUS</code>): N</li>
+      <li>
+        Support mmconfig PCI space access (<code>PCI_MMCONFIG</code>): Y, STD
+      </li>
+      <li>
+        Read CNB20LE Host Bridge Windows
+        (<code>CONFIG_PCI_CNB20LE_QUIRK</code>): N
+      </li>
+      <li>
+        ISA bus support on modern systems (<code>CONFIG_ISA_BUS</code>): N
+      </li>
       <li>ISA-style DMA support (<code>CONFIG_ISA_DMA_API</code>): N</li>
     </div>
     <div id="binary_emulation">
       <h3>Binary Emulations</h3>
-      <li>IA32 Emulation (<code>CONFIG_IA32_EMULATION</code>): N, unless using 32-bit applications</li>
+      <li>
+        IA32 Emulation (<code>CONFIG_IA32_EMULATION</code>): N, unless using
+        32-bit applications
+      </li>
     </div>
     <div id="arch_dependent">
       <h3>General architecture-dependent options</h3>
-      <li>Optimize very unlikely/likely branche (<code>CONFIG_JUMP_LABEL</code>): Y</li>
-      <li>Static key selftest (<code>CONFIG_STATIC_KEYS_SELFTEST</code>): N, DEV</li>
-      <li>Static call selftest (<code>CONFIG_STATIC_CALL_SELFTEST</code>): N, DEV</li>
-      <li>Enable seccomp to safely execute untrusted bytecode (<code>CONFIG_SECCOMP</code>): Y, STD</li>
-      <li>Show seccomp filter cache status in /proc/pid/seccomp_cache (<code>CONFIG_SECCOMP_CACHE_DEBUG</code>): N, DEV</li>
-      <li>Stack Protector buffer overflow detection (<code>CONFIG_STACKPROTECTOR</code>): Y, SEC</li>
-      <li>Strong Stack Protector (<code>CONFIG_STACKPROTECTOR_STRONG</code>): Y, SEC</li>
+      <li>
+        Optimize very unlikely/likely branche (<code>CONFIG_JUMP_LABEL</code>):
+        Y
+      </li>
+      <li>
+        Static key selftest (<code>CONFIG_STATIC_KEYS_SELFTEST</code>): N, DEV
+      </li>
+      <li>
+        Static call selftest (<code>CONFIG_STATIC_CALL_SELFTEST</code>): N, DEV
+      </li>
+      <li>
+        Enable seccomp to safely execute untrusted bytecode
+        (<code>CONFIG_SECCOMP</code>): Y, STD
+      </li>
+      <li>
+        Show seccomp filter cache status in /proc/pid/seccomp_cache
+        (<code>CONFIG_SECCOMP_CACHE_DEBUG</code>): N, DEV
+      </li>
+      <li>
+        Stack Protector buffer overflow detection
+        (<code>CONFIG_STACKPROTECTOR</code>): Y, SEC
+      </li>
+      <li>
+        Strong Stack Protector (<code>CONFIG_STACKPROTECTOR_STRONG</code>): Y,
+        SEC
+      </li>
       <li>Link Time Optimization (LTO): None</li>
-      <li>Number of bits to use for ASLR of mmap base address (<code>CONFIG_ARCH_MMAP_RND_BITS</code>): 28</li>
-      <li>Provide system calls for 32-bit time_t (<code>CONFIG_COMPAT_32BIT_TIME</code>): Y, STD</li>
-      <li>Use a virtually-mapped stack (<code>CONFIG_VMAP_STACK</code>): Y, SEC</li>
-      <li>Support for randomizing kernel stack offset on syscall entry (<code>CONFIG_RANDOMIZE_KSTACK_OFFSET</code>): Y, SEC</li>
-      <li>Default state of kernel stack offset randomization (<code>CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT</code>): Y, SEC</li>
+      <li>
+        Number of bits to use for ASLR of mmap base address
+        (<code>CONFIG_ARCH_MMAP_RND_BITS</code>): 28
+      </li>
+      <li>
+        Provide system calls for 32-bit time_t
+        (<code>CONFIG_COMPAT_32BIT_TIME</code>): Y, STD
+      </li>
+      <li>
+        Use a virtually-mapped stack (<code>CONFIG_VMAP_STACK</code>): Y, SEC
+      </li>
+      <li>
+        Support for randomizing kernel stack offset on syscall entry
+        (<code>CONFIG_RANDOMIZE_KSTACK_OFFSET</code>): Y, SEC
+      </li>
+      <li>
+        Default state of kernel stack offset randomization
+        (<code>CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT</code>): Y, SEC
+      </li>
     </div>
     <div id="block_layer">
       <h3>Enable the block layer</h3>
-      <li>Legacy autoloading support (<code>CONFIG_BLOCK_LEGACY_AUTOLOAD</code>): N, OLD</li>
-      <li>Block layer SG support v4 helper lib (<code>CONFIG_BLK_DEV_BSGLIB</code>): N, auto enabled if needed</li>
-      <li>Block layer data integrity support (<code>CONFIG_BLK_DEV_INTEGRITY</code>): N</li>
-      <li>Allow writing to mounted block devices (<code>CONFIG_BLK_DEV_WRITE_MOUNTED</code>): Y, STD</li>
+      <li>
+        Legacy autoloading support (<code>CONFIG_BLOCK_LEGACY_AUTOLOAD</code>):
+        N, OLD
+      </li>
+      <li>
+        Block layer SG support v4 helper lib
+        (<code>CONFIG_BLK_DEV_BSGLIB</code>): N, auto enabled if needed
+      </li>
+      <li>
+        Block layer data integrity support
+        (<code>CONFIG_BLK_DEV_INTEGRITY</code>): N
+      </li>
+      <li>
+        Allow writing to mounted block devices
+        (<code>CONFIG_BLK_DEV_WRITE_MOUNTED</code>): Y, STD
+      </li>
       <li>Zoned block device support (<code>CONFIG_BLK_DEV_ZONED</code>): N</li>
-      <li>Block layer bio throttling support (<code>CONFIG_BLK_DEV_THROTTLING</code>): N, VIRT</li>
-      <li>Enable support for block device writeback throttling (<code>CONFIG_BLK_WBT</code>): Y</li>
-      <li>Enable writeback throttling by default (<code>CONFIG_BLK_WBT_MQ</code>): N</li>
-      <li>Enable support for latency based cgroup IO protection (<code>CONFIG_BLK_CGROUP_IOLATENCY</code>): N, VIRT</li>
-      <li>Enable support for cost model based cgroup IO controller (<code>CONFIG_BLK_CGROUP_IOCOST</code>): N, VIRT</li>
-      <li>Cgroup I/O controller for assigning an I/O priority class (<code>CONFIG_BLK_CGROUP_IOPRIO</code>): N, VIRT</li>
-      <li>Logic for interfacing with Opal enabled SEDs (<code>CONFIG_BLK_SED_OPAL</code>): N</li>
-      <li>Enable inline encryption support in block layer (<code>CONFIG_BLK_INLINE_ENCRYPTION</code>): N</li>
+      <li>
+        Block layer bio throttling support
+        (<code>CONFIG_BLK_DEV_THROTTLING</code>): N, VIRT
+      </li>
+      <li>
+        Enable support for block device writeback throttling
+        (<code>CONFIG_BLK_WBT</code>): Y
+      </li>
+      <li>
+        Enable writeback throttling by default (<code>CONFIG_BLK_WBT_MQ</code>):
+        N
+      </li>
+      <li>
+        Enable support for latency based cgroup IO protection
+        (<code>CONFIG_BLK_CGROUP_IOLATENCY</code>): N, VIRT
+      </li>
+      <li>
+        Enable support for cost model based cgroup IO controller
+        (<code>CONFIG_BLK_CGROUP_IOCOST</code>): N, VIRT
+      </li>
+      <li>
+        Cgroup I/O controller for assigning an I/O priority class
+        (<code>CONFIG_BLK_CGROUP_IOPRIO</code>): N, VIRT
+      </li>
+      <li>
+        Logic for interfacing with Opal enabled SEDs
+        (<code>CONFIG_BLK_SED_OPAL</code>): N
+      </li>
+      <li>
+        Enable inline encryption support in block layer
+        (<code>CONFIG_BLK_INLINE_ENCRYPTION</code>): N
+      </li>
       <li>Partition Types</li>
       <ul>
-        <li>Advanced partition selection (<code>CONFIG_PARTITION_ADVANCED</code>): Y</li>
-        <li>PC BIOS (MSDOS partition tables) support (<code>CONFIG_MSDOS_PARTITION</code>): Y</li>
-        <li>EFI GUID Partition support (<code>CONFIG_EFI_PARTITION</code>): Y</li>
+        <li>
+          Advanced partition selection (<code>CONFIG_PARTITION_ADVANCED</code>):
+          Y
+        </li>
+        <li>
+          PC BIOS (MSDOS partition tables) support
+          (<code>CONFIG_MSDOS_PARTITION</code>): Y
+        </li>
+        <li>
+          EFI GUID Partition support (<code>CONFIG_EFI_PARTITION</code>): Y
+        </li>
         <li>Select others as needed...</li>
       </ul>
       <li>IO Schedulers</li>
       <ul>
-        <li>MQ deadline I/O scheduler (<code>CONFIG_MQ_IOSCHED_DEADLINE</code>): N, if using cgroups</li>
+        <li>
+          MQ deadline I/O scheduler (<code>CONFIG_MQ_IOSCHED_DEADLINE</code>):
+          N, if using cgroups
+        </li>
         <li>Kyber I/O scheduler (<code>CONFIG_MQ_IOSCHED_KYBER</code>): N</li>
         <li>BFQ I/O scheduler (<code>CONFIG_IOSCHED_BFQ</code>): Y</li>
-        <li>BFQ hierarchical scheduling support (<code>CONFIG_BFQ_GROUP_IOSCHED</code>): Y, if using cgroups</li>
-        <li>BFQ IO controller debugging (<code>CONFIG_BFQ_CGROUP_DEBUG</code>): N, DEV</li>
+        <li>
+          BFQ hierarchical scheduling support
+          (<code>CONFIG_BFQ_GROUP_IOSCHED</code>): Y, if using cgroups
+        </li>
+        <li>
+          BFQ IO controller debugging (<code>CONFIG_BFQ_CGROUP_DEBUG</code>): N,
+          DEV
+        </li>
       </ul>
     </div>
     <div id="executable_file">
       <h3>Executable file formats</h3>
-      <li>Kernel support for ELF binaries (<code>CONFIG_BINFMT_ELF</code>): Y, STD</li>
-      <li>Write ELF core dumps with partial segments (<code>CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS</code>): Y</li>
-      <li>Kernel support for scripts starting with #! (<code>CONFIG_BINFMT_SCRIPT</code>): Y, STD</li>
-      <li>Kernel support for MISC binaries (<code>CONFIG_BINFMT_MISC</code>): N, SEC</li>
+      <li>
+        Kernel support for ELF binaries (<code>CONFIG_BINFMT_ELF</code>): Y, STD
+      </li>
+      <li>
+        Write ELF core dumps with partial segments
+        (<code>CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS</code>): Y
+      </li>
+      <li>
+        Kernel support for scripts starting with #!
+        (<code>CONFIG_BINFMT_SCRIPT</code>): Y, STD
+      </li>
+      <li>
+        Kernel support for MISC binaries (<code>CONFIG_BINFMT_MISC</code>): N,
+        SEC
+      </li>
       <li>Enable core dump support (<code>CONFIG_COREDUMP</code>): Y</li>
     </div>
     <div id="memory_management">
       <h3>Memory Management options</h3>
-      <li>Support for paging of anonymous memory (swap) (<code>CONFIG_SWAP</code>): Y, STD</li>
+      <li>
+        Support for paging of anonymous memory (swap)
+        (<code>CONFIG_SWAP</code>): Y, STD
+      </li>
       <li>Slab allocator options</li>
       <ul>
-        <li>Configure for minimal memory footprint (<code>CONFIG_SLUB_TINY</code>): N, EMB</li>
-        <li>Allow slab caches to be merged (<code>CONFIG_SLAB_MERGE_DEFAULT</code>): Y</li>
-        <li>Randomize slab freelist (<code>CONFIG_SLAB_FREELIST_RANDOM</code>): Y, SEC</li>
-        <li>Harden slab freelist metadata (<code>CONFIG_SLAB_FREELIST_HARDENED</code>): Y, SEC</li>
-        <li>Enable performance statistics (<code>CONFIG_SLUB_STATS</code>): N, DEV</li>
-        <li>Enable per cpu partial caches (<code>CONFIG_SLUB_CPU_PARTIAL</code>): Y, on multicore systems...</li>
-        <li>Randomize slab caches for normal kmalloc (<code>CONFIG_RANDOM_KMALLOC_CACHES</code>): N, SEC</li>
+        <li>
+          Configure for minimal memory footprint
+          (<code>CONFIG_SLUB_TINY</code>): N, EMB
+        </li>
+        <li>
+          Allow slab caches to be merged
+          (<code>CONFIG_SLAB_MERGE_DEFAULT</code>): Y
+        </li>
+        <li>
+          Randomize slab freelist (<code>CONFIG_SLAB_FREELIST_RANDOM</code>): Y,
+          SEC
+        </li>
+        <li>
+          Harden slab freelist metadata
+          (<code>CONFIG_SLAB_FREELIST_HARDENED</code>): Y, SEC
+        </li>
+        <li>
+          Enable performance statistics (<code>CONFIG_SLUB_STATS</code>): N, DEV
+        </li>
+        <li>
+          Enable per cpu partial caches (<code>CONFIG_SLUB_CPU_PARTIAL</code>):
+          Y, on multicore systems...
+        </li>
+        <li>
+          Randomize slab caches for normal kmalloc
+          (<code>CONFIG_RANDOM_KMALLOC_CACHES</code>): N, SEC
+        </li>
       </ul>
-      <li>Page allocator randomization (<code>CONFIG_SHUFFLE_PAGE_ALLOCATOR</code>): Y, SEC</li>
-      <li>Disable heap randomization (<code>CONFIG_COMPAT_BRK</code>): N, OLD</li>
-      <li>Sparse Memory virtual memmap (<code>CONFIG_SPARSE_VMEMMAP</code>): Y, STD</li>
+      <li>
+        Page allocator randomization
+        (<code>CONFIG_SHUFFLE_PAGE_ALLOCATOR</code>): Y, SEC
+      </li>
+      <li>
+        Disable heap randomization (<code>CONFIG_COMPAT_BRK</code>): N, OLD
+      </li>
+      <li>
+        Sparse Memory virtual memmap (<code>CONFIG_SPARSE_VMEMMAP</code>): Y,
+        STD
+      </li>
       <li>Memory hotplug (<code>MEMORY_HOTPLUG</code>): N, VIRT</li>
-      <li>Allow for memory compaction (<code>CONFIG_COMPACTION</code>): Y, STD</li>
+      <li>
+        Allow for memory compaction (<code>CONFIG_COMPACTION</code>): Y, STD
+      </li>
       <li>Free page reporting (<code>CONFIG_PAGE_REPORTING</code>): N, VIRT</li>
-      <li>Page migration (<code>CONFIG_MIGRATION</code>): Y, auto enabled if needed</li>
-      <li>Maximum scale factor of PCP (Per-CPU pageset) batch allocate/free (<code>CONFIG_PCP_BATCH_SCALE_MAX</code>): 5</li>
+      <li>
+        Page migration (<code>CONFIG_MIGRATION</code>): Y, auto enabled if
+        needed
+      </li>
+      <li>
+        Maximum scale factor of PCP (Per-CPU pageset) batch allocate/free
+        (<code>CONFIG_PCP_BATCH_SCALE_MAX</code>): 5
+      </li>
       <li>Enable KSM for page merging (<code>CONFIG_KSM</code>): N, VIRT</li>
-      <li>Low address space to protect from user allocation (<code>CONFIG_DEFAULT_MMAP_ADDR</code>): 65536</li>
-      <li>Enable recovery from hardware memory errors (<code>CONFIG_MEMORY_FAILURE</code>): N, unless you have ECC memory</li>
-      <li>Transparent Hugepage Support (<code>CONFIG_TRANSPARENT_HUGEPAGE</code>): N, unless you have large amounts of memory</li>
+      <li>
+        Low address space to protect from user allocation
+        (<code>CONFIG_DEFAULT_MMAP_ADDR</code>): 65536
+      </li>
+      <li>
+        Enable recovery from hardware memory errors
+        (<code>CONFIG_MEMORY_FAILURE</code>): N, unless you have ECC memory
+      </li>
+      <li>
+        Transparent Hugepage Support (<code>CONFIG_TRANSPARENT_HUGEPAGE</code>):
+        N, unless you have large amounts of memory
+      </li>
       <li>Contiguous Memory Allocator (<code>CONFIG_CMA</code>): N</li>
-      <li>Defer initialisation of struct pages to kthreads (<code>CONFIG_DEFERRED_PAGE_INIT</code>): N</li>
-      <li>Enable idle page tracking (<code>CONFIG_IDLE_PAGE_TRACKING</code>): N</li>
+      <li>
+        Defer initialisation of struct pages to kthreads
+        (<code>CONFIG_DEFERRED_PAGE_INIT</code>): N
+      </li>
+      <li>
+        Enable idle page tracking (<code>CONFIG_IDLE_PAGE_TRACKING</code>): N
+      </li>
       <li>Support DMA zone (<code>ZONE_DMA</code>): Y</li>
       <li>Support DMA32 zone (<code>ZONE_DMA32</code>): Y</li>
-      <li>Enable VM event counters /proc/vmstat (<code>CONFIG_VM_EVENT_COUNTERS</code>): Y</li>
-      <li>Collect percpu memory statistics (<code>CONFIG_PERCPU_STATS</code>): N, DEV</li>
-      <li>Enable a module to run time tests on dma_pool (<code>CONFIG_DMAPOOL_TEST</code>): N, DEV</li>
+      <li>
+        Enable VM event counters /proc/vmstat
+        (<code>CONFIG_VM_EVENT_COUNTERS</code>): Y
+      </li>
+      <li>
+        Collect percpu memory statistics (<code>CONFIG_PERCPU_STATS</code>): N,
+        DEV
+      </li>
+      <li>
+        Enable a module to run time tests on dma_pool
+        (<code>CONFIG_DMAPOOL_TEST</code>): N, DEV
+      </li>
       <li>Enable memfd_create() system call (<code>MEMFD_CREATE</code>): Y</li>
-      <li>Enable memfd_secreat() system call (<code>CONFIG_SECRETMEM</code>): Y</li>
-      <li>Anonymous VMA name support (<code>CONFIG_ANON_VMA_NAME</code>): N, SEC</li>
-      <li>Enable userfaultfd() system call (<code>CONFIG_USERFAULTFD</code>): N, VIRT</li>
+      <li>
+        Enable memfd_secreat() system call (<code>CONFIG_SECRETMEM</code>): Y
+      </li>
+      <li>
+        Anonymous VMA name support (<code>CONFIG_ANON_VMA_NAME</code>): N, SEC
+      </li>
+      <li>
+        Enable userfaultfd() system call (<code>CONFIG_USERFAULTFD</code>): N,
+        VIRT
+      </li>
       <li>Multi-Gen LRU (<code>CONFIG_LRU_GEN</code>): N</li>
       <li>Data Access Monitoring</li>
       <ul>
-        <li>DAMON: Data Access Monitoring Framework (<code>CONFIG_DAMON</code>): N</li>
+        <li>
+          DAMON: Data Access Monitoring Framework (<code>CONFIG_DAMON</code>): N
+        </li>
       </ul>
     </div>
     <div id="networking_support">
       <h3>Network support</h3>
       <li>Networking options</li>
       <ul>
-        <li></li>
+        <li>Packet Socket (<code>CONFIG_PACKET</code>): Y, STD</li>
+        <li>
+          Packet: sockets monitoring interface
+          (<code>CONFIG_PACKET_DIAG</code>): Y, STD
+        </li>
+        <li>Unix domain sockets (<code>CONFIG_UNIX</code>): Y</li>
+        <li>
+          UNIX: socket monitoring interface (<code>CONFIG_UNIX_DIAG</code>)
+        </li>
+        <li>Transport Layer Security support (<code>CONFIG_TLS</code>): N</li>
+        <li>
+          Transformation user configuration interface
+          (<code>CONFIG_XFRM_USER</code>): N, not strictly necessary
+        </li>
+        <li>
+          Transformation virtual interface (<code>CONFIG_XFRM_INTERFACE</code>):
+          N
+        </li>
+        <li>
+          Transformation sub policy support
+          (<code>CONFIG_XFRM_SUB_POLICY</code>): N, DEV
+        </li>
+        <li>
+          Transformation migrate database (<code>CONFIG_XFRM_MIGRATE</code>): N,
+          unless on mobile
+        </li>
+        <li>
+          Transformation statistics (<code>CONFIG_XFRM_STATISTICS</code>):N, DEV
+        </li>
+        <li>PF_KEY sockets (<code>CONFIG_NET_KEY</code>): N</li>
+        <li>TCP/IP networking (<code>CONFIG_INET</code>): Y, STD</li>
+        <li>IP: multicasting (<code>CONFIG_IP_MULTICAST</code>): N</li>
+        <li>
+          IP: advanced router (<code>CONFIG_IP_ADVANCED_ROUTER</code>): N,
+          unless acting as router
+        </li>
+        <li>
+          IP: kernel level autoconfiguration (<code>CONFIG_IP_PNP</code>): N,
+          unless using PXE
+        </li>
+        <li>IP: tunneling (<code>CONFIG_INET_IPIP</code>): N</li>
+        <li>IP: GRE demultiplexer (<code>CONFIG_NET_IPGRE_DEMUX</code>): N</li>
+        <li>
+          IP: TCP syncookie support (<code>CONFIG_SYN_COOKIES</code>): N, SEC
+        </li>
+        <li>
+          Virtual (secure) IP: tunneling (<code>CONFIG_NET_IPVTI</code>): N
+        </li>
+        <li>
+          IP: Foo (IP protocols) over UDP (<code>CONFIG_NET_FOU</code>): N
+        </li>
+        <li>
+          IP: FOU encapsulation of IP tunnels
+          (<code>CONFIG_NET_FOU_IP_TUNNELS</code>): N
+        </li>
+        <li>IP: AH transformation (<code>CONFIG_INET_AH</code>): Y, STD</li>
+        <li>IP: ESP transformation (<code>CONFIG_INET_ESP</code>): Y, STD</li>
+        <li>
+          IP: ESP transformation offload (<code>CONFIG_INET_ESP_OFFLOAD</code>):
+          N
+        </li>
+        <li>
+          IP: ESP in TCP encapsulation (RFC 8229)
+          (<code>CONFIG_INET_ESPINTCP</code>): N
+        </li>
+        <li>IP: IPComp transformation (<code>CONFIG_INET_IPCOMP</code>): N</li>
+        <li>
+          INET: Source port perturbation table size (as power of 2)
+          (<code>CONFIG_INET_TABLE_PERTUB_ORDER</code>): 16
+        </li>
+        <li>
+          INET: socket monitoring interface (<code>CONFIG_INET_DIAG</code>): N
+        </li>
+        <li>
+          TCP: advanced congestion control
+          (<code>CONFIG_TCP_CONG_ADVANCED</code>): N
+        </li>
+        <li>
+          TCP: Authentication Option (RFC5925) (<code>CONFIG_TCP_AO</code>): N
+        </li>
+        <li>
+          TCP: MD5 Signature Option Support (RFC2385)
+          (<code>CONFIG_TCP_MD5SIG</code>): N
+        </li>
+        <li>The IPv6 protocol (<code>CONFIG_IPV6</code>): Y</li>
+        <ul>
+          <li>
+            IPv6: Router Preference (RFC 4191) support
+            (<code>CONFIG_IPV6_ROUTER_PREF</code>): N
+          </li>
+          <li>
+            IPv6: Enable RFC 4429 Optimistic DAD
+            (<code>CONFIG_IPV6_OPTIMISTIC_DAD</code>): N
+          </li>
+          <li>IPv6: AH transformation (<code>CONFIG_IPV6_AH</code>): Y, STD</li>
+          <li>
+            IPv6: ESP transformation (<code>CONFIG_INET6_ESP</code>): Y, STD
+          </li>
+          <li>
+            IPv6: ESP transformation offload
+            (<code>CONFIG_INET6_ESP_OFFLOAD</code>): N
+          </li>
+          <li>
+            IPv6: ESP in TCP encapsulation (RFC 8229)
+            (<code>CONFIG_INET6_ESPINTCP</code>): N
+          </li>
+          <li>
+            IPv6: IPComp transformation (<code>CONFIG_INET6_IPCOMP</code>): N
+          </li>
+          <li>IPv6: Mobility (<code>CONFIG_IPV6_MIP6</code>): N</li>
+          <li>
+            IPv6: Identifier Locator Addressing (ILA)
+            (<code>CONFIG_IPV6_ILA</code>): N
+          </li>
+          <li>
+            Virtual (secure) IPv6: tunneling (<code>CONFIG_IPV6_VTI</code>): N
+          </li>
+          <li>
+            IPv6: IPv6-in-IPv4 tunnel (SIT driver)
+            (<code>CONFIG_IPV6_SIT</code>): Y, STD
+          </li>
+          <li>
+            IPv6: IPv6 Rapid Deployment (6RD)
+            (<code>CONFIG_IPV6_SIT_6RD</code>): N
+          </li>
+          <li>
+            IPv6: IP-in-IPv6 tunnel (RFC2473) (<code>CONFIG_IPV6_TUNNEL</code>):
+            N
+          </li>
+          <li>
+            IPv6: Multiple Routing Tables
+            (<code>CONFIG_IPV6_MULTIPLE_TABLES</code>): N
+          </li>
+          <li>IPv6: multicast routing (<code>CONFIG_IPV6_MROUTE</code>): N</li>
+          <li>
+            IPv6: Segment Routing Header encapsulation support
+            (<code>CONFIG_IPV6_SEG6_LWTUNNEL</code>): N
+          </li>
+          <li>
+            IPv6: Segment Routing HMAC support
+            (<code>CONFIG_IPV6_SEG6_HMAC</code>): N
+          </li>
+          <li>
+            IPv6: RPL Source Routing Header support
+            (<code>CONFIG_IPV6_RPL_LWTUNNEL</code>): N
+          </li>
+          <li>
+            IPv6: IOAM Pre-allocated Trace insertion support
+            (<code>CONFIG_IPV6_IOAM6_LWTUNNEL</code>): N
+          </li>
+        </ul>
+        <li>MPTCP: Multipath TCP (<code>CONFIG_MPTCP</code>): N</li>
+        <li>
+          Security Marking (<code>CONFIG_NETWORK_SECMARK</code>): N, auto
+          enabled if needed
+        </li>
+        <li>
+          Timestamping in PHY devices
+          (<code>CONFIG_NETWORK_PHY_TIMESTAMPING</code>): N
+        </li>
+        <li>
+          Network packet filtering framework (Netfilter)
+          (<code>CONFIG_NETFILTER</code>): Y, this is firewall
+        </li>
+        <ul>
+          <li>
+            Advanced netfilter configuration
+            (<code>CONFIG_NETFILTER_ADVANCED</code>): Y
+          </li>
+          <li>Core Netfilter Configuration</li>
+          <ul>
+            <li>
+              Netfilter ingress support (<code>CONFIG_NETFILTER_INGRESS</code>):
+              Y
+            </li>
+            <li>
+              Netfilter egress support (<code>CONFIG_NETFILTER_EGRESS</code>): Y
+            </li>
+            <li>
+              Netfilter OSF over NFNETLINK interface
+              (<code>CONFIG_NETFILTER_NETLINK_OSF</code>): Y
+            </li>
+            <li>
+              Syslog packet logging (<code>CONFIG_NF_LOG_SYSLOG</code>): Y
+            </li>
+            <li>
+              Netfilter Xtables support (<code>CONFIG_NETFILTER_XTABLES</code>):
+              Y
+            </li>
+            <li>
+              nfmark target and match support
+              (<code>CONFIG_NETFILTER_XT_MARK</code>): Y
+            </li>
+            <li>N to all others</li>
+          </ul>
+          <li>IP set support (<code>CONFIG_IP_SET</code>): N</li>
+          <li>IP virtual server support (<code>CONFIG_IP_VS</code>): N</li>
+          <li>IP: Netfilter Configuration</li>
+          <ul>
+            <li>
+              IPv4 socket lookup support (<code>CONFIG_NF_SOCKET_IPV4</code>): Y
+            </li>
+            <li>IPv4 tproxy support (<code>NF_TPROXY_IPV4</code>): Y</li>
+            <li>
+              Netfilter IPv4 packet duplication to alternate destination
+              (<code>CONFIG_NF_DUP_IPV4</code>): Y
+            </li>
+            <li>ARP packet logging (<code>CONFIG_NF_LOG_ARP</code>): Y</li>
+            <li>IPv4 packet logging (<code>CONFIG_NF_LOG_IPV4</code>): Y</li>
+            <li>IPv4 packet rejection (<code>NF_REJECT_IPV4</code>): Y</li>
+            <li>IP tables support (<code>CONFIG_IP_NF_IPTABLES</code>): N</li>
+            <li>ARP tables support (<code>CONFIG_IP_NF_ARPTABLES</code>): N</li>
+          </ul>
+          <li>IPv6: Netfilter Configuration</li>
+          <ul>
+            <li>
+              IPv6 socket lookup support (<code>CONFIG_NF_SOCKET_IPV6</code>): Y
+            </li>
+            <li>IPv6 tproxy support (<code>NF_TPROXY_IPV6</code>): Y</li>
+            <li>
+              Netfilter IPv6 packet duplication to alternate destination
+              (<code>CONFIG_NF_DUP_IPV6</code>): Y
+            </li>
+            <li>IPv6 packet rejection (<code>NF_REJECT_IPV6</code>): Y</li>
+            <li>IPv6 packet logging (<code>CONFIG_NF_LOG_IPV6</code>): Y</li>
+            <li>IP6 tables support (<code>CONFIG_IP6_NF_IPTABLES</code>): N</li>
+          </ul>
+        </ul>
+        <li>The DCCP Protocol (<code>CONFIG_IP_DCCP</code>): N</li>
+        <li>
+          The SCTP Protocol (<code>CONFIG_IP_SCTP</code>): N, used by Telcos
+        </li>
+        <li>
+          The Reliable Datagram Sockets Protocol (<code>CONFIG_RDS</code>): N
+        </li>
+        <li>The TIPC Protocol (<code>CONFIG_TIPC</code>): N</li>
+        <li>
+          Asynchronous Transfer Mode (ATM) (<code>CONFIG_ATM</code>): N, used by
+          DSL modems
+        </li>
+        <li>
+          Layer Two Tunneling Protocol (L2TP) (<code>CONFIG_L2TP</code>): N,
+          unless using a VPN
+        </li>
+        <li>802.1d Ethernet Bridging (<code>CONFIG_BRIDGE</code>): N, VIRT</li>
+        <li>
+          Distributed Switch Architecture (<code>CONFIG_NET_DSA</code>): N
+        </li>
+        <li>802.1Q/802.1ad VLAN Support (<code>CONFIG_VLAN_8021Q</code>): N</li>
+        <li>
+          ANSI/IEEE 802.2 LLC type 2 support (<code>CONFIG_LLC2</code>): N
+        </li>
+        <li>Appletalk protocol support (<code>CONFIG_ATALK</code>): N, OLD</li>
+        <li>CCITT X.25 Packet Layer (<code>CONFIG_X25</code>): N</li>
+        <li>LAPB Data Link Driver (<code>CONFIG_LAPB</code>): N</li>
+        <li>Phonet protocols family (<code>CONFIG_PHONET</code>): N</li>
+        <li>6LoWPAN Support (<code>CONFIG_6LOWPAN</code>): N</li>
+        <li>
+          IEEE Std 802.15.4 Low-Rate Wireless Personal Area Networks Support
+          (<code>CONFIG_IEEE802154</code>): N
+        </li>
+        <li>QoS and/or fair queueing (<code>CONFIG_NET_SCHED</code>): Y</li>
+        <ul>
+          <li>N to all others</li>
+        </ul>
+        <li>Data Center Bridging support (<code>CONFIG_DCB</code>): N</li>
+        <li>DNS Resolver support (<code>CONFIG_DNS_RESOLVER</code>): N</li>
+        <li>
+          B.A.T.M.A.N Advanced Meshing Protocol
+          (<code>CONFIG_BATMAN_ADV</code>): N
+        </li>
+        <li>Open vSwitch (<code>CONFIG_OPENVSWITCH</code>): N</li>
+        <li>Virtual Socket protocol (<code>CONFIG_VSOCKETS</code>): N, VIRT</li>
+        <li>
+          NETLINK: socket monitoring interface
+          (<code>CONFIG_NETLINK_DIAG</code>): N
+        </li>
+        <li>MultiProtocol Label Switching (<code>CONFIG_MPLS</code>): N</li>
+        <li>
+          Network Service Header (NSH) protocol (<code>CONFIG_NET_NSH</code>): N
+        </li>
+        <li>
+          High-availability Seamless Redundancy (HSR & PRP)
+          (<code>CONFIG_HSR</code>): N
+        </li>
+        <li>
+          Switch (and switch-ish) device support
+          (<code>CONFIG_NET_SWITCHDEV</code>): N
+        </li>
+        <li>
+          L3 Master device support (<code>CONFIG_NET_L3_MASTER_DEV</code>): N
+        </li>
+        <li>Qualcomm IPC Router support (<code>CONFIG_QRTR</code>): N</li>
+        <li>NCSI interface support (<code>CONFIG_NET_NCSI</code>): N</li>
+        <li>
+          Use percpu variables to maintain network device refcount
+          (<code>CONFIG_PCPU_DEV_REFCNT</code>): Y
+        </li>
+        <li>
+          Maximum number of fragments per skb_shared_info
+          (<code>CONFIG_MAX_SKB_FRAGS</code>): 17
+        </li>
+        <li>
+          Network priority cgroup (<code>CONFIG_CGROUP_NET_PRIO</code>): N
+        </li>
+        <li>
+          Network classid cgroup (<code>CONFIG_CGROUP_NET_CLASSID</code>): N
+        </li>
       </ul>
       <li>Amateur Radio support (<code>CONIG_HAMRADIO</code>): N</li>
-      <li>CAN bus subsystem support (<code>CONFIG_CAN</code>): N, used in vehicles</li>
-      <li>Bluetooth subsystem support (<code>CONFIG_BT</code>): Y, if desired</li>
+      <li>
+        CAN bus subsystem support (<code>CONFIG_CAN</code>): N, used in vehicles
+      </li>
+      <li>
+        Bluetooth subsystem support (<code>CONFIG_BT</code>): Y, if desired
+      </li>
       <ul>
-        <li>Bluetooth Classic (BR/EDR) features (<code>CONFIG_BT_BREDR</code>): Y</li>
+        <li>
+          Bluetooth Classic (BR/EDR) features (<code>CONFIG_BT_BREDR</code>): Y
+        </li>
         <li>RFCOMM protocol support (<code>CONFIG_BT_RFCOMM</code>): Y</li>
         <li>RFCOMM TTY support (<code>CONFIG_BT_RFCOMM_TTY</code>): N</li>
         <li>BNEP protocol support (<code>CONFIG_BT_BNEP</code>): N</li>
-        <li>HIDP protocol support (<code>CONFIG_BT_HIDP</code>): Y, for input devices</li>
-        <li>Bluetooth High Speed (HS) features (<code>CONFIG_BT_HS</code>): Y</li>
-        <li>Bluetooth Low Energy (LE) features (<code>CONFIG_BT_LE</code>): Y</li>
-        <li>Bluetooth L2CAP Enhanced Credit Flow Control (<code>CONFIG_BT_LE_L2CAP_ECRED</code>): Y</li>
+        <li>
+          HIDP protocol support (<code>CONFIG_BT_HIDP</code>): Y, for input
+          devices
+        </li>
+        <li>
+          Bluetooth High Speed (HS) features (<code>CONFIG_BT_HS</code>): Y
+        </li>
+        <li>
+          Bluetooth Low Energy (LE) features (<code>CONFIG_BT_LE</code>): Y
+        </li>
+        <li>
+          Bluetooth L2CAP Enhanced Credit Flow Control
+          (<code>CONFIG_BT_LE_L2CAP_ECRED</code>): Y
+        </li>
         <li>Enable LED triggers (<code>CONFIG_BT_LEDS</code>): N</li>
         <li>Enable Microsoft extensions (<code>CONFIG_BT_MSFTEXT</code>): N</li>
-        <li>Enable Android Open Source Project extensions (<code>CONFIG_BT_AOSPEXT</code>): N</li>
-        <li>Bluetooth self testing support (<code>CONFIG_BT_SELFTEST</code>): N, DEV</li>
-        <li>Enable runtime option for debugging statements (<code>CONFIG_BT_FEATURE_DEBUG</code>): N, DEV</li>
+        <li>
+          Enable Android Open Source Project extensions
+          (<code>CONFIG_BT_AOSPEXT</code>): N
+        </li>
+        <li>
+          Bluetooth self testing support (<code>CONFIG_BT_SELFTEST</code>): N,
+          DEV
+        </li>
+        <li>
+          Enable runtime option for debugging statements
+          (<code>CONFIG_BT_FEATURE_DEBUG</code>): N, DEV
+        </li>
         <li>Bluetooth device drivers</li>
         <ul>
-          <li>HCI USB driver (<code>CONFIG_BT_HCIBTUSB</code>): Y, most bt cards are attached via usb</li>
-          <li>Enable USB poll_sync for Bluetooth USB devices by default (<code>CONFIG_BT_HCIBTUSB_POLL_SYNC</code>): Y, STD</li>
+          <li>
+            HCI USB driver (<code>CONFIG_BT_HCIBTUSB</code>): Y, most bt cards
+            are attached via usb
+          </li>
+          <li>
+            Enable USB poll_sync for Bluetooth USB devices by default
+            (<code>CONFIG_BT_HCIBTUSB_POLL_SYNC</code>): Y, STD
+          </li>
           <li>Enable others based on hardware...</li>
         </ul>
       </ul>
@@ -506,32 +1512,270 @@
       <li>MCTP core protocol support (<code>CONFIG_MCTP</code>): N</li>
       <li>Wireless (<code>WIRELESS</code>): Y, if needed</li>
       <ul>
-        <li>cfg80211 - wireless configuration API (<code>CONFIG_CFG80211</code>): Y, STD</li>
-        <li>nl80211 testmode command (<code>CONFIG_NL80211_TESTMODE</code>): N, DEV</li>
-        <li>enable developer warnings (<code>CONFIG_CFG80211_DEVELOPER_WARNINGS</code>): N, DEV</li>
-        <li>cfg80211 certification onus (<code>CONFIG_CFG80211_CERTIFICATION_ONUS</code>): N</li>
-        <li>enable powersave by default (<code>CONFIG_CFG80211_DEFAULT_PS</code>): Y</li>
+        <li>
+          cfg80211 - wireless configuration API (<code>CONFIG_CFG80211</code>):
+          Y, STD
+        </li>
+        <li>
+          nl80211 testmode command (<code>CONFIG_NL80211_TESTMODE</code>): N,
+          DEV
+        </li>
+        <li>
+          enable developer warnings
+          (<code>CONFIG_CFG80211_DEVELOPER_WARNINGS</code>): N, DEV
+        </li>
+        <li>
+          cfg80211 certification onus
+          (<code>CONFIG_CFG80211_CERTIFICATION_ONUS</code>): N
+        </li>
+        <li>
+          enable powersave by default (<code>CONFIG_CFG80211_DEFAULT_PS</code>):
+          Y
+        </li>
         <li>support CRDA (<code>CONFIG_CFG80211_CRDA_SUPPORT</code>): Y</li>
-        <li>cfg80211 wireless extensions compatibility (<code>CONFIG_CFG80211_WEXT</code>): N</li>
-        <li>Generic IEEE 802.11 Networking Stack (mac80211) (<code>CONFIG_MAC80211</code>): Y, STD</li>
+        <li>
+          cfg80211 wireless extensions compatibility
+          (<code>CONFIG_CFG80211_WEXT</code>): N
+        </li>
+        <li>
+          Generic IEEE 802.11 Networking Stack (mac80211)
+          (<code>CONFIG_MAC80211</code>): Y, STD
+        </li>
         <li>Minstrel (<code>CONFIG_MAC80211_RC_MINSTREL</code>): Y</li>
         <li>Default rate control algorithm: Minstrel</li>
-        <li>Enable mac80211 mesh networking support (<code>CONFIG_MAC80211_MESH</code>): N, OLD</li>
+        <li>
+          Enable mac80211 mesh networking support
+          (<code>CONFIG_MAC80211_MESH</code>): N, OLD
+        </li>
         <li>Enable LED triggers (<code>CONFIG_MAC80211_LEDS</code>): N</li>
-        <li>Trace all mac80211 debug messages (<code>CONFIG_MAC80211_MESSAGE_TRACING</code>): N, DEV</li>
-        <li>Select mac80211 debugging features (<code>CONFIG_MAC80211_DEBUG_MENU</code>): N, DEV</li>
+        <li>
+          Trace all mac80211 debug messages
+          (<code>CONFIG_MAC80211_MESSAGE_TRACING</code>): N, DEV
+        </li>
+        <li>
+          Select mac80211 debugging features
+          (<code>CONFIG_MAC80211_DEBUG_MENU</code>): N, DEV
+        </li>
       </ul>
-      <li>RF switch subsystem support (<code>CONFIG_RFKILL</code>): N, may be needed for some network/bt cards</li>
-      <li>Plan 9 Resource Sharing Support (9P2000) (<code>CONFIG_NET_9P</code>): N, VIRT</li>
+      <li>
+        RF switch subsystem support (<code>CONFIG_RFKILL</code>): N, may be
+        needed for some network/bt cards
+      </li>
+      <li>
+        Plan 9 Resource Sharing Support (9P2000) (<code>CONFIG_NET_9P</code>):
+        N, VIRT
+      </li>
       <li>CAIF support (<code>CONFIG_CAIF</code>): N</li>
       <li>Ceph core library (<code>CONFIG_CEPH_LIB</code>): N</li>
       <li>NFC subsystem support (<code>CONFIG_NFC</code>): N, EMB</li>
       <li>Packet-sampling netlink channel (<code>CONFIG_PSAMPLE</code>): N</li>
-      <li>Inter-FE based on IETF ForCES InterFE LFB (<code>CONFIG_NET_IFE</code>): N</li>
+      <li>
+        Inter-FE based on IETF ForCES InterFE LFB (<code>CONFIG_NET_IFE</code>):
+        N
+      </li>
       <li>Network light weight tunnels (<code>CONFIG_LWTUNNEL</code>): N</li>
       <li>Generic failover module (<code>CONFIG_FAILOVER</code>): N, VIRT</li>
-      <li>Netlink interface for ethtool (<code>CONFIG_ETHTOOL_NETLINK</code>): N</li>
+      <li>
+        Netlink interface for ethtool (<code>CONFIG_ETHTOOL_NETLINK</code>): N
+      </li>
     </div>
-    <br>This is a WIP...
+    <div id="file_systems">
+      <h3>File systems</h3>
+      <ul>
+        <li>
+          Validate filesystem parameter description
+          (<code>CONFIG_VALIDATE_FS_PARSER</code>): N
+        </li>
+        <li>
+          Second extended fs support (<code>CONFIG_EXT2_FS</code>): N, covered
+          by ext4
+        </li>
+        <li>
+          The Extended 3 (ext3) filesystem (<code>CONFIG_EXT3_FS</code>): N,
+          covered by ext4
+        </li>
+        <li>
+          The Extended 4 (ext4) filesystem (<code>CONFIG_EXT4_FS</code>): Y,
+          assuming ext4 is used
+        </li>
+        <li>
+          Use ext4 for ext2 file systems
+          (<code>CONFIG_EXT4_USE_FOR_EXT2</code>): Y, STD
+        </li>
+        <li>
+          Ext4 POSIX Access Control Lists
+          (<code>CONFIG_EXT4_FS_POSIX_ACL</code>): N
+        </li>
+        <li>
+          Ext4 Security Labels (<code>CONFIG_EXT4_FS_SECURITY</code>): Y, SEC
+        </li>
+        <li>Ext4 debugging support (<code>CONFIG_EXT4_DEBUG</code>): N, DEV</li>
+        <li>
+          JBD2 (ext4) deubgging support (<code>CONFIG_JBD2_DEBUG</code>): N, DEV
+        </li>
+        <li>Reiserfs support (<code>CONFIG_REISERFS_FS</code>): N, OLD</li>
+        <li>JFS filesystem support (<code>CONFIG_JFS_FS</code>): N</li>
+        <li>
+          XFS filesystem support (<code>CONFIG_XFS_FS</code>): N, for server
+        </li>
+        <li>GFS2 file system support (<code>CONFIG_GFS2_FS</code>): N</li>
+        <li>
+          Btrfs filesystem support (<code>CONFIG_BTRFS_FS</code>): N,
+          unreliable...
+        </li>
+        <li>NILFS2 file system support (<code>CONFIG_NILFS2_FS</code>): N</li>
+        <li>F2FS filesystem support (<code>CONFIG_F2FS_FS</code>): N</li>
+        <li>
+          bcachefs filesystem support (<code>CONFIG_BCACHEFS_FS</code>): N
+        </li>
+        <li>
+          Enable filesystem export operations for block IO
+          (<code>CONFIG_EXPORTFS_BLOCK_OPS</code>): N
+        </li>
+        <li>
+          Enable POSIX file locking API (<code>CONFIG_FILE_LOCKING</code>): Y
+        </li>
+        <li>
+          FS Encryption (Per-file encryption)
+          (<code>CONFIG_FS_ENCRYPTION</code>): N
+        </li>
+        <li>
+          FS Verity (read-only file-based authenticity protection)
+          (<code>CONFIG_FS_VERITY</code>): N
+        </li>
+        <li>Dnotify support (<code>CONFIG_DNOTIFY</code>): Y, STD</li>
+        <li>
+          Inotify support for userspace (<code>CONFIG_INOTIFY_USER</code>): Y,
+          STD
+        </li>
+        <li>
+          Filesystem wide access notification (<code>CONFIG_FANOTIFY</code>): Y,
+          STD
+        </li>
+        <li>Quota Support (<code>CONFIG_QUOTA</code>): N</li>
+        <li>
+          Kernel automounter support (<code>CONFIG_AUTOFS_FS</code>): Y, if
+          using systemd
+        </li>
+        <li>
+          FUSE (Filesystem in Userspace support) (<code>CONFIG_FUSE_FS</code>):
+          Y
+        </li>
+        <li>
+          Character device in Userspace support (<code>CONFIG_CUSE</code>): N
+        </li>
+        <li>Virtio Filesystem (<code>CONFIG_VIRTIO_FS</code>): N, VIRT</li>
+        <li>Overlay filesystem support (<code>CONFIG_OVERLAY_FS</code>): N</li>
+        <li>CD-ROM/DVD Filesystems</li>
+        <ul>
+          <li>
+            ISO 9660 CDROM file system support (<code>CONFIG_ISO9660_FS</code>):
+            N, unless you intend to mount ISO images
+          </li>
+          <li>
+            UDF file system support (<code>CONFIG_UDF_FS</code>): N, unless DVD
+            hardware is present
+          </li>
+        </ul>
+        <li>DOS/FAT/EXFAT/NT Filesystems</li>
+        <ul>
+          <li>MSDOS fs support (<code>CONFIG_MSDOS_FS</code>): N, OLD</li>
+          <li>
+            VFAT (Windows-95) fs support (<code>CONFIG_VFAT_FS</code>): Y,
+            commonly used by USB storage
+          </li>
+          <li>
+            Default codepage for FAT (<code>CONFIG_FAT_DEFAULT_CODEPAGE</code>):
+            437, unless in Russia/Asia
+          </li>
+          <li>
+            Default iocharset for FAT
+            (<code>CONFIG_FAT_DEFAULT_IOCHARSET</code>): ios8859-1
+          </li>
+          <li>
+            Enable FAT UTF-8 option by default
+            (<code>CONFIG_FAT_DEFAULT_UTF8</code>): N
+          </li>
+          <li>exFAT filesystem support (<code>CONFIG_EXFAT_FS</code>): N</li>
+          <li>
+            NTFS file system support (<code>CONFIG_NTFS_FS</code>): N, Windows
+            disks
+          </li>
+          <li>
+            NTFS debugging support (<code>CONFIG_NTFS_DEBUG</code>): N, DEV
+          </li>
+          <li>NTFS writesupport (<code>CONFIG_NTFS_RW</code>): N</li>
+          <li>
+            NTFS Read-Write file system support (<code>CONFIG_NTFS3_FS</code>):
+            N
+          </li>
+        </ul>
+        <li>Pseudo filesystems</li>
+        <ul>
+          <li>
+            /proc file system support (<code>CONFIG_PROC_FS</code>): Y, STD
+          </li>
+          <li>/proc/kcore support (<code>CONFIG_PROC_KCORE</code>): N, SEC</li>
+          <li>
+            Sysctl support (/proc/sys) (<code>CONFIG_PROC_SYSCTL</code>): Y
+          </li>
+          <li>
+            Enable /proc page monitoring
+            (<code>CONFIG_PROC_PAGE_MONITOR</code>): Y
+          </li>
+          <li>sysfs file system support (<code>CONFIG_SYSFS</code>): Y</li>
+          <li>
+            Tmpfs virtual memory file system support (former shm fs)
+            (<code>CONFIG_TMPFS</code>): Y, STD
+          </li>
+          <li>
+            Tmpfs POSIX Access Control Lists
+            (<code>CONFIG_TMPFS_POSIX_ACL</code>): Y
+          </li>
+          <li>
+            Tmpfs extended attributes (<code>CONFIG_TMPFS_XATTR</code>): Y, STD
+          </li>
+          <li>
+            Use 64-bit ino_t by default in tmpfs
+            (<code>CONFIG_TMPFS_INODE64</code>): N
+          </li>
+          <li>Tmpfs quota support (<code>CONFIG_TMPFS_QUOTA</code>): N</li>
+          <li>
+            HugeTLB file system support (<code>CONFIG_HUGETLBFS</code>): N,
+            irrelevant due to THP
+          </li>
+          <li>
+            Userspace-driven configuration filesystem
+            (<code>CONFIG_CONFIGFS_FS</code>): N
+          </li>
+          <li>
+            EFI Variable filesystem (<code>CONFIG_EFIVAR_FS</code>): Y, STD
+          </li>
+        </ul>
+        <li>
+          Miscellaneous filesystems (<code>CONFIG_MISC_FILESYSTEMS</code>): N
+        </li>
+        <li>
+          Network File Systems (<code>CONFIG_NETWORK_FILESYSTEMS</code>): N,
+          unless needed
+        </li>
+        <li>Native language support (<code>CONFIG_NLS</code>): Y</li>
+        <ul>
+          <li>Default NLS Option (<code>CONFIG_NLS_DEFAULT</code>): utf8</li>
+          <li>
+            Codepage 437 (United States, Canada)
+            (<code>CONFIG_NLS_CODEPAGE_437</code>): Y
+          </li>
+          <li>ASCII (United States) (<code>CONFIG_NLS_ASCII</code>): Y</li>
+          <li>NLS UTF-8 (<code>CONFIG_NLS_UTF8</code>): Y</li>
+          <li>Select others as needed</li>
+        </ul>
+        <li>
+          UTF-8 normalization and casefolding support
+          (<code>CONFIG_UNICODE</code>): N
+        </li>
+      </ul>
+    </div>
+    <br />This is a WIP...
   </body>
 </html>

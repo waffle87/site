@@ -8,12 +8,15 @@ app-misc/brightnessctl
 app-portage/gentoolkit
 app-shells/zoxide
 app-shells/zsh
-app-shells/zsh-completions
+app-shells/zsh-autosuggestions
+app-shells/zsh-syntax-highlighting
 app-text/zathura
 app-text/zathura-pdf-mupdf
 dev-debug/gdb
 dev-lang/rust-bin
-dev-python/pip
+dev-python/black
+dev-python/python-lsp-server
+dev-python/uv
 dev-util/tokei
 gui-apps/grim
 gui-apps/gtklock
@@ -31,7 +34,6 @@ media-libs/harfbuzz
 media-libs/libsdl
 media-video/ffmpeg
 net-im/discord
-net-libs/nodejs
 net-misc/chrony
 net-misc/rclone
 net-wireless/wpa_supplicant
@@ -51,3 +53,4 @@ www-client/firefox-bin
 x11-base/xwayland
 x11-drivers/xf86-video-intel
 x11-libs/libnotify
+x11-libs/pixman

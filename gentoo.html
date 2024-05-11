@@ -25,15 +25,16 @@
     <h2>Gentoo Linux on Macbook Air</h2>
     This page covers various features, nuances, notes, etc. of my Gentoo system
     running on a 2012 Macbook Air. This laptop was initially bought as a
-    tinkering project for $150USD. While this is not the most powerful device,
-    it is suitable for all the work I encounter on a daily basis and is used as
-    my primary system. My intentions for this system are reliability and speed
-    most importantly. With this comes a tidy OS with quite few kernel parameters
-    set, fine-tuned USE flags, and a usable system that I'm very familiar with.
-    All my configuration can be found on my
+    tinkering project for 150USD. While this is not the most powerful device, it
+    is suitable for just about anything I encounter on a daily basis and is used
+    as my primary system. My intentions for this system are reliability and
+    speed most importantly. Follows is a tidy OS with minimal kernel parameters
+    set, fine-tuned USE flags, and a system I'm very familiar with. Much of my
+    configuration can be found on my
     <a href="https://github.com/waffle87/dots/tree/xena" target="_blank"
       >Github</a
     >. <br /><br />
+
     <img src="data/gentoo/laptop.jpg" alt="laptop image" />
     <img src="data/gentoo/laptop_open.jpg" alt="laptop open image" />
     <br /><br />
@@ -90,7 +91,7 @@
         target="_blank"
         >replacement</a
       >
-      can be found roughly $50USD. With this, I get about 5 hours on a full
+      can be found roughly 50USD. With this, I get about 5 hours on a full
       charge, mostly thanks to
       <a href="https://github.com/linrunner/TLP" target="_blank">TLP</a> and
       thermald. Now, if only the memory wasn't soldered directly to the
@@ -101,19 +102,19 @@
     </div>
     <div id="kernel">
       <h3>Kernel</h3>
-      After spending many hours narrowing down kernel options enabled, I have a
-      7.8 MB kernel image with ~4000 parameters set. Note, this configuration is
-      very hardware and user specific. I opted for absolutely zero modules since
-      I don't need any out-of-tree hardware support. I also did not configure
-      anything very drastically in either direction, like extreme security,
-      sacraficing usability, etc. I chose to use
+      After spending quite some time narrowing down kernel enabled, I have a
+      7.8MB kernel image with ~4000 parameters set. Note, this configuration is
+      very hardware and user specific. I opted for zero modules since I don't
+      need any out-of-tree hardware support. I also did not configure anything
+      very drastically in either direction, like extreme security, sacraficing
+      usability, etc. I chose to use
       <a
         href="https://packages.gentoo.org/packages/sys-kernel/gentoo-sources"
         target="_blank"
         >gentoo-sources</a
       >
       to provide kernel source as it contains some handy patches and is easy to
-      obtain via emerge. A base 6.7 kernel builds locally (remember, 4 cores) in
+      obtain via emerge. A base 6.8 kernel builds locally (with 4 cores!) in
       approximately 17 minutes, which is not too much of a pain when
       troubleshooting on bare metal. I also chose to omit an initramfs, which
       means CPU microcode can/should be built directly into the kernel. This can
@@ -122,7 +123,7 @@
       <code>/etc/portage/make.conf</code>
       <pre>
 $ iucode_tool -S -l /lib/firmware/intel-ucode/*
-iucode_tool: system has processor(s) with signature 0x000306a9
+        iucode_tool: system has processor(s) with <b>signature 0x000306a9</b>
 microcode bundle 1: /lib/firmware/intel-ucode/06-3a-09
 selected microcodes:
   001/001: sig 0x000306a9, pf_mask 0x12, 2019-02-13, rev 0x0021, size 14336
@@ -138,26 +139,24 @@ CONFIG_FW_LOADER=y
 CONFIG_EXTRA_FIRMWARE="intel-ucode/06-3a-09"
 CONFIG_EXTRA_FIRMWARE_DIR="/lib/firmware"
       </pre>
-      Check dmesg for microcode output to ensure all was successful. My specific
+      Check dmesg for microcode output to ensure all was successful. Specific
       configuation for this machine can be found at
       <a
         href="https://raw.githubusercontent.com/waffle87/dots/xena/.config/kernel.config"
-        >6.7.4 .config</a
-      >
-
-      For some more kernel related stuff, see <a href="kernel.html">here</a>.
+        >6.8.9 .config</a
+      >. For some more kernel related stuff, see <a href="kernel.html">here</a>.
     </div>
     <div id="bootloader">
       <h3>Bootloader</h3>
       Spoiler: there is none. For the duration of my time using Linux, I have
-      used GRUB as my bootloader across various systems. In my experience, it's
-      been ok, it does what it needs to, allows for extensive configuration like
-      theming and requiring a password. However, some time ago it went kaput and
-      despite manually setting the root partition in
+      used GRUB across various systems. In my experience, it's been ok, it does
+      what it needs to, allows for extensive configuration like theming and
+      requiring a password. However, some time ago it went kaput on this machine
+      and despite manually setting the root partition in
       <code>/boot/grub/grub.cfg</code>, it seems the incorrect value was passed
       to the kernel at boot and the partition could not be found. Every time I
-      would reboot I would have to manually set it (which is a handy trick to
-      know nonetheless)
+      would reboot I would have to manually set it from GRUB command line (which
+      is a handy trick to know nonetheless):
       <pre>
 grub> ls
 (hd0) (hd0,gpt0) (hd0,gpt1) (hd0,gpt2)
@@ -167,25 +166,27 @@ grub> root=(hd0,gpt1)
 grub> linux /boot/vmlinuz root=/dev/sda3
 grub> boot
       </pre>
-      Since this isn't a multiboot machine or anything, I can simply omit GRUB
-      and expose the kernel image as an EFI stub. First, the following kernel
+      Since this isn't a multiboot machine, GRUB can simply be omitted and
+      expose the kernel image as an EFI stub. First, the following kernel
       options must be set
       <pre>
 CONFIG_EFI=y
 CONFIG_EFI_STUB=y
 CONFIG_CMDLINE_BOOL=y
-CONFIG_CMDLINE="root=PARTUUID=... ro"
+CONFIG_CMDLINE="root=PARTUUID=&ltuuid&gt ro"
       </pre>
-      The root must be set to the <code>PARTUUID</code> value of the root
+      Where root is set to the <code>PARTUUID</code> value of the root
       partition. Use <code>blkid</code> to obtain this Once kernel has been
       recompiled, copy the image to the EFI partition and create a new boot
-      entry. It is also wise to remove unneeded entries to conserve space
+      entry. It is also wise to remove unneeded entries to conserve limited
+      space. (below command selects the first entry with <code>-b</code> and
+      deletes it with <code>-B</code>)
       <pre>
 # efibootmgr -b 1 -B
 # cp arch/x86/boot/bzImage /boot/efi/gentoo/bzImage-x.y.z.efi
 # efibootmgr -c -d /dev/sda -L "gentoo efi stub" -l "\efi\gentoo\bzImage-x.y.z.efi"
       </pre>
-      Reboot and the bootable system should be shown in Mac's EFI program
+      Reboot and the bootable system should be shown in Mac's EFI program.
     </div>
     <div id="portage">
       <h3>Portage</h3>
@@ -203,12 +204,13 @@ CONFIG_CMDLINE="root=PARTUUID=... ro"
 # emerge -auDN @world
 # emerge --depclean
       </pre>
-      It was pleasant to see 60+ packages removed after the switch. And have
-      much reduced overhead in my system overall.
+      It was pleasant to see 80+ packages removed after the switch. And have
+      much reduced overhead in my system overall. I did have to manually set a
+      few USE flags the were originally set by default profile.
       <h4>Compiler</h4>
-      As Clang/LLVM has become more and more stable and is able to compile all
-      packages installed, I chose to switch the default compiler, linker and
-      other bits over from GCC. This is easy enough in
+      As Clang/LLVM has become more and more stable and is able to compile
+      (almost) all packages installed, I chose to switch the default compiler,
+      linker and other bits over from GCC. This is easy enough in
       <code>/etc/portage/make.conf</code>.
       <pre>
 CC="clang"
@@ -217,11 +219,16 @@ AR="llvm-ar"
 NM="llvm-nm"
 RANLIB="llvm-ranlib"
       </pre>
-      If needed, a GCC fallback environment can be made containing the previous
-      variables, then applied to certain packages which may fail under Clang via
-      adding an entry in <code>/etc/portage/package.env</code>. Some advantagees
-      of using Clang over GCC are slightly faster compilation times and reduced
-      memory usage, and potentially safer binaries overall.
+      For packages that Clang fails to compile, a GCC fallback environment can
+      be made containing the previous variables, then applied to certain
+      packages (e.g.
+      <a
+        href="https://packages.gentoo.org/packages/gui-apps/waybar"
+        target="_blank"
+        >gui-apps/waybar</a
+      >) by adding an entry in <code>/etc/portage/package.env</code>. Some
+      advantages of using Clang over GCC are slightly faster compilation times
+      and reduced memory usage, and potentially safer binaries overall.
       <h4>USE Flags</h4>
       My USE flags and related options are quite minimal. Global flags include
       <pre>
@@ -231,8 +238,10 @@ ACCEPT_LICENSE="*"
 ACCEPT_KEYWORDS="~amd64"
       </pre>
       For reference, some primary features used on this system are Wayland,
-      Pipewire, elogind, and OpenRC. Since no-multilib already has very few
-      things enabled, not many flags needed to be disabled.
+      audio, elogind, and OpenRC. Since no-multilib already has very few things
+      enabled, not many flags needed to be disabled, although I have quite a few
+      package specific USE flags disabled to help reduce compile times and
+      remove dependencies that may only be required for one or two packages.
     </div>
     <div id="applications">
       <h3>Applications</h3>
@@ -279,7 +288,7 @@ fi
           <b>Notifications: </b
           ><a href="https://github.com/emersion/mako" target="_blank">Mako</a
           ><br />
-          Requires <code>x11-libs/libnotify</code> and to be manually launched
+          Requires <code>x11-libs/libnotify</code> and to be manually started
           via Sway configuration.
         </li>
         <li>
@@ -315,25 +324,32 @@ pidfile="/run/keyd.pid"
         </li>
         <li>
           <b>Terminal: </b
-          ><a href="https://github.com/waffle87/st" target="_blank"
-            >st (fork)</a
+          ><a href="https://github.com/waffle87/st" target="_blank">st (fork)</a
+          ><br />
+          While st was originally written as an X program and can be run under
+          Wayland via Xwayland, it would be nice if it were natively supported.
+          I have a
+          <a href="https://github.com/waffle87/st/tree/wl" target="_blank"
+            >branch</a
           >
+          which is fully functional and does not require Xwayland, although I am
+          yet to port my current st patches to it.
         </li>
         <li>
           <b>Shell: </b
-          ><a href="https://github.com/zsh-users/zsh" target="_blank">ZSH</a
+          ><a href="https://sourceforge.net/projects/zsh" target="_blank">ZSH</a
           ><br />
           Some command line tools I used along with ZSH include
           <ul>
             <li>
               <a href="https://github.com/starship/starship" target="_blank"
-                >starship prompt</a
+                >Starship Prompt</a
               >
               which provides some useful UI tools like Git repository status.
             </li>
             <li>
               <a href="https://github.com/ajeetdsouza/zoxide" target="_blank"
-                >zoxide cd replacement</a
+                >Zoxide cd Replacement</a
               >
               which has auto-jump functionality meaning
               <code>cd very/long/long/path</code> can be simplified to
@@ -341,14 +357,14 @@ pidfile="/run/keyd.pid"
             </li>
             <li>
               <a href="https://github.com/lsd-rs/lsd" target="_blank"
-                >lsd ls replacement</a
+                >LSD ls Replacement</a
               >
-              which mostly offers useful UI improvments like file type icons and
-              empty directories, and extensive configuration.
+              which mostly offers useful UI improvements like file type icons
+              and empty directories, and extensive configuration.
             </li>
             <li>
               <a href="https://github.com/sharkdp/bat" target="_blank"
-                >bat cat replacement</a
+                >Bat cat Replacement</a
               >
               also mostly consists of UI features like syntax highlighting and
               line numbers.
@@ -357,7 +373,7 @@ pidfile="/run/keyd.pid"
               <a
                 href="https://github.com/zsh-users/zsh-autosuggestions"
                 target="_blank"
-                >autosuggestions</a
+                >Autosuggestions</a
               >
               which allows past-run long commands to be completed by tapping
               right arrow key.
@@ -366,10 +382,17 @@ pidfile="/run/keyd.pid"
               <a
                 href="https://github.com/zsh-users/zsh-syntax-highlighting"
                 target="_blank"
-                >syntax highlighting</a
+                >Syntax Highlighting</a
               >
               does exactly as the name suggests; colours available commands in
               green, underlines valid paths, etc.
+            </li>
+            <li>
+              <a href="https://github.com/BurntSushi/ripgrep" target="_blank"
+                >Ripgrep grep Replacement</a
+              >
+              is a more intuitive and significantly faster alternative to
+              traditional grep.
             </li>
           </ul>
         </li>
@@ -384,20 +407,21 @@ pidfile="/run/keyd.pid"
         <li>
           <b>Privilege escalation: </b
           ><a href="https://github.com/Duncaen/OpenDoas" target="_blank"
-            >doas sudo alternative</a
-          >
-          is a utility originally written for BSD, but has been ported to Linux
-          under the name OpenDoas. Comparatively, sudo contains roughly 150,000
-          lines of code, while doas only contains about 4,000. For a personal
-          computer like this, doas is more than capable of achieving what I need
-          it to. By default, the "persist" feature is not enabled and must be
-          set via <code>persist</code>
+            >Doas sudo Alternative</a
+          ><br />
+          This is a utility originally written for BSD, but has been ported to
+          Linux under the name OpenDoas. Comparatively, sudo contains roughly
+          150,000 lines of code, while doas only contains about 4,000. For a
+          personal computer like this, doas is more than capable of achieving
+          what I need it to. By default, the "persist" feature is not enabled
+          and must be set via <code>persist</code>
           USE flag.
         </li>
         <li>
           <b>Screenshots: </b
-          ><a href="https://sr.ht/~emersion/grim/" target="_blank">grim</a>
-          which can be used with
+          ><a href="https://sr.ht/~emersion/grim/" target="_blank">grim</a
+          ><br />
+          Which can be used with
           <a href="https://github.com/emersion/slurp" target="_blank">slurp</a>
           to allow to select specific regions. This can then be piped to
           <a href="https://github.com/bugaevc/wl-clipboard" target="_blank"
@@ -416,12 +440,12 @@ bindsym $mod+Shift+p exec grim -g "$(slurp)"
             href="https://github.com/Hummer12007/brightnessctl"
             target="_blank"
             >brightnessctl</a
-          >
-          is used to control both screen brightness and keyboard backlight. This
-          package is now available in the GURU repository. Ensure
+          ><br />
+          Is used to control both screen brightness and keyboard backlight. This
+          package is available in the GURU repository. Ensure
           <code>CONFIG_APPLE_BACKLIGHT</code> and
           <code>CONFIG_SENSORS_APPLESMC</code> are set in the kernel. This
-          functionality can also be mapped to the keyboard using Sway.
+          functionality can also be mapped to the keyboard in Sway.
           <pre>
 bindsym XF86MonBrightnessDown exec brightnessctl -q set 10%-
 bindsym XF86MonBrightnessUp   exec brightnessctl -q set +10%

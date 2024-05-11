@@ -24,7 +24,7 @@
     <h2>Some bits & bobs</h2>
     Here lives some miscellaneous things I reference one or one hundred
     times and figure they should be gathered somewhere.
-    <h3>wpa_supplicant</h3>
+    <h3>WPA Supplicant</h3>
     Frequently forgotten usage of the <code>wpa_cli</code> tool
     <pre>
 > scan
@@ -43,7 +43,7 @@ bssid / freq / sig lvl / flags / ssid
 > save_config
     </pre>
     <h3>GPG key signing with Git</h3>
-    Sometime ago I spent hours on a new system on this. When signing a
+    Sometime ago I spent hours on this. When signing a
     commit, this error would appear
     <pre>
 gpg: skipped "Foo Bar <Foo_Bar@baz>": No secret key[GNUPG:] INV_SGNR 9 Foo Bar <Foo_Bar@baz>[GNUPG:] FAILURE sign 17
@@ -58,22 +58,22 @@ $ gpg --list-secret-keys --keyid-format=long
 -----------------------------
 sec   rsa4096/FC53C827D09C7050 2019-03-24 [SC]
       ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890
-uid                 [ultimate] Foo Bar <Foo_Bar@baz>
+uid                 [ultimate] <b>Foo Bar &ltFoo_Bar@baz&gt</b>
 ssb   rsa4096/2EE67124D597BB00 2019-03-24 [E]
 
 $ head -n 4 .gitconfig
 [user]
-	name = Foo Bar
-	email = Foo_Bar@baz
+        <b>name = Foo Bar
+	email = Foo_Bar@baz</b>
 	signingkey = FC53C827D09C7050
     </pre>
     <h3>SSH agent for password-less login</h3>
-    I have four machines I frequently log in to and from via SSH. Typing
+    I have numerous machines I frequently log in to and from via SSH. Typing
     in a password every time is tiresome and a password-less key is not
     an option. A solution is an SSH agent running in the background, which
     prompts for a password once at log in, and stores it for the duration
     of the session (until reboot). The following can live in your shell's
-    startup file (eg. <code>~/.zshrc</code>)
+    startup file (e.g. <code>~/.zshrc</code>)
     <pre>
 if [ ! -S ~/.ssh/ssh_auth_sock ]; then
   eval "$(ssh-agent)"
@@ -84,9 +84,9 @@ ssh-add -l > /dev/null || ssh-add
     </pre>
     Then, just copy the needed key between machines with <code>ssh-copy-id -i ~/.ssh/id_xxx.pub name@host</code>
     <h3>Configuration file manager</h3>
-    Across the aforementioned four machines, I also have various configuration
-    files (dotfiles) that I like to keep track of for the sake of backing
-    them up incase of data loss. I use <a href="https://github.com/TheLocehiliosan/yadm" target="_blank">yadm</a>
+    Across the aforementioned machines, I also have various configuration
+    files that I like to keep track of for the sake of backing
+    them up in case of data loss. I use <a href="https://github.com/TheLocehiliosan/yadm" target="_blank">yadm</a>
     to achieve this. Mostly for it's ease of use (yadm is quite simply
     an alias for git) and minimal system footprint, which consists mostly
     of a git directory living out of sight in <code>~/.local/share/yadm/repo.git</code>.
@@ -112,12 +112,12 @@ ssh-add -l > /dev/null || ssh-add
     tool is currently broken with the latest FIDO2 library, meaning
     it must be installed explicitly at 0.9.3.
     <pre>
-$ pip3 install solo1
-$ pip3 install fido2==0.9.3
+$ pip install solo1
+$ pip install fido2==0.9.3
     </pre>
     After building, I didn't use it much, as many services don't support
     security keys quite yet, or required a paid subscription (I'm looking
-    at you, Bitwarden). Come a few months ago, I found <a href="https://github.com/Yubico/pam-u2f" target="_blank">Yubico's PAM for U2F</a>.
+    at you, Bitwarden). Come a few months ago, I found <a href="https://github.com/Yubico/pam-u2f" target="_blank">Yubico's PAM for U2F</a>. This is a PAM module to provide authentication from a U2F device.
     To use this, first ensure the <code>CONFIG_HIDRAW</code> and
     <code>CONFIG_USB_HIDDEV</code> options are set in your kernel.
     Next, obtain the module via package manager or compiling from source

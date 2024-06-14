@@ -1,1 +1,1 @@
-source files for [lzycat.xyz](https://lzycat.xyz)
+source files for [pngu.org](https://pngu.org)

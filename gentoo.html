@@ -3,6 +3,10 @@
     <meta charset="UTF-8" />
     <title>Gentoo</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="apple-touch-icon" sizes="180x180" href="data/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="data/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="data/favicon/favicon-16x16.png">
+    <link rel="manifest" href="data/favicon/site.webmanifest">
     <style>
       code {
         color: #505050;
@@ -30,14 +34,15 @@
     as my primary system. My intentions for this system are reliability and
     speed most importantly. Follows is a tidy OS with minimal kernel parameters
     set, fine-tuned USE flags, and a system I'm very familiar with. Much of my
-    configuration can be found on my
-    <a href="https://github.com/waffle87/dots/tree/xena" target="_blank"
-      >Github</a
+    configuration can be found
+    <a href="https://git.pngu.org/dots" target="_blank"
+      >here</a
     >. <br /><br />
 
     <img src="data/gentoo/laptop.jpg" alt="laptop image" />
     <img src="data/gentoo/laptop_open.jpg" alt="laptop open image" />
     <br /><br />
+    <h3>Overview</h3>
     <a href="#hardware_features">hardware features</a><br />
     <a href="#kernel">kernel</a><br />
     <a href="#bootloader">bootloader</a><br />
@@ -142,7 +147,7 @@ CONFIG_EXTRA_FIRMWARE_DIR="/lib/firmware"
       Check dmesg for microcode output to ensure all was successful. Specific
       configuation for this machine can be found at
       <a
-        href="https://raw.githubusercontent.com/waffle87/dots/xena/.config/kernel.config"
+        href="https://git.pngu.org/dots/tree/.config/kernel.config" target="_blank"
         >6.8.9 .config</a
       >. For some more kernel related stuff, see <a href="kernel.html">here</a>.
     </div>
@@ -307,7 +312,7 @@ fi
           things, namely key combos. I stumbled across Keyd which to my surprise
           did in fact support combos. The
           <a
-            href="https://raw.githubusercontent.com/waffle87/dots/xena/.config/keyd.conf"
+            href="https://git.pngu.org/dots/tree/.config/keyd.conf"
             target="_blank"
             >configuration syntax</a
           >
@@ -324,12 +329,12 @@ pidfile="/run/keyd.pid"
         </li>
         <li>
           <b>Terminal: </b
-          ><a href="https://github.com/waffle87/st" target="_blank">st (fork)</a
+          ><a href="https://git.pngu.org/st" target="_blank">st (fork)</a
           ><br />
           While st was originally written as an X program and can be run under
           Wayland via Xwayland, it would be nice if it were natively supported.
           I have a
-          <a href="https://github.com/waffle87/st/tree/wl" target="_blank"
+          <a href="https://git.pngu.org/st/tree/?h=wl" target="_blank"
             >branch</a
           >
           which is fully functional and does not require Xwayland, although I am

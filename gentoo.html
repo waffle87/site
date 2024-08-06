@@ -25,15 +25,15 @@
     </style>
   </head>
   <body>
-    <a style="text-decoration: none" href="topics.html"><--</a>
+    <a style="text-decoration: none" href="index.html"><--</a>
     <h2>Gentoo Linux on Macbook Air</h2>
     This page covers various features, nuances, notes, etc. of my Gentoo system
     running on a 2012 Macbook Air. This laptop was initially bought as a
     tinkering project for 150USD. While this is not the most powerful device, it
     is suitable for just about anything I encounter on a daily basis and is used
     as my primary system. My intentions for this system are reliability and
-    speed most importantly. Follows is a tidy OS with minimal kernel parameters
-    set, fine-tuned USE flags, and a system I'm very familiar with. Much of my
+    speed most importantly. Follows is a tidy system with minimal kernel parameters
+    set, fine-tuned USE flags, and a system I'm rather familiar with. Much of my
     configuration can be found
     <a href="https://git.pngu.org/dots" target="_blank"
       >here</a
@@ -119,7 +119,7 @@
         >gentoo-sources</a
       >
       to provide kernel source as it contains some handy patches and is easy to
-      obtain via emerge. A base 6.8 kernel builds locally (with 4 cores!) in
+      obtain via emerge. A base 6.10 kernel builds locally (with 4 cores!) in
       approximately 17 minutes, which is not too much of a pain when
       troubleshooting on bare metal. I also chose to omit an initramfs, which
       means CPU microcode can/should be built directly into the kernel. This can
@@ -148,7 +148,7 @@ CONFIG_EXTRA_FIRMWARE_DIR="/lib/firmware"
       configuation for this machine can be found at
       <a
         href="https://git.pngu.org/dots/tree/.config/kernel.config" target="_blank"
-        >6.8.9 .config</a
+        >6.10.0 .config</a
       >. For some more kernel related stuff, see <a href="kernel.html">here</a>.
     </div>
     <div id="bootloader">
@@ -309,16 +309,14 @@ fi
           For many months, I used
           <a href="https://github.com/kmonad/kmonad" target="_blank">KMonad</a>,
           which was suitable for most of what I needed, but lacked a couple
-          things, namely key combos. I stumbled across Keyd which to my surprise
-          did in fact support combos. The
+          things, namely key combos. The
           <a
             href="https://git.pngu.org/dots/tree/.config/keyd.conf"
             target="_blank"
             >configuration syntax</a
           >
           is also incredibly simple. After creating an OpenRC service script, it
-          was ready for use. Putting this here as I'm sure I'll need to
-          reference it sometime in the future.
+          was ready for use.
           <pre>
 #!/sbin/openrc-run
 command=/usr/bin/keyd

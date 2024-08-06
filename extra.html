@@ -24,7 +24,7 @@
     </style>
   </head>
   <body>
-    <a style="text-decoration: none;" href="topics.html"><--</a>
+    <a style="text-decoration: none;" href="index.html"><--</a>
     <h2>Some bits & bobs</h2>
     Here lives some miscellaneous things I reference one or one hundred
     times and figure they should be gathered somewhere.
@@ -50,7 +50,7 @@ bssid / freq / sig lvl / flags / ssid
     Sometime ago I spent hours on this. When signing a
     commit, this error would appear
     <pre>
-gpg: skipped "Foo Bar <Foo_Bar@baz>": No secret key[GNUPG:] INV_SGNR 9 Foo Bar <Foo_Bar@baz>[GNUPG:] FAILURE sign 17
+gpg: skipped "Foo Bar &ltFoo_Bar@baz&gt": No secret key[GNUPG:] INV_SGNR 9 Foo Bar &ltFoo_Bar@baz&gt[GNUPG:] FAILURE sign 17
 gpg: signing failed: No secret key
     </pre>
     After much searching I came up empty handed. Finally, one thing
@@ -104,76 +104,6 @@ ssh-add -l > /dev/null || ssh-add
 # sysyadm init -w /
 # sysyadm add foo.conf
 # sysyadm commit -m "foo"
-    </pre>
-    <h3>Hardware security key for authentication on Linux</h3>
-    Typing in a rather long password each time I log into my computer
-    or need to complete a privileged task can be bothersome. A couple
-    years ago I came across <a href="https://github.com/solokeys" target="_blank">solokeys</a>,
-    which are fully open source hardware and firmware security keys. I
-    chose to build the <a href="https://github.com/solokeys/solo-hw" target="_blank">Solo 1</a>
-    (or five because that's the MOQ from most PCB manufacturers). Note,
-    at the time of writing this, the <a href="https://github.com/solokeys/solo1-cli" target="_blank">solo1-cli</a>
-    tool is currently broken with the latest FIDO2 library, meaning
-    it must be installed explicitly at 0.9.3.
-    <pre>
-$ pip install solo1
-$ pip install fido2==0.9.3
-    </pre>
-    After building, I didn't use it much, as many services don't support
-    security keys quite yet, or required a paid subscription (I'm looking
-    at you, Bitwarden). Come a few months ago, I found <a href="https://github.com/Yubico/pam-u2f" target="_blank">Yubico's PAM for U2F</a>. This is a PAM module to provide authentication from a U2F device.
-    To use this, first ensure the <code>CONFIG_HIDRAW</code> and
-    <code>CONFIG_USB_HIDDEV</code> options are set in your kernel.
-    Next, obtain the module via package manager or compiling from source
-    and generate the authorisation mapping with your key inserted. The
-    created directory must be named <code>Yubico</code>, even if not
-    using a Yubico key. It can be overridden in <a href="https://github.com/Yubico/pam-u2f/blob/main/util.h#L14" target="_blank">util.h</a>
-    if you so choose.
-    <pre>
-$ mkdir ~/.config/Yubico
-$ pamu2fcfg > ~/.config/Yubico/u2f_keys
-Enter PIN for /dev/hidraw2:
-    </pre>
-    Assuming all has been successful, you can configure PAM services
-    to use the device. The following configures doas to utilise the
-    U2F module in the <code>/etc/pam.d/doas</code> file. The same line
-    can be added in other files where needed (eg. display manager,
-    <code>system-local-login</code>, etc.)
-    <pre>
-auth sufficient pam_u2f.so cue pinverification=0
-auth include system-auth
-...
-    </pre>
-    Above, <b>sufficient</b> indicates that authentication from the device
-    alone is enough to fully authenticate. Use <b>required</b> instead
-    if you want both password and device authentication to be required.
-    <b>cue</b> simply displays a prompt to press the button on the device
-    when needed to authenticate. <b>pinverification=0</b> disables the need
-    to entre the passphrase associated with your security key. Note, this
-    means your system can be accessed only with your key, and no password entry
-    of any type. Set the parameter to 1 if you'd like otherwise. Another
-    thing of interest was locking/unlocking my system automatically when
-    the key is removed/inserted, respectively. This can be achieved via
-    a custom udev rule that executes a script when a device matching
-    our key's VID/PID is plugged in. This script will use <a href="https://pamtester.sourceforge.net" target="_blank">pamtester</a>
-    to test for authentication success.
-    <pre>
-#!/bin/bash
-if [ "$1" == "lock" ]; then
-    # lock system
-else
-    if [ echo "" | pamtester login <user> authenticate ]; then
-        # kill lock program
-    fi
-fi
-exit 0
-    </pre>
-    Now, a custom udev rule that lives in <code>/etc/udev/rules.d/70-solokey.rules</code>
-    and looks for a matching VID/PID and executes this script when
-    found with the appropriate argument.
-    <pre>
-ACTION::"remove", ENV{DEVTYPE}::"usb_device", ENV{PRODUCT}::"0483/a2Ca", RUN+:"/usr/local/sbin/keyauth.sh lock"
-ACTION::"add", ENV{DEVTYPE}::"usb_device", ENV{ID_BUS}::"usb", ENV{PRODUCT}::"0483/a2Ca", RUN+:"/usr/local/sbin/keyauth.sh unlock"
     </pre>
   </body>
 </html>

@@ -58,7 +58,7 @@
     <a href="#hardware_features">hardware features</a><br />
     <a href="#kernel">kernel</a><br />
     <a href="#bootloader">bootloader</a><br />
-    <a href="#portage">portage</a><br />
+    <a href="#system_bits">system bits</a><br />
     <a href="#applications">applications</a><br />
     <a href="#miscellaneous">miscellaneous</a><br />
     <a href="#screenshots">screenshots</a>
@@ -207,18 +207,18 @@ CONFIG_CMDLINE="root=PARTUUID=&ltuuid&gt ro"
       </pre>
       Reboot and the bootable system should be shown in Mac's EFI program.
     </div>
-    <div id="portage">
+    <div id="system_bits">
       <h3>Other System Bits</h3>
       <h4>C Library</h4>
       I opted to use <a href="https://musl.libc.org" target="_blank">musl</a> on
       this system, over the traditionally used glibc. While there are
       never-ending debates over which library is better, using musl has some
-      clear benefits on this machine. Namely, meaning shorter compile times --
-      musl compiles in roughly 2 minutes, versus glibc's 2 hours. Omitting glibc
-      also removes the dependency for GCC, another hefty package. As for the
-      reduced "compatibility" when using musl, in terms of non-POSIX compliant
-      code, Flatpak is an adequate solution. I currently use Flatpak packages
-      for proprietary applications whose binaries are linked against glibc, and
+      clear benefits on this machine. Namely, shorter compile times -- musl
+      compiles in roughly 2 minutes, versus glibc's 2 hours. Omitting glibc also
+      removes the dependency for GCC, another hefty package. As for the reduced
+      "compatibility" when using musl, in terms of non-POSIX compliant code,
+      Flatpak is an adequate solution. I currently use Flatpak packages for
+      proprietary applications whose binaries are linked against glibc, and
       Firefox, as NodeJS has a strict runtime dependency of GCC.
       <h4>Compiler</h4>
       As you may have guessed, this system's default compiler infrastructure is

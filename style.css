@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+
 body {
   max-width: 65%;
   margin: auto;
@@ -5,9 +7,22 @@ body {
   padding: 15px 0px;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-  width: auto;
-  margin: 8px 0px;
+.email {
+  font-size: 30%;
+  font-weight: bold;
+  white-space: pre;
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.code {
+  font-size: smaller;
+  font-family: "JetBrains Mono", monospace;
+  white-space: pre;
+  width: inherit;
+  overflow-x: auto;
+  overflow-y: hidden;
+  line-height: 1;
+  display: block;
 }

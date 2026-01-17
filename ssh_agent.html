@@ -20,16 +20,17 @@
       file (e.g.
       <code>~/.zshrc</code>).
     </p>
-    <!-- prettier-ignore -->
-    <div class="code-block language-shell">
-      if [ ! -S $HOME/.ssh/ssh_auth_sock ]; then
-        eval "$(ssh-agent)"
-        ln -sf "$SSH_AUTH_SOCK" $HOME/.ssh/ssh_auth_sock
-      fi
+    <pre>
+      <code class="language-shell">
+if [ ! -S $HOME/.ssh/ssh_auth_sock ]; then
+  eval "$(ssh-agent)"
+  ln -sf "$SSH_AUTH_SOCK" $HOME/.ssh/ssh_auth_sock
+fi
 
-      export SSH_AUTH_SOCK=$HOME/.ssh/ssh_auth_sock
-      ssh-add -l > /dev/null || ssh-add
-    </div>
+export SSH_AUTH_SOCK=$HOME/.ssh/ssh_auth_sock
+ssh-add -l > /dev/null || ssh-add
+      </code>
+    </pre>
     <p>
       Then, just copy the needed key between machines with
       <code>ssh-copy-id -i ~/.ssh/id_xxx.pub name@host</code>.
@@ -38,13 +39,14 @@
       MacOS however, has its own provision for this. The following can simply be
       added to your <code>~/.ssh/config</code> file:
     </p>
-    <!-- prettier-ignore -->
-    <div class="code-block">
-      Host *
-        UseKeychain yes
-        AddKeysToAgent yes
-        IdentityFile ~/.ssh/id_ed25519
-    </div>
+    <pre>
+      <code>
+Host *
+  UseKeychain yes
+  AddKeysToAgent yes
+  IdentityFile ~/.ssh/id_ed25519
+      </code>
+    </pre>
     <script src="frame.js"></script>
   </body>
 </html>

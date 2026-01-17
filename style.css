@@ -1,20 +1,71 @@
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
-
-body {
-  max-width: 65%;
-  margin: auto;
-  line-height: 1;
-  padding: 15px 0px;
-  font-size: 12pt;
+@font-face {
+  font-family: "LiberationMono";
+  src: url("fonts/LiberationMono-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
 }
 
-.header {
-  line-height: 1.5;
+@font-face {
+  font-family: "LiberationMono";
+  src: url("fonts/LiberationMono-BoldItalic.ttf") format("truetype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "LiberationMono";
+  src: url("fonts/LiberationMono-Italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "LiberationMono";
+  src: url("fonts/LiberationMono-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "LiberationSerif";
+  src: url("fonts/LiberationSerif-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "LiberationSerif";
+  src: url("fonts/LiberationSerif-BoldItalic.ttf") format("truetype");
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "LiberationSerif";
+  src: url("fonts/LiberationSerif-Italic.ttf") format("truetype");
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: "LiberationSerif";
+  src: url("fonts/LiberationSerif-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: LiberationSerif, serif;
+  font-size: 12pt;
+  line-height: 1.2;
+  max-width: 65%;
+  margin: auto;
+  padding: 15px 0px;
 }
 
 .email {
+  font-family: LiberationMono, monospace;
   font-size: 25%;
-  font-family: monospace;
   white-space: pre;
   line-height: 1;
   display: inline-block;
@@ -22,22 +73,21 @@ body {
 }
 
 code {
-  font-family: "JetBrains Mono", monospace;
+  font-family: LiberationMono, monospace;
   font-size: smaller;
-  border: 0.5px solid grey;
-  border-radius: 3px;
-  color: darkgrey;
 }
 
-.code-block {
-  font-family: "JetBrains Mono", monospace;
-  font-size: smaller;
-  white-space: pre;
-  width: inherit;
+code {
+  background-color: #eeeeee;
+  color: darkgrey;
+  border-radius: 3px;
+  padding: 2px 4px;
+}
+
+pre {
+  white-space: pre-wrap;
   overflow-x: auto;
   overflow-y: hidden;
-  line-height: 1;
   display: block;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  font-size: smaller;
 }

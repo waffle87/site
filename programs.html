@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Programs &amp; Utilities</title>
+    <script src="header.js"></script>
+  </head>
+  <body>
+    <a style="text-decoration: none" href="content.html">&lt;--</a>
+    <h2>Programs &amp; Utilities</h2>
+    <p><i>2026-01-17</i></p>
+    <hr />
+    This page contains a list of various packages, programs, and utilities that
+    I use across most of my systems, along with some relevant configuration and
+    nuances.
+    <h3>Shell</h3>
+    <ul>
+      <li>
+        <a href="https://github.com/sharkdp/bat" target="_blank">bat</a>
+        <p>
+          A fancy <code>cat</code> alternative with line numbers and syntax
+          highlighting. The <code>--all</code> flag is especially helpful for
+          showing spaces, tabs, and line endings in files.
+        </p>
+        <pre>
+          <code class="language-shell">
+$ cat .zshrc
+─────┬──────────────────────────────────────────
+     │ File: .zshrc
+─────┼──────────────────────────────────────────
+   1 │ #!/bin/zsh
+   2 │
+   3 │ if [ "$(tty)" = "/dev/tty1" ]; then
+   4 │   exec dbus-run-session sway
+   5 │ fi
+          </code>
+        </pre>
+        <p>
+          The only configuration really needed is setting the theme and perhaps
+          more preferentially, an alias that also disables paging, like normal
+          <code>cat</code> output:
+        </p>
+        <pre>
+          <code>
+export BAT_THEME="base16"
+alias cat="bat --paging=never"
+          </code>
+        </pre>
+      </li>
+      <li>
+        <a href="https://direnv.net" target="_blank">direnv</a>
+        <p>
+          Allows for a shell script to be run upon entering a directory. This is
+          particularly useful for automatically activating Python virtual
+          environments.
+        </p>
+      </li>
+      <li><a href="https://github.com/junegunn/fzf" target="_blank">fzf</a></li>
+      <li><a href="https://github.com/lsd-rs/lsd" target="_blank">lsd</a></li>
+      <li><a href="https://neovim.io" target="_blank">neovim</a></li>
+      <ul>
+        <li>npm required for some plugins</li>
+      </ul>
+      <li>
+        <a href="https://github.com/BurntSushi/ripgrep" target="_blank"
+          >ripgrep</a
+        >
+      </li>
+      <li><a href="https://starship.rs" target="_blank">starship</a></li>
+      <li>
+        <a href="https://github.com/XAMPPRocky/tokei" target="_blank">tokei</a>
+      </li>
+      <li>
+        <a href="https://github.com/ajeetdsouza/zoxide" target="_blank"
+          >zoxide</a
+        >
+      </li>
+      <li>zsh</li>
+      <ul>
+        <li>
+          <a
+            href="https://github.com/zsh-users/zsh-autosuggestions"
+            target="_blank"
+            >zsh-autosuggestions</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://github.com/zsh-users/zsh-syntax-highlighting"
+            target="_blank"
+            >zsh-syntax-highlighting</a
+          >
+        </li>
+      </ul>
+    </ul>
+    <h3>Graphical</h3>
+    <ul>
+      <li>
+        <a href="https://codeberg.org/dnkl/fuzzel" target="_blank">fuzzel</a>
+      </li>
+      <li>
+        <a href="https://gitlab.freedesktop.org/emersion/grim" target="_blank"
+          >grim</a
+        >
+      </li>
+      <ul>
+        <li>
+          <a href="https://github.com/emersion/slurp" target="_blank">slurp</a>
+        </li>
+      </ul>
+      <li>
+        <a href="https://github.com/jovanlanik/gtklock" target="_blank"
+          >gtklock</a
+        >
+      </li>
+      <li><a href="https://sr.ht/~exec64/imv" target="_blank">imv</a></li>
+      <li><a href="https://mako-project.org" target="_blank">mako</a></li>
+      <li>
+        <a href="https://fonts.google.com/noto" target="_blank">noto fonts</a>
+        (+ cjk &amp; emoji)
+      </li>
+      <li><a href="https://swaywm.org" target="_blank">sway</a></li>
+      <li>
+        <a href="https://github.com/swaywm/swaybg" target="_blank">swaybg</a>
+      </li>
+      <li>
+        <a href="https://github.com/Alexays/Waybar" target="_blank">waybar</a>
+      </li>
+      <li>
+        <a href="https://github.com/wez/wezterm" target="_blank">wezterm</a>
+      </li>
+      <li>
+        <a href="https://github.com/bugaevc/wl-clipboard" target="_blank"
+          >wl-clipboard</a
+        >
+      </li>
+      <li>
+        <a href="https://xorg.freedesktop.org" target="_blank">xorg-xwayland</a>
+      </li>
+      <li>
+        <a href="https://pwmt.org/projects/zathura" target="_blank">zathura</a>
+      </li>
+    </ul>
+    <h3>System</h3>
+    <ul>
+      <li><a href="https://chrony-project.org" target="_blank">chrony</a></li>
+      <li>
+        <a href="https://github.com/dracut-ng/dracut-ng" target="_blank"
+          >dracut</a
+        >
+      </li>
+      <li>
+        <a href="https://github.com/rhboot/efibootmgr" target="_blank"
+          >efibootmgr</a
+        >
+      </li>
+      <li>
+        <a
+          href="https://git.kernel.org/cgit/network/wireless/iwd.git"
+          target="_blank"
+          >iwd</a
+        >
+      </li>
+      <ul>
+        <li>
+          <a href="https://roy.marples.name/projects/openresolv" target="_blank"
+            >openresolv</a
+          >
+        </li>
+      </ul>
+      <li>
+        <a href="https://github.com/Duncaen/OpenDoas" target="_blank">doas</a>
+      </li>
+      <li>
+        <a href="https://github.com/OpenRC/openrc" target="_blank">openrc</a>
+      </li>
+      <li>openssh</li>
+      <li>pipewire</li>
+    </ul>
+    <h3>Development</h3>
+    <ul>
+      <li>
+        <a href="https://github.com/rizsotto/Bear" target="_blank">bear</a>
+      </li>
+      <li><a href="https://llvm.org" target="_blank">llvm</a></li>
+      <li>git</li>
+      <li><a href="https://lldb.llvm.org" target="_blank">lldb</a></li>
+      <li>
+        <a href="https://github.com/pkgconf/pkgconf" target="_blank">pkgconf</a>
+      </li>
+      <li><a href="https://github.com/astral-sh/uv" target="_blank">uv</a></li>
+      <li>
+        <a href="https://www.veripool.org/verilator" target="_blank"
+          >verilator</a
+        >
+      </li>
+    </ul>
+    <h3>Miscellaneous</h3>
+    <ul>
+      <li>kicad</li>
+      <ul>
+        <li>
+          <a
+            href="https://waterlan.home.xs4all.nl/dos2unix.html"
+            target="_blank"
+            >dos2unix</a
+          >
+        </li>
+        <li>kicad library</li>
+        <li>kicad libary 3d</li>
+      </ul>
+      <li>
+        <a href="https://www.imagemagick.org" target="_blank">imagemagick</a>
+      </li>
+      <li><a href="https://www.weechat.org" target="_blank">weechat</a></li>
+      <li>
+        <a href="https://github.com/yadm-dev/yadm" target="_blank">yadm</a>
+      </li>
+    </ul>
+    <script src="frame.js"></script>
+  </body>
+</html>

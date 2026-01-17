@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Linux Hardware Authenticator</title>
+    <script src="header.js"></script>
+  </head>
+  <body>
+    <a style="text-decoration: none" href="content.html">&lt;--</a>
+    <h2>Hardware security key for authentication on Linux</h2>
+    <p><i>2024-03-01</i></p>
+    <hr />
+    <p>
+      Typing in a rather long password each time I log into my computer or need
+      to complete a privileged task can be bothersome. Sometime ago I came
+      across
+      <a href="https://github.com/solokeys" target="_blank">Solokeys</a>, which
+      are open source hardware and firmware security keys. I chose to build the
+      <a href="https://github.com/solokeys/solo-hw" target="_blank">Solo 1</a>
+      (or five because that's the MOQ from most PCB manufacturers). Note, at the
+      time of writing this, the
+      <a href="https://github.com/solokeys/solo1-cli" target="_blank"
+        >solo1-cli</a
+      >
+      tool is somewhat broken with the latest FIDO2 library, meaning it must be
+      installed explicitly at 0.9.3.
+    </p>
+    <!-- prettier-ignore -->
+    <div class="code-block language-shell">
+      $ pip install solo1
+      $ pip install fido2==0.9.3
+    </div>
+    <p>
+      After building, I didn't use it much, as many services don't support
+      security keys quite yet, or required a paid subscription (I.e. Bitwarden).
+      I found
+      <a href="https://github.com/Yubico/pam-u2f" target="_blank"
+        >Yubico's PAM for U2F</a
+      >, which is a PAM module to provide authentication from a U2F device.
+    </p>
+    <p>
+      To use this, first ensure the kernel parameters
+      <code>CONFIG_HIDRAW</code> and <code>CONFIG_USB_HIDDEV</code> are enabled.
+      Next, obtain the module via package manager or compiling from source and
+      generate the authorisation mapping with your key inserted. The created
+      directory must be named <code>Yubico</code>, even if not using a Yubico
+      key. It can be overridden in
+      <a
+        href="https://github.com/Yubico/pam-u2f/blob/ffdef7df696ee6054cccd8e2302731b036d9cf64/util.h#L16"
+        target="_blank"
+        >util.h</a
+      >
+      if you choose however.
+    </p>
+    <!-- prettier-ignore -->
+    <div class="code-block language-shell">
+      $ mkdir ~/.config/Yubico
+      $ pamu2fcfg > ~/.config/Yubico/u2f_keys
+      Enter PIN for /dev/hidraw2:
+    </div>
+    <p>
+      Assuming all has been successful, you can configure PAM services to use
+      the device. The following configures
+      <a href="https://github.com/Duncaen/OpenDoas" target="_blank">Doas</a> to
+      utilise the U2F module in the <code>/etc/pam.d/doas</code> file. The same
+      line can be added in other files where needed (eg. display manager,
+      <code>system-local-login</code>, etc.)
+    </p>
+    <!-- prettier-ignore -->
+    <div class="code-block language-shell">
+      auth sufficient pam_u2f.so cue pinverification=0
+      auth include system-auth
+      ...
+    </div>
+    <p>
+      Above, <strong>sufficient</strong> indicates that authentication from the
+      device alone is enough to fully authenticate. Use
+      <strong>required</strong> instead if you want both password and device
+      authentication to be required. <strong>cue</strong> simply displays a
+      prompt to press the button on the device when needed to authenticate.
+      <strong>pinverification=0</strong> disables the need to entre the
+      passphrase associated with your security key. Note, this means your system
+      can be accessed only with your key, and no password entry of any type. Set
+      the parameter to <strong>1</strong> if you'd like otherwise.
+    </p>
+    <p>
+      Another thing of interest was locking/unlocking my system automatically
+      when the key is removed/inserted, respectively. This can be achieved via a
+      custom Udev rule that executes a script when a device matching the key's
+      VID/PID is plugged in. This script will use
+      <a href="https://pamtester.sourceforge.net" target="_blank">pamtester</a>
+      to test for authentication success.
+    </p>
+    <!-- prettier-ignore -->
+    <div class="code-block language-shell">
+      #!/bin/bash
+
+      if [ "$1" == "lock" ]; then
+          # lock system (e.g. gtklock -d)
+      else
+          if [ echo "" | pamtester login &gt;user&lt; authenticate ]; then
+              # kill lock program
+          fi
+      fi
+      exit 0
+    </div>
+    <p>
+      Now, a custom udev rule that lives in
+      <code>/etc/udev/rules.d/70-solokey.rules</code>
+      and looks for a matching VID/PID and executes this script when found with
+      the appropriate argument.
+    </p>
+    <!-- prettier-ignore -->
+    <div class="code-block language-shell">
+      ACTION::"remove", ENV{DEVTYPE}::"usb_device", ENV{PRODUCT}::"0483/a2Ca", RUN+:"/usr/local/sbin/keyauth.sh lock"
+      ACTION::"add", ENV{DEVTYPE}::"usb_device", ENV{ID_BUS}::"usb", ENV{PRODUCT}::"0483/a2Ca", RUN+:"/usr/local/sbin/keyauth.sh unlock"
+    </div>
+    <script src="frame.js"></script>
+  </body>
+</html>

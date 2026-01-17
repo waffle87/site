@@ -1,26 +1,14 @@
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Kernel Configuration</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="apple-touch-icon" sizes="180x180" href="data/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="data/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="data/favicon/favicon-16x16.png">
-    <link rel="manifest" href="data/favicon/site.webmanifest">
-    <style>
-      code {
-        color: #505050;
-        font-size: 10px;
-        border: 1px solid grey;
-        border-radius: 3px;
-        padding: 1.75px;
-      }
-    </style>
+    <script src="header.js"></script>
   </head>
   <body>
-    <a style="text-decoration: none" href="content.html"><--</a>
+    <a style="text-decoration: none" href="content.html">&lt;--</a>
     <h2>Kernel Configuration Pseudo Guide</h2>
-    <h5>2024-04-08</h5>
+    <p><i>2024-08-14</i></p>
     <h4>
       Current base:
       <a
@@ -29,22 +17,25 @@
         >Linux 6.9.y</a
       >
     </h4>
-    This aims to be a guide for configuring a Linux kernel for a modern x86_64
-    machine containing hardware commonly found in laptops, desktops, and other
-    consumer computers. Note, this guide will sway more minimally, meaning some
-    features that are not strictly required will not be enabled. All features
-    will be built directly into kernel, no modules. This article will not
-    attempt to cover all possible configuration options, as it omits entire
-    sections that are not relevant on such systems, as well as some
-    hardware-specific configuration. Please also refer to the kernel's help text
-    for further information on respective options. I am not a kernel developer
-    and nothing here is guaranteed to be functionally accurate. If you feel
-    anything mentioned is wrong or should be switched around, please contact me.
-    This article assumes some prior knowledge of your system (eg. lspci, lscpu,
-    lsusb, dmidecode, <code>/proc/devices</code>, etc.) and general kernel
-    configuration/installation, such as obtaining source, generating and
-    maintaining <code>.config</code>, methods of configuration, compilation, and
-    installation. Throughout, the following acronyms will be used
+    <p>
+      This aims to be a guide for configuring a Linux kernel for a modern x86_64
+      machine containing hardware commonly found in laptops, desktops, and other
+      consumer computers. Note, this guide will sway more minimally, meaning
+      some features that are not strictly required will not be enabled. All
+      features will be built directly into kernel, no modules. This article will
+      not attempt to cover all possible configuration options, as it omits
+      entire sections that are not relevant on such systems, as well as some
+      hardware-specific configuration. Please also refer to the kernel's help
+      text for further information on respective options. I'm not a kernel
+      developer and comments here are not guaranteed to be functionally
+      accurate. If you feel anything mentioned is wrong or should be switched
+      around, reach out. This article assumes some prior knowledge of your
+      system (eg. lspci, lscpu, lsusb, dmidecode, <code>/proc/devices</code>,
+      etc.) and general kernel configuration/installation, such as obtaining
+      sources, generating and maintaining <code>.config</code>, methods of
+      configuration, compilation, and installation. Throughout, the following
+      acronyms will be used:
+    </p>
     <ul>
       <li>
         STD: recommended/standard feature that generally should be enabled
@@ -2409,5 +2400,6 @@
         </ul>
       </ul>
     </div>
+    <script src="frame.js"></script>
   </body>
 </html>

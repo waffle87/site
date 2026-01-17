@@ -3,12 +3,14 @@
 body {
   max-width: 65%;
   margin: auto;
-  line-height: 1.0;
+  line-height: 1;
   padding: 15px 0px;
   font-size: 12pt;
 }
 
-.header { line-height: 1.5; }
+.header {
+  line-height: 1.5;
+}
 
 .email {
   font-size: 25%;
@@ -19,14 +21,23 @@ body {
   vertical-align: middle;
 }
 
-.code {
-  font-size: smaller;
-  background-color: grey;
+code {
   font-family: "JetBrains Mono", monospace;
+  font-size: smaller;
+  border: 0.5px solid grey;
+  border-radius: 3px;
+  color: darkgrey;
+}
+
+.code-block {
+  font-family: "JetBrains Mono", monospace;
+  font-size: smaller;
   white-space: pre;
   width: inherit;
   overflow-x: auto;
   overflow-y: hidden;
   line-height: 1;
   display: block;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }

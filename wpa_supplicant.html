@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WPA Supplicant Usage</title>
+    <script src="header.js"></script>
+  </head>
+  <body>
+    <a style="text-decoration: none" href="content.html">&lt;--</a>
+    <h2>WPA Supplicant Usage</h2>
+    <p><i>2022-11-26</i></p>
+    <hr />
+    <p>Frequently forgotten usage of the <code>wpa_cli</code> tool.</p>
+    <!-- prettier-ignore -->
+    <div class="code-block language-shell">
+      $ wpa_cli
+      &gt; scan
+      ...
+      &lt;3&gt;CTRL-EVENT-SCAN-RESULTS # wait for this to appear
+      &gt; scan_results
+      bssid / freq / sig lvl / flags / ssid
+      ...
+      &gt; add_network
+      5
+      &gt; set_network 5 ssid "network"
+      &gt; set_network 5 psk "psswd"
+      # or if no password:
+      &gt; set_network 5 key_mgmt NONE
+      &gt; enable_network 5
+      &gt; save_config
+    </div>
+    <p>
+      However, one should strongly consider moving
+      <a
+        href="https://archive.kernel.org/oldwiki/iwd.wiki.kernel.org"
+        target="_blank"
+        >iwd</a
+      >...
+    </p>
+    <script src="frame.js"></script>
+  </body>
+</html>

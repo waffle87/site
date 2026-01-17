@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SSH Agent in Background</title>
+    <script src="header.js"></script>
+  </head>
+  <body>
+    <a style="text-decoration: none" href="content.html">&lt;--</a>
+    <h2>SSH agent for password-less login</h2>
+    <p><i>2021-01-17</i></p>
+    <hr />
+    <p>
+      I have numerous machines I frequently log in to and from via SSH. Typing
+      in a password every time is tiresome and a password-less key is not an
+      option. A solution is an SSH agent running in the background, which
+      prompts for a password once at log in, and stores it for the duration of
+      the session (until reboot). The following can live in your shell's startup
+      file (e.g.
+      <code>~/.zshrc</code>).
+    </p>
+    <!-- prettier-ignore -->
+    <div class="code-block language-shell">
+      if [ ! -S $HOME/.ssh/ssh_auth_sock ]; then
+        eval "$(ssh-agent)"
+        ln -sf "$SSH_AUTH_SOCK" $HOME/.ssh/ssh_auth_sock
+      fi
+
+      export SSH_AUTH_SOCK=$HOME/.ssh/ssh_auth_sock
+      ssh-add -l > /dev/null || ssh-add
+    </div>
+    <p>
+      Then, just copy the needed key between machines with
+      <code>ssh-copy-id -i ~/.ssh/id_xxx.pub name@host</code>.
+    </p>
+    <p>
+      MacOS however, has its own provision for this. The following can simply be
+      added to your <code>~/.ssh/config</code> file:
+    </p>
+    <!-- prettier-ignore -->
+    <div class="code-block">
+      Host *
+        UseKeychain yes
+        AddKeysToAgent yes
+        IdentityFile ~/.ssh/id_ed25519
+    </div>
+    <script src="frame.js"></script>
+  </body>
+</html>

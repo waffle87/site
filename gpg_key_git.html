@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GPG key signing with Git</title>
+    <script src="header.js"></script>
+  </head>
+  <body>
+    <a style="text-decoration: none" href="content.html">&lt;--</a>
+    <h2>GPG key signing with Git</h2>
+    <p><i>2023-11-14</i></p>
+    <hr />
+    <p>
+      I spent much time trying to figure out the following error when trying to
+      sign a commit:
+    </p>
+    <!-- prettier-ignore -->
+    <div class="code-block">
+      gpg: skipped "Foo Bar &ltFooBar@baz&gt": No secret key[GNUPG:] INV_SGNR 9 FooBar &ltFooBar@baz&gt[GNUPG:] FAILURE sign 17
+      gpg: signing failed: No secret key
+    </div>
+    <p>
+      After searching and coming up empty handed, one thing stood out. The name
+      and email in <code>~/.gitconfig</code> must match exactly to the name and
+      email associated with the GPG key:
+    </p>
+    <!-- prettier-ignore -->
+    <div class="code-block language-shell">
+      $ gpg --list-secret-keys --keyid-format=long
+      /home/foo/.gnupg/pubring.kbx
+      -----------------------------
+      sec   rsa4096/FC53C827D09C7050 2019-03-24 [SC]
+            ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890
+      uid                 [ultimate] <b>Foo Bar &ltFoo_Bar@baz&gt</b>
+      ssb   rsa4096/2EE67124D597BB00 2019-03-24 [E]
+
+      $ head -n 4 .gitconfig
+      [user]
+        <strong>name = Foo Bar
+        email = Foo_Bar@baz</strong>
+        signingkey = FC53C827D09C7050
+    </div>
+    <script src="frame.js"></script>
+  </body>
+</html>

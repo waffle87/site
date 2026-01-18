@@ -22,52 +22,45 @@
           A fancy <code>cat</code> alternative with line numbers and syntax
           highlighting. The <code>--all</code> flag is especially helpful for
           showing spaces, tabs, and line endings in files.
-        </p>
-        <pre>
-          <code class="language-shell">
-$ cat .zshrc
-─────┬──────────────────────────────────────────
-     │ File: .zshrc
-─────┼──────────────────────────────────────────
-   1 │ #!/bin/zsh
-   2 │
-   3 │ if [ "$(tty)" = "/dev/tty1" ]; then
-   4 │   exec dbus-run-session sway
-   5 │ fi
-          </code>
-        </pre>
-        <p>
           The only configuration really needed is setting the theme and perhaps
           more preferentially, an alias that also disables paging, like normal
           <code>cat</code> output:
         </p>
-        <pre>
-          <code>
-export BAT_THEME="base16"
-alias cat="bat --paging=never"
-          </code>
-        </pre>
+        <pre><code>export BAT_THEME="base16"
+alias cat="bat --paging=never"</code></pre>
       </li>
       <li>
         <a href="https://direnv.net" target="_blank">direnv</a>
         <p>
           Allows for a shell script to be run upon entering a directory. This is
           particularly useful for automatically activating Python virtual
-          environments.
+          environments. Configuration consists of creating the <code>.envrc</code> file that is sourced at entry, and allowing this to happen by running <code>direnv allow</code> within the directory.
+          <pre><code class="language-shell">if [ -f ".venv/bin/activate" ]; then
+  source .venv/bin/activate
+fi</code></pre>
         </p>
       </li>
-      <li><a href="https://github.com/junegunn/fzf" target="_blank">fzf</a></li>
-      <li><a href="https://github.com/lsd-rs/lsd" target="_blank">lsd</a></li>
-      <li><a href="https://neovim.io" target="_blank">neovim</a></li>
-      <ul>
-        <li>npm required for some plugins</li>
-      </ul>
+      <li><a href="https://github.com/lsd-rs/lsd" target="_blank">lsd</a>
+        <p>A fancy <code>ls</code> alternative that mostly provides intuitive colours and icons. As for configuration, I found it beneficial to <a href="https://git.pngu.org/dots/tree/.config/lsd/config.yaml" target="_blank">trim down</a> some of the default output, and <a href="https://git.pngu.org/dots/tree/.config/lsd/colors.yaml" target="_blank">configure colours</a> accordingly.</p>
+      </li>
+      <li><a href="https://neovim.io" target="_blank">neovim</a>
+        <p>My Neovim configuration is based on <a href="https://nvchad.com" target="_blank">Nvchad</a>, and configured with my desired language servers, formatters, and plugins. The following packages are installed through <a href="https://mason-registry.dev" target="_blank">Mason</a>:</p>
+        <ul>
+          <li><a href="https://docs.astral.sh/ruff" target="_blank">Ruff</a>: Python formatter and linter</li>
+          <li><a href="https://github.com/python-lsp/python-lsp-server" target="_blank">Python LSP</a>: what it says on the tin</li>
+          <li><a href="https://prettier.io" target="_blank">Prettier</a>: formatter for HTML and CSS (for me at least). This package unfortunately requires <code>npm</code> to be installed on the host system.</li>
+          <li><a href="https://github.com/LuaLS/lua-language-server" target="'_blank">Lua LSP</a>: also what it says on the tin</li>
+          <li><a href="https://github.com/JohnnyMorganz/StyLua" target="_blank">Stylua</a>: Lua formatter</li>
+          <li><a href="https://github.com/chipsalliance/verible" target="_blank">Verible</a>: SystemVerilog language server, formatter, and linter</li>
+        </ul>
+      </li>
       <li>
         <a href="https://github.com/BurntSushi/ripgrep" target="_blank"
           >ripgrep</a
         >
+        <p>An incredibly robust <code>grep</code> alternative, which I am quite sure I do not use to its full potential. Things like omitting directories are especially useful, and also intuitive &mdash; e.g. <code>rg -g '!dir/' foo</code>.</p>
       </li>
-      <li><a href="https://starship.rs" target="_blank">starship</a></li>
+      <li><a href="https://starship.rs" target="_blank">starship</a><p>An alternative terminal prompt to <code>$</code> that has extensive customisation and functionality regarding current working directory. </p></li>
       <li>
         <a href="https://github.com/XAMPPRocky/tokei" target="_blank">tokei</a>
       </li>

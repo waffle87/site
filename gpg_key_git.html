@@ -15,20 +15,14 @@
       I spent much time trying to figure out the following error when trying to
       sign a commit:
     </p>
-    <pre>
-      <code>
-gpg: skipped "Foo Bar &ltFooBar@baz&gt": No secret key[GNUPG:] INV_SGNR 9 FooBar &ltFooBar@baz&gt[GNUPG:] FAILURE sign 17
-gpg: signing failed: No secret key
-      </code>
-    </pre>
+    <pre><code>gpg: skipped "Foo Bar &ltFooBar@baz&gt": No secret key[GNUPG:] INV_SGNR 9 FooBar &ltFooBar@baz&gt[GNUPG:] FAILURE sign 17
+gpg: signing failed: No secret key</code></pre>
     <p>
       After searching and coming up empty handed, one thing stood out. The name
       and email in <code>~/.gitconfig</code> must match exactly to the name and
       email associated with the GPG key:
     </p>
-    <pre>
-      <code class="language-shell">
-$ gpg --list-secret-keys --keyid-format=long
+    <pre><code class="language-shell">$ gpg --list-secret-keys --keyid-format=long
 /home/foo/.gnupg/pubring.kbx
 -----------------------------
 sec   rsa4096/FC53C827D09C7050 2019-03-24 [SC]
@@ -40,9 +34,7 @@ $ head -n 4 .gitconfig
 [user]
   <strong>name = Foo Bar
   email = Foo_Bar@baz</strong>
-  signingkey = FC53C827D09C7050
-      </code>
-    </pre>
+  signingkey = FC53C827D09C7050</code></pre>
     <script src="frame.js"></script>
   </body>
 </html>

@@ -85,9 +85,9 @@ code {
 }
 
 pre {
+  font-size: inherit;
   white-space: pre-wrap;
   overflow-x: auto;
   overflow-y: hidden;
   display: block;
-  font-size: smaller;
 }

@@ -12,9 +12,7 @@
     <p><i>2022-11-26</i></p>
     <hr />
     <p>Frequently forgotten usage of the <code>wpa_cli</code> tool.</p>
-    <pre>
-      <code>
-$ wpa_cli
+    <pre><code>$ wpa_cli
 &gt; scan
 ...
 &lt;3&gt;CTRL-EVENT-SCAN-RESULTS # wait for this to appear
@@ -28,9 +26,7 @@ bssid / freq / sig lvl / flags / ssid
 # or if no password:
 &gt; set_network 5 key_mgmt NONE
 &gt; enable_network 5
-&gt; save_config
-      </code>
-    </pre>
+&gt; save_config</code></pre>
     <p>
       However, one should strongly consider moving
       <a

@@ -26,12 +26,8 @@
       tool is somewhat broken with the latest FIDO2 library, meaning it must be
       installed explicitly at 0.9.3.
     </p>
-    <pre>
-      <code class="language-shell">
-$ pip install solo1
-$ pip install fido2==0.9.3
-      </code>
-    </pre>
+    <pre><code class="language-shell">$ pip install solo1
+$ pip install fido2==0.9.3</code></pre>
     <p>
       After building, I didn't use it much, as many services don't support
       security keys quite yet, or required a paid subscription (I.e. Bitwarden).
@@ -54,13 +50,9 @@ $ pip install fido2==0.9.3
       >
       if you choose however.
     </p>
-    <pre>
-      <code class="language-shell">
-$ mkdir ~/.config/Yubico
+    <pre><code class="language-shell">$ mkdir ~/.config/Yubico
 $ pamu2fcfg > ~/.config/Yubico/u2f_keys
-Enter PIN for /dev/hidraw2:
-      </code>
-    </pre>
+Enter PIN for /dev/hidraw2:</code></pre>
     <p>
       Assuming all has been successful, you can configure PAM services to use
       the device. The following configures
@@ -69,13 +61,9 @@ Enter PIN for /dev/hidraw2:
       line can be added in other files where needed (eg. display manager,
       <code>system-local-login</code>, etc.)
     </p>
-    <pre>
-      <code>
-auth sufficient pam_u2f.so cue pinverification=0
+    <pre><code>auth sufficient pam_u2f.so cue pinverification=0
 auth include system-auth
-...
-      </code>
-    </pre>
+...</code></pre>
     <p>
       Above, <strong>sufficient</strong> indicates that authentication from the
       device alone is enough to fully authenticate. Use
@@ -95,9 +83,7 @@ auth include system-auth
       <a href="https://pamtester.sourceforge.net" target="_blank">pamtester</a>
       to test for authentication success.
     </p>
-    <pre>
-      <code class="language-shell">
-#!/bin/bash
+    <pre><code class="language-shell">#!/bin/bash
 
 if [ "$1" == "lock" ]; then
     # lock system (e.g. gtklock -d)
@@ -106,21 +92,15 @@ else
         # kill lock program
     fi
 fi
-exit 0
-      </code>
-    </pre>
+exit 0</code></pre>
     <p>
       Now, a custom udev rule that lives in
       <code>/etc/udev/rules.d/70-solokey.rules</code>
       and looks for a matching VID/PID and executes this script when found with
       the appropriate argument.
     </p>
-    <pre>
-      <code>
-ACTION::"remove", ENV{DEVTYPE}::"usb_device", ENV{PRODUCT}::"0483/a2Ca", RUN+:"/usr/local/sbin/keyauth.sh lock"
-ACTION::"add", ENV{DEVTYPE}::"usb_device", ENV{ID_BUS}::"usb", ENV{PRODUCT}::"0483/a2Ca", RUN+:"/usr/local/sbin/keyauth.sh unlock"
-      </code>
-    </pre>
+    <pre><code>ACTION::"remove", ENV{DEVTYPE}::"usb_device", ENV{PRODUCT}::"0483/a2Ca", RUN+:"/usr/local/sbin/keyauth.sh lock"
+ACTION::"add", ENV{DEVTYPE}::"usb_device", ENV{ID_BUS}::"usb", ENV{PRODUCT}::"0483/a2Ca", RUN+:"/usr/local/sbin/keyauth.sh unlock"</code></pre>
     <script src="frame.js"></script>
   </body>
 </html>

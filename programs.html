@@ -19,11 +19,11 @@
       <li>
         <a href="https://github.com/sharkdp/bat" target="_blank">bat</a>
         <p>
-          A fancy <code>cat</code> alternative with line numbers and syntax
+          A <code>cat</code> alternative with line numbers and syntax
           highlighting. The <code>--all</code> flag is especially helpful for
-          showing spaces, tabs, and line endings in files.
-          The only configuration really needed is setting the theme and perhaps
-          more preferentially, an alias that also disables paging, like normal
+          showing spaces, tabs, and line endings in files. The only
+          configuration really needed is setting the theme and perhaps more
+          preferentially, an alias that also disables paging, like normal
           <code>cat</code> output:
         </p>
         <pre><code>export BAT_THEME="base16"
@@ -34,42 +34,144 @@ alias cat="bat --paging=never"</code></pre>
         <p>
           Allows for a shell script to be run upon entering a directory. This is
           particularly useful for automatically activating Python virtual
-          environments. Configuration consists of creating the <code>.envrc</code> file that is sourced at entry, and allowing this to happen by running <code>direnv allow</code> within the directory.
-          <pre><code class="language-shell">if [ -f ".venv/bin/activate" ]; then
+          environments. Configuration consists of creating the
+          <code>.envrc</code> file that is sourced at entry, and allowing this
+          to happen by running <code>direnv allow</code> within the directory.
+        </p>
+        <pre><code class="language-shell">if [ -f ".venv/bin/activate" ]; then
   source .venv/bin/activate
 fi</code></pre>
+      </li>
+      <li>
+        <a href="https://github.com/lsd-rs/lsd" target="_blank">lsd</a>
+        <p>
+          A <code>ls</code> alternative that mostly provides intuitive colours
+          and icons. As for configuration, I found it beneficial to
+          <a
+            href="https://git.pngu.org/dots/tree/.config/lsd/config.yaml"
+            target="_blank"
+            >trim down</a
+          >
+          some of the default output, and
+          <a
+            href="https://git.pngu.org/dots/tree/.config/lsd/colors.yaml"
+            target="_blank"
+            >configure colours</a
+          >
+          accordingly.
         </p>
       </li>
-      <li><a href="https://github.com/lsd-rs/lsd" target="_blank">lsd</a>
-        <p>A fancy <code>ls</code> alternative that mostly provides intuitive colours and icons. As for configuration, I found it beneficial to <a href="https://git.pngu.org/dots/tree/.config/lsd/config.yaml" target="_blank">trim down</a> some of the default output, and <a href="https://git.pngu.org/dots/tree/.config/lsd/colors.yaml" target="_blank">configure colours</a> accordingly.</p>
-      </li>
-      <li><a href="https://neovim.io" target="_blank">neovim</a>
-        <p>My Neovim configuration is based on <a href="https://nvchad.com" target="_blank">Nvchad</a>, and configured with my desired language servers, formatters, and plugins. The following packages are installed through <a href="https://mason-registry.dev" target="_blank">Mason</a>:</p>
+      <li>
+        <a href="https://neovim.io" target="_blank">neovim</a>
+        <p>
+          My Neovim configuration is based on
+          <a href="https://nvchad.com" target="_blank">Nvchad</a>, and
+          configured with my desired language servers, formatters, and plugins.
+          The following packages are installed through
+          <a href="https://mason-registry.dev" target="_blank">Mason</a>:
+        </p>
         <ul>
-          <li><a href="https://docs.astral.sh/ruff" target="_blank">Ruff</a>: Python formatter and linter</li>
-          <li><a href="https://github.com/python-lsp/python-lsp-server" target="_blank">Python LSP</a>: what it says on the tin</li>
-          <li><a href="https://prettier.io" target="_blank">Prettier</a>: formatter for HTML and CSS (for me at least). This package unfortunately requires <code>npm</code> to be installed on the host system.</li>
-          <li><a href="https://github.com/LuaLS/lua-language-server" target="'_blank">Lua LSP</a>: also what it says on the tin</li>
-          <li><a href="https://github.com/JohnnyMorganz/StyLua" target="_blank">Stylua</a>: Lua formatter</li>
-          <li><a href="https://github.com/chipsalliance/verible" target="_blank">Verible</a>: SystemVerilog language server, formatter, and linter</li>
+          <li>
+            <a href="https://docs.astral.sh/ruff" target="_blank">Ruff</a>:
+            Python formatter and linter
+          </li>
+          <li>
+            <a
+              href="https://github.com/python-lsp/python-lsp-server"
+              target="_blank"
+              >Python LSP</a
+            >: what it says on the tin
+          </li>
+          <li>
+            <a href="https://prettier.io" target="_blank">Prettier</a>:
+            formatter for HTML and CSS (for me at least). This package
+            unfortunately requires <code>npm</code> to be installed on the host
+            system.
+          </li>
+          <li>
+            <a
+              href="https://github.com/LuaLS/lua-language-server"
+              target="'_blank"
+              >Lua LSP</a
+            >: also what it says on the tin
+          </li>
+          <li>
+            <a href="https://github.com/JohnnyMorganz/StyLua" target="_blank"
+              >Stylua</a
+            >: Lua formatter
+          </li>
+          <li>
+            <a href="https://github.com/chipsalliance/verible" target="_blank"
+              >Verible</a
+            >: SystemVerilog language server, formatter, and linter
+          </li>
         </ul>
       </li>
       <li>
         <a href="https://github.com/BurntSushi/ripgrep" target="_blank"
           >ripgrep</a
         >
-        <p>An incredibly robust <code>grep</code> alternative, which I am quite sure I do not use to its full potential. Things like omitting directories are especially useful, and also intuitive &mdash; e.g. <code>rg -g '!dir/' foo</code>.</p>
+        <p>
+          An incredibly robust <code>grep</code> alternative, which I am quite
+          sure I do not use to its full potential. Things like omitting
+          directories are especially useful, and also intuitive &mdash; e.g.
+          <code>rg -g '!dir/' foo</code>.
+        </p>
       </li>
-      <li><a href="https://starship.rs" target="_blank">starship</a><p>An alternative terminal prompt to <code>$</code> that has extensive customisation and functionality regarding current working directory. </p></li>
+      <li>
+        <a href="https://starship.rs" target="_blank">starship</a>
+        <p>
+          An alternative terminal prompt to <code>$</code> that has extensive
+          customisation and functionality regarding current working directory. I
+          find the virtual environment status very useful.
+        </p>
+      </li>
       <li>
         <a href="https://github.com/XAMPPRocky/tokei" target="_blank">tokei</a>
+        <p>
+          Counts lines of code, as well as different languages, comments, etc.
+        </p>
       </li>
       <li>
         <a href="https://github.com/ajeetdsouza/zoxide" target="_blank"
           >zoxide</a
         >
+        <p>
+          A <code>cd</code> alternative that auto-jumps to previously visited
+          directories. This turns a long
+          <code>cd to/a/nested/directory/named/foo</code> command to just
+          <code>cd foo</code>, after entering it once.
+        </p>
       </li>
-      <li>zsh</li>
+      <li>
+        zsh
+        <p>My shell-specific configuration is rather minimal:</p>
+        <pre><code class="language-shell">#!/bin/zsh
+
+export HISTFILE=~/.zsh_history
+export HISTSIZE=20000
+export SAVEHIST=20000
+export LANG=en_GB.UTF-8
+
+path+=(
+"$HOME/.local/bin"
+"$path[@]")
+export PATH
+
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
+
+bindkey -v
+bindkey "^?" backward-delete-char
+zstyle ':completion:*' completer _complete _ignored
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle :compinstall filename '~/.zshrc'
+autoload -U compinit && compinit</code></pre>
+        <p>
+          ZSH's default Vi mode has room for improvement unfortunately, but it
+          is usable nonetheless.
+        </p>
+      </li>
       <ul>
         <li>
           <a
@@ -77,6 +179,19 @@ fi</code></pre>
             target="_blank"
             >zsh-autosuggestions</a
           >
+          <p>
+            Similarly to Zoxide mentioned above, this plugin aides in running
+            previously long commands. Instead of typing out a cumbersome
+            <code>awk</code> command that you've run before, one can tap the
+            right arrow key to fill the command after typing the first few
+            characters.
+          </p>
+          <p>
+            Depending on your terminal's colour configuration, the default
+            colour of the suggested text to fill may not be very readable. If
+            so, set it manually at shell startup:
+          </p>
+          <pre><code>export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#C7C7C7"</code></pre>
         </li>
         <li>
           <a
@@ -84,69 +199,191 @@ fi</code></pre>
             target="_blank"
             >zsh-syntax-highlighting</a
           >
+          <p>
+            Provides syntax highlighting directly to commands run in your shell.
+            A small detail but invaluable for things like underlining a path
+            that is valid, quoted and conditional arguments, and so on.
+          </p>
         </li>
       </ul>
     </ul>
     <h3>Graphical</h3>
+    <p>
+      My non-headless Linux systems run under Wayland, so in turn, the following
+      applications are more or less Wayland specific.
+    </p>
     <ul>
       <li>
         <a href="https://codeberg.org/dnkl/fuzzel" target="_blank">fuzzel</a>
+        <p>
+          Application launcher that is incredibly easy to
+          <a
+            href="https://git.pngu.org/dots/tree/.config/fuzzel/fuzzel.ini"
+            target="_blank"
+            >configure</a
+          >.
+        </p>
       </li>
       <li>
         <a href="https://gitlab.freedesktop.org/emersion/grim" target="_blank"
           >grim</a
         >
+        <ul>
+          <li>
+            <a href="https://github.com/emersion/slurp" target="_blank"
+              >slurp</a
+            >
+          </li>
+        </ul>
+        <p>
+          Screenshot tools that are boring and functional. Grim is the
+          screenshot utility itself, while Slurp allows for selecting a region
+          to capture. The combination is easily bound to Sway shortcuts to
+          either copy to clipboard (see
+          <a href="https://github.com/bugaevc/wl-clipboard" target="_blank"
+            >wl-clipboard</a
+          >), or save to <code>$XDG_PICTURES_DIR</code>, respectively:
+        </p>
+        <pre><code>bindsym $mod+p exec       grim -g "$(slurp)" - | wl-copy
+bindsym $mod+Shift+p exec grim -g "$(slurp)"</code></pre>
+        <p></p>
       </li>
-      <ul>
-        <li>
-          <a href="https://github.com/emersion/slurp" target="_blank">slurp</a>
-        </li>
-      </ul>
       <li>
         <a href="https://github.com/jovanlanik/gtklock" target="_blank"
           >gtklock</a
         >
+        <p>
+          A GTK-based lock screen program that's useful when I'm out and about.
+          <a
+            href="https://git.pngu.org/dots/tree/.config/gtklock"
+            target="_blank"
+            >Configuration</a
+          >
+          is rather simple, and it is styled via CSS, which I find to be a perk.
+          Also triggered from a Sway mapping:
+        </p>
+        <pre><code>bindsym $mod+Escape  exec gtklock -d</code></pre>
       </li>
-      <li><a href="https://sr.ht/~exec64/imv" target="_blank">imv</a></li>
-      <li><a href="https://mako-project.org" target="_blank">mako</a></li>
+      <li>
+        <a href="https://sr.ht/~exec64/imv" target="_blank">imv</a>
+        <p>
+          An image viewer that supports the file formats I encounter, and even
+          has Vim keybindings.
+        </p>
+      </li>
+      <li>
+        <a href="https://mako-project.org" target="_blank">mako</a>
+        <p>
+          Notification daemon that's libnotify compatible, and easily
+          <a
+            href="https://git.pngu.org/dots/tree/.config/mako/config"
+            target="_blank"
+            >configured</a
+          >. Its daemon must be started by Sway:
+          <code>exec /usr/bin/mako</code>.
+        </p>
+      </li>
       <li>
         <a href="https://fonts.google.com/noto" target="_blank">noto fonts</a>
         (+ cjk &amp; emoji)
+        <p>
+          Incredibly widely used fonts, including support for CJK and Cyrillic
+          languages, and emoji support in applications such as Discord.
+        </p>
       </li>
-      <li><a href="https://swaywm.org" target="_blank">sway</a></li>
       <li>
-        <a href="https://github.com/swaywm/swaybg" target="_blank">swaybg</a>
+        <a href="https://swaywm.org" target="_blank">sway</a>
+        <p>
+          Rather powerful window manager. Especially appreciate the input
+          <a
+            href="https://git.pngu.org/dots/tree/.config/sway/config"
+            target="_blank"
+            >configuration</a
+          >
+          options like easily changing trackpad behaviours and switching between
+          languages. Things like these are challenging on X. I use
+          <a href="https://github.com/swaywm/swaybg" target="_blank">swaybg</a>
+          to set wallpapers.
+        </p>
       </li>
       <li>
         <a href="https://github.com/Alexays/Waybar" target="_blank">waybar</a>
+        <p>
+          Status bar with loads of functionality.
+          <a
+            href="https://git.pngu.org/dots/tree/.config/sway/config"
+            target="_blank"
+            >Configuration</a
+          >
+          is done via a JSON-esque file and styled via CSS, which offers nearly
+          too much opportunity.
+        </p>
       </li>
       <li>
         <a href="https://github.com/wez/wezterm" target="_blank">wezterm</a>
-      </li>
-      <li>
-        <a href="https://github.com/bugaevc/wl-clipboard" target="_blank"
-          >wl-clipboard</a
-        >
-      </li>
-      <li>
-        <a href="https://xorg.freedesktop.org" target="_blank">xorg-xwayland</a>
+        <p>
+          Terminal of choice. I went back and forth between this, and
+          <a href="https://git.pngu.org/st" target="_blank">st</a>, and while
+          fun, st lacks Wayland and macOS support. Wezterm is easily
+          <a href="https://git.pngu.org/dots/tree/.config/wezterm/wezterm.lua"
+            >configured</a
+          >
+          in Lua.
+        </p>
       </li>
       <li>
         <a href="https://pwmt.org/projects/zathura" target="_blank">zathura</a>
+        <p>
+          PDF viewer with Vim keybindings and commands. Allows for ample
+          <a
+            href="https://git.pngu.org/dots/tree/.config/zathura/zathurarc"
+            target="_blank"
+            >configuration</a
+          >
+          of colours and fonts.
+        </p>
       </li>
     </ul>
     <h3>System</h3>
     <ul>
-      <li><a href="https://chrony-project.org" target="_blank">chrony</a></li>
+      <li>
+        <a href="https://chrony-project.org" target="_blank">chrony</a>
+        <p>
+          The system clock frequently falls out of sync on some of my older
+          hardware and Chrony is a solution. Enable the system service and
+          select a
+          <a href="https://www.ntppool.org/zone/@" target="_blank">NTP pool</a>.
+        </p>
+      </li>
       <li>
         <a href="https://github.com/dracut-ng/dracut-ng" target="_blank"
           >dracut</a
         >
+        <p>
+          On my systems, Dracut is used to generate initramfs during kernel
+          installation, and create a bootable
+          <a
+            href="https://uapi-group.org/specifications/specs/unified_kernel_image"
+            target="_blank"
+            >UKI</a
+          >, which omits the need for a bootloader, such as GRUB. See
+          system-specific pages for more details.
+        </p>
       </li>
       <li>
         <a href="https://github.com/rhboot/efibootmgr" target="_blank"
           >efibootmgr</a
         >
+        <p>
+          Similar to usage of the above, efibootmgr is used to create boot
+          entries for bootable kernel images, both in the form of UKI's or
+          <a
+            href="https://www.kernel.org/doc/html/latest/admin-guide/efi-stub.html"
+            target="_blank"
+            >EFI Stub</a
+          >'s. Also handy for cleaning up other entries littered around by other
+          operating systems.
+        </p>
       </li>
       <li>
         <a
@@ -154,61 +391,159 @@ fi</code></pre>
           target="_blank"
           >iwd</a
         >
+        <ul>
+          <li>
+            <a
+              href="https://roy.marples.name/projects/openresolv"
+              target="_blank"
+              >openresolv</a
+            >
+          </li>
+        </ul>
+        <p>
+          Preferred networking setup for its minimal system footprint,
+          reliability (significantly over WPA Supplicant), and ease of use with
+          most networks I encounter. It can be configured to use its internal
+          DHCP client, and a DNS manager such as a resolvconf:
+        </p>
+        <pre><code>[General]
+EnableNetworkConfiguration=true
+
+[Network]
+NameResolvingService=resolvconf</code></pre>
       </li>
-      <ul>
-        <li>
-          <a href="https://roy.marples.name/projects/openresolv" target="_blank"
-            >openresolv</a
-          >
-        </li>
-      </ul>
       <li>
         <a href="https://github.com/Duncaen/OpenDoas" target="_blank">doas</a>
+        <p>
+          A <code>sudo</code> alternative that is a fraction of the size of the
+          traditional authentication program, and performs everything most
+          single-user, non-server systems would need. Configuration to allow
+          persistent authentication for some time after a user of the
+          <code>wheel</code> group has entered their password is straight
+          forward:
+        </p>
+        <pre><code>permit persist :wheel</code></pre>
+      </li>
+      <li>
+        <a href="https://github.com/rvaiya/keyd" target="_blank">keyd</a>
+        <p>
+          Key remapping for Linux systems that's capable of reproducing much of
+          my <a href="https://qmk.fm" target="_blank">QMK</a> configuration,
+          which primarily includes combos, layers, home row mods, and more. This
+          is certainly suitable for making my laptop's keyboard usable, albeit
+          uncomfortable.
+          <a href="https://git.pngu.org/dots/tree/.config/keyd.conf"></a> is
+          certainly straight forward as well. This file must however either live
+          at or be symlinked to <code>/etc/keyd/default.conf</code>.
+        </p>
       </li>
       <li>
         <a href="https://github.com/OpenRC/openrc" target="_blank">openrc</a>
+        <p>
+          Undoubtedly my preferred init system. Incredibly reliable and not
+          built such that things like reboot depend on some other program (hint
+          hint systemd...). Usage is also intuitive:
+        </p>
+        <pre><code>$ rc-status
+Runlevel: default
+ chrony                                                                 [  started  ]
+ dbus                                             [  started 17 day(s) 23:13:07 (0) ]
+ thermald                                         [  started 17 day(s) 23:13:06 (0) ]
+ sshd                                             [  started 17 day(s) 23:13:06 (0) ]
+ iwd                                               [  started 3 day(s) 01:25:06 (0) ]
+ keyd                                                                   [  started  ]
+ tlp                                                                    [  started  ]
+ agetty.tty1                                      [  started 17 day(s) 23:13:05 (0) ]
+Dynamic Runlevel: hotplugged
+ user.jack                                        [  started 17 day(s) 23:12:47 (0) ]
+        </code></pre>
       </li>
-      <li>openssh</li>
-      <li>pipewire</li>
     </ul>
     <h3>Development</h3>
     <ul>
       <li>
         <a href="https://github.com/rizsotto/Bear" target="_blank">bear</a>
+        <p>
+          The clangd language server sources a
+          <code>compile_commands.json</code> file that provides information like
+          where header files are found, compilation flags, etc. Clang(d) has no
+          built-in provision for generating this file, so bear is the tool for
+          the job. Usage is rather straight forward:
+        </p>
+        <pre><code>$ bear -- cc misc.c
+$ cat compile_commands.json
+[
+  {
+    "file": "misc.c",
+    "arguments": [
+      "cc",
+      "misc.c"
+    ],
+    "directory": "/home/jack"
+  }
+]</code></pre>
+        <p>
+          Running <code>bear -- make</code> would be appropriate for projects
+          that use a Makefile.
+        </p>
       </li>
-      <li><a href="https://llvm.org" target="_blank">llvm</a></li>
-      <li>git</li>
-      <li><a href="https://lldb.llvm.org" target="_blank">lldb</a></li>
+      <li>
+        <a href="https://lldb.llvm.org" target="_blank">lldb</a>
+        <p>
+          A debugger that behaves similarly to GDB, but is much more intuitive
+          in my opinion. This
+          <a href="https://github.com/gdbinit/lldbinit" target="_blank">here</a>
+          extends LLDB a bit by providing some graphical features and overall
+          more information by default. The script lives in
+          <code>~/.local/lldbinit.py</code> and call it from
+          <code>.lldbinit</code>:
+        </p>
+        <pre><code>command script import ~/.local/lldbinit.py</code></pre>
+      </li>
       <li>
         <a href="https://github.com/pkgconf/pkgconf" target="_blank">pkgconf</a>
+        <p>
+          Used to automatically configure compiler and linker flags for
+          libraries that need them. Helpful working on projects across different
+          systems and architectures.
+        </p>
       </li>
-      <li><a href="https://github.com/astral-sh/uv" target="_blank">uv</a></li>
       <li>
-        <a href="https://www.veripool.org/verilator" target="_blank"
-          >verilator</a
-        >
+        <a href="https://github.com/astral-sh/uv" target="_blank">uv</a>
+        <p>
+          Python installation and package manager. Incredibly fast and intuitive
+          to use, and preferable to <code>pip</code> and other Python utilities.
+        </p>
       </li>
     </ul>
     <h3>Miscellaneous</h3>
     <ul>
-      <li>kicad</li>
-      <ul>
-        <li>
-          <a
-            href="https://waterlan.home.xs4all.nl/dos2unix.html"
-            target="_blank"
-            >dos2unix</a
-          >
-        </li>
-        <li>kicad library</li>
-        <li>kicad libary 3d</li>
-      </ul>
       <li>
         <a href="https://www.imagemagick.org" target="_blank">imagemagick</a>
+        <p>
+          I occasionally find myself in need of some sort of basic image
+          manipulation, like rotating, resizing, or combining images. Searching
+          the web for "rotate image online" is silly, and imagemagick is capable
+          of far more than just that.
+        </p>
       </li>
-      <li><a href="https://www.weechat.org" target="_blank">weechat</a></li>
+      <li>
+        <a href="https://www.weechat.org" target="_blank">weechat</a>
+        <p>
+          I am active in a few IRC channels, however not often enough to need a
+          fancy GUI client. Weechat is quite configurable and easy to use, with
+          much of the shortcuts match those found in browsers and Vim.
+        </p>
+      </li>
       <li>
         <a href="https://github.com/yadm-dev/yadm" target="_blank">yadm</a>
+        <p>
+          This tool (read git wrapper) keeps track of all my system
+          configuration files with the ease and convenience of git. Each system
+          gets a branch and files I want to exclude are excluded via the
+          standard <code>.gitignore</code>. This makes setting up new systems or
+          undoing changes incredibly easy.
+        </p>
       </li>
     </ul>
     <script src="frame.js"></script>

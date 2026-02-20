@@ -91,3 +91,9 @@ pre {
   overflow-y: hidden;
   display: block;
 }
+
+.inline-image {
+  display: block;
+  margin: 10px 0px;
+  width: 100%;
+}

@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gentoo Desktop</title>
+    <script src="header.js"></script>
+  </head>
+  <body>
+    <a style="text-decoration: none" href="content.html">&lt;--</a>
+    <h2>Gentoo Desktop</h2>
+    <p><i>2021-12-20</i></p>
+    <hr />
+    <p>
+      This page covers various features and notes of my AMD Desktop running Gentoo Linux, where the
+      majority of my time is spent. My system configuration can be found
+      <a href="https://git.pngu.org/dots/tree/?h=pluto" target="_blank">here</a>. The programs I use
+      on this system can mostly be found <a href="programs.html">here</a>.
+    </p>
+    <h3>Hardware Overview</h3>
+    <ul>
+      <li>Ryzen 7 3700X 8-core @ 3.6GHz</li>
+      <li>Radeon RX 6600/6600 XT/6600M</li>
+      <li>16 GiB Memory</li>
+      <li>MSI B550i Motherboard</li>
+      <li>Intel AX200 Network/Bluetooth Controller</li>
+      <li>
+        <a href="data/desktop_lspci" target="_blank"><code>lspci</code></a
+        >, <a href="data/desktop_lscpu" target="_blank"><code>lscpu</code></a>
+      </li>
+    </ul>
+    <img class="inline-image" src="data/desktop.jpg" alt="desktop.jpg" />
+    <h3>System</h3>
+    <h4>Profile</h4>
+    <p>
+      This system uses a combined <code>llvm</code> and <code>no-multilib</code> profile. I came to
+      this decision after having spent a few years working out what software I use on a day-to-day
+      basis, and learned I have no need for any 32-bit programs, and thus can omit support for them
+      entirely from my system. A non-multilib system mostly provides security benefits in the sense
+      that 32-bit support can be disabled in the kernel, significantly reducing vulnerability
+      surface area. This also means 32-bit libraries don't need to (cannot) be compiled when
+      building packages. This helps reduce the compile time needed for
+      <code>sys-devel/gcc</code> and <code>sys-libs/glibc</code> by quite a bit. <br /><br />
+      In addition to this, I have opted for an LLVM system profile. This means that by default,
+      Portage will build packages with Clang(++). The LLVM toolchain has become more widely
+      supported and rarely runs into issues compiling software. On occasion however, a package may
+      fail to compile under Clang. In this case, a GCC fallback environment can be used:
+    </p>
+    <pre><code class="language-shell"># /etc/portage/env/compiler-gcc
+
+COMMON_FLAGS="-march=znver2 -O2 -pipe"
+CFLAGS="${COMMON_FLAGS}"
+CXXFLAGS="${COMMON_FLAGS}"
+LDFLAGS="-Wl,--as-needed"
+
+CC="gcc"
+CXX="g++"
+CPP="gcc -E"
+AR="ar"
+NM="nm"
+RANLIB="ranlib"</code></pre>
+    <p>And then applied to a package as such:</p>
+    <pre><code class="language-shell"># /etc/portage/package.env
+
+sci-electronics/verilator compiler-gcc
+net-libs/libtirpc compiler-gcc</code></pre>
+    <p>
+      Most benefits of Clang its counterparts of negligible in most ways, but one may notice
+      slightly quicker compile times and reduced memory usage with some programs. Clang is also
+      capable of compiling the Linux kernel, and is known to also produce slightly more secure
+      binaries. I primarily opted for this setup, as I use LLVM tooling across all my systems, and
+      appreciate consistency.
+    </p>
+    <h4>Portage</h4>
+    <p>
+      Despite a slightly complex setup of combing profiles, my <code>make.conf</code> is fairly
+      simple. This is a graphical desktop system that primarily runs under Wayland, but still has
+      some X dependencies unfortunately.
+    </p>
+    <pre><code class="language-shell"># /etc/portage/make.conf
+
+COMMON_FLAGS="-march=znver2 -O2 -pipe"
+CFLAGS="${COMMON_FLAGS}"
+CXXFLAGS="${COMMON_FLAGS}"
+FCFLAGS="${COMMON_FLAGS}"
+FFLAGS="${COMMON_FLAGS}"
+USE="wayland X elogind bluetooth"
+VIDEO_CARDS="amdgpu radeonsi"
+ACCEPT_LICENSE="*"
+ACCEPT_KEYWORDS="~amd64"</code></pre>
+    <p>
+      Global USE flags really should only be set if multiple packages make use of them. Hence the
+      small number of them above. Prior to installing a package, I prefer to take a quick look at
+      its USE flags and set them appropriate. This greatly helps in reducing dependency packages for
+      functionality that may not be needed.
+    </p>
+    <pre><code class="language-shell"># /etc/portage/package.use
+
+app-admin/doas persist # persist functionality, like that of sudo
+dev-lang/rust system-llvm # do not build a separate llvm toolchain for only rust
+x11-libs/libdrm video_cards_radeon
+gui-apps/waybar network pipewire # needed to show wireless network and pipewire audio statuses
+media-video/pipewire flatpak pipewire-alsa sound-server dbus
+media-gfx/imv jpeg png svg
+media-sound/spotify local-playback pulseaudio libnotify # local-playback allows for playing local audio files
+media-fonts/noto cjk
+net-libs/nodejs npm
+net-wireless/iwd standalone # configure iwd to use built-in dhcp client
+sys-kernel/installkernel dracut uki
+sys-apps/systemd-utils boot kernel-install</code></pre>
+    <h4>Bootloader</h4>
+    <p>
+      This system does not have a traditional bootloader, such as GRUB. My "boot requirements" are
+      fairly minimal, meaning I prefer to use BIOS to boot alternate operating systems, and I
+      believe my system is stable enough I do not need multiple kernels or an emergency command
+      line. As such, a unified kernel image (<a
+        href="https://uapi-group.org/specifications/specs/unified_kernel_image"
+        target="_blank"
+        >UKI</a
+      >) can be used instead. Creates a bootable image that bundles microcode, initramfs, kernel
+      image, etc. into one binary that can be exposed to BIOS or another bootloader like GRUB.
+      <br /><br />
+      Configuring this is fairly straight forward.
+    </p>
+    <ol>
+      <li>
+        <p>
+          A "stub loader" is required, which is in the form of Systemd software. The
+          <code>sys-apps/systemd-utils</code> package can be install with the <code>boot</code> and
+          <code>kernel-install</code> USE flags.
+        </p>
+      </li>
+      <li>
+        <p>
+          Assuming <code>sys-kernel/installkernel</code> is used to handle the kernel installation
+          process, add the <code>dracut</code> and <code>uki</code> USE flags to this package. This
+          will instruct <code>installkernel</code> to use Dracut to generate the UKI.
+        </p>
+      </li>
+      <li>
+        <p>
+          Dracut's default layout settings should work for most, however the root partition needs to
+          be passed to the kernel command line. Find the UUID with <code>blkid</code>.
+        </p>
+        <pre><code class="language-shell"># /etc/dracut.conf.d/uki.conf
+uefi="yes"
+kernel_cmdline="root=UUID=883b14d7-d9aa-4b1f-b3ef-7eec02c6c5c0 ro"</code></pre>
+      </li>
+      <li>
+        <p>
+          After <code>installkernel</code> executes (i.e. after installing/updating a kernel), an
+          EFI stub can be created to boot directly from BIOS. It is important that the ESP is
+          mounted, so the EFI stub can be installed.
+        </p>
+        <pre><code>efibootmgr --create --disk /dev/sdX --part partition_number --label "Gentoo Linux x.y.z" --loader 'EFI\Linux\linux-x.y.z-gentoo.efi'</code></pre>
+        <p>
+          In the above, the <code>disk</code> parameter should be only the identifier of the entire
+          disk (e.g. <code>nvme0n1</code>), and the <code>part</code> parameter is the partition
+          number (e.g. simply "1" if the ESP is on <code>nvme0n1p1</code>).
+        </p>
+      </li>
+    </ol>
+    <h4>Kernel</h4>
+    <p>
+      On this system, I simply use the
+      <a href="https://packages.gentoo.org/packages/sys-kernel/gentoo-kernel"
+        ><code>gentoo-kernel</code></a
+      >. This works well for me and does not require following kernel releases to adjust my personal
+      configuration appropriately. I update the kernel when I have a reason to, or about every 6
+      months. To avoid building a new kernel every time a patch revision is released, I pin the
+      kernel-related packages in <code>package.mask</code>.
+    </p>
+    <pre><code># /etc/portage/package.mask
+
+sys-kernel/gentoo-kernel
+sys-kernel/gentoo-kernel-bin
+sys-kernel/vanilla-kernel
+virtual/dist-kernel</code></pre>
+    <h3>Screenshots</h3>
+    <img
+      class="inline-image"
+      src="https://raw.githubusercontent.com/waffle87/dots/refs/heads/pluto/.img/fetch.png"
+      alt="fetch.png"
+    />
+    <img
+      class="inline-image"
+      src="https://raw.githubusercontent.com/waffle87/dots/refs/heads/pluto/.img/nvim.png"
+      alt="nvim.png"
+    />
+    <img
+      class="inline-image"
+      src="https://raw.githubusercontent.com/waffle87/dots/refs/heads/pluto/.img/zathura.png"
+      alt="zathura.png"
+    />
+    <img
+      class="inline-image"
+      src="https://raw.githubusercontent.com/waffle87/dots/refs/heads/pluto/.img/fuzzel.png"
+      alt="fuzzel.png"
+    />
+    <img
+      class="inline-image"
+      src="https://raw.githubusercontent.com/waffle87/dots/refs/heads/pluto/.img/fuzzel.png"
+      alt="fuzzel.png"
+    />
+    <script src="frame.js"></script>
+  </body>
+</html>

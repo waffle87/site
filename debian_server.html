@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Debian Server</title>
+  <script src="header.js"></script>
+</head>
+
+<body>
+  <a style="text-decoration: none" href="content.html">&lt;--</a>
+  <h2>Debian Server</h2>
+  <p><i>2024-07-25</i></p>
+  <hr />
+  <p>Without the physical space or electricity funding to have a home lab setup, I opted for a VPS instead. Despite
+    some perhaps questionable reviews and information online, <a href="https://racknerd.com"
+      target="_blank">RackNerd</a> has provided well for my needs. I pay about 25 USD per year for a KVM VPS with 4 GB
+    RAM and 4 virtual CPU cores. While this is a suspiciously low price (what one may pay <i>per month</i> with another
+    provider), they have quite good Black Friday sales. I initially chose them, as one of the requirements for a VPS was
+    the necessary SMTP ports open for a email server. Most providers (AWS, DigitalOcean, etc.) keep these ports strictly
+    closed, as to not be placed on an IP blacklists for spam origination. I will note that my VPS's IP is on a number of
+    blacklists and it has been a work in progress to be able to send email to certain receivers.</p>
+  <pre><code>       _,met$$$$$gg.          jack@pngu.org
+    ,g$$$$$$$$$$$$$$$P.       -------------
+  ,g$$P"        """Y$$.".     OS: Debian GNU/Linux 12 (bookworm) x86_64
+ ,$$P'              `$$$.     Host: KVM RHEL 7.6.0 PC (i440FX + PIIX, 1996)
+',$$P       ,ggs.     `$$b:   Kernel: 6.1.0-21-amd64
+`d$$'     ,$P"'   .    $$$    Uptime: 486 days, 22 hours, 21 mins
+ $$P      d$'     ,    $$P    Packages: 715 (dpkg)
+ $$:      $$.   -    ,d$$'    Shell: zsh 5.9
+ $$;      Y$b._   _,d$P'      Resolution: 1024x768
+ Y$$.    `.`"Y$$$$P"'         Terminal: /dev/pts/0
+ `$$b      "-.__              CPU: Intel Xeon E5-2680 v2 (4) @ 2.799GHz
+  `Y$$                        GPU: Cirrus Logic QEMU Virtual Machine
+   `Y$$.                      Memory: 1183MiB / 4679MiB
+     `$$b.
+       `Y$$b.
+          `"Y$b._
+              `"""</code></pre>
+  <p>There is not much to discuss in terms of intricate system configuration or hardware quirks. All
+    services run in Docker containers, configured via Docker Compose. These include...</p>
+  <h3><a href="https://agendav.readthedocs.io" target="_blank">Agendav</a></h3>
+  <h3><a href="https://sabre.io/baikal" target="_blank">Ba&iuml;kal</a></h3>
+  <h3><a href="https://caddyserver.com" target="_blank">Caddy</a></h3>
+  <h3><a href="https://git.zx2c4.com/cgit" target="_blank">Cgit</a></h3>
+  <h3><a href="https://uptimekuma.org" target="_blank">Kuma</a></h3>
+  <h3><a href="https://roundcube.net" target="_blank">Roundcube</a></h3>
+  <h3><a href="https://stalw.art" target="_blank">Stalwart</a></h3>
+  <h3><a href="https://www.vaultwarden.net" target="_blank">Vaultwarden</a></h3>
+  <script src="frame.js"></script>
+</body>
+
+</html>

@@ -1,67 +1,86 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Leetcode</title>
+    <script src="header.js"></script>
+  </head>
 
-<head>
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Leetcode</title>
-  <script src="header.js"></script>
-</head>
+  <body>
+    <a style="text-decoration: none" href="content.html">&lt;--</a>
+    <h2>Leetcode</h2>
+    <p><i>2025-02-23</i></p>
+    <hr />
+    <p>
+      I have been completing
+      <a href="https://leetcode.com/u/0x6A73" target="_blank">Leetcode</a> problems for quite some
+      time now, and at the time of writing have a 1,400 day streak and am ranked about 6,500
+      worldwide. Many problems end up feeling quite similar to others, however I greatly enjoy bit
+      manipulation type problems, as these still puzzle me often. I solve the daily problem in both
+      C and Python3, unless the C solution would require hundreds of LoC to implement. My solutions
+      can be found <a href="https://pngu.org/leetcode" target="_blank">here</a>, along with some
+      utility functions.
+    </p>
+    <h3>C Utilities</h3>
+    <p>
+      The
+      <a href="https://git.pngu.org/leetcode/tree/leetcode.h" target="_blank"
+        ><code>leetcode.h</code></a
+      >
+      header file contains various includes, standard Leetcode structs (<code>ListNode</code>,
+      <code>TreeNode</code>), and macros for things like calculating the size of an array (<i
+        >in a portable manner</i
+      >):
+    </p>
+    <pre><code class="language-c">#define IS_ARRAY(value)                                                        \
+  (!__builtin_types_compatible_p(typeof((value)), typeof(&(value)[0])))
 
-<body>
-  <a style="text-decoration: none" href="content.html">&lt;--</a>
-  <h2>Leetcode</h2>
-  <p><i>2025-02-23</i></p>
-  <hr />
-  <p>I have been completing <a href="https://leetcode.com/u/0x6A73" target="_blank">Leetcode</a> problems for quite some
-    time
-    now, and at the time of writing have a 1,400 day streak and am ranked about 6,500 worldwide. Many problems end up
-    feeling quite similar to others, however I greatly enjoy bit manipulation type problems, as these still puzzle me
-    often. I solve the daily problem in both C and Python3, unless the C solution would require hundreds of
-    LoC to implement. My solutions can be found <a href="https://pngu.org/leetcode" target="_blank">here</a>, along with
-    some utility functions.
-  </p>
-  <h3>C Utilities</h3>
-  <p>The <a href="https://git.pngu.org/leetcode/tree/leetcode.h" target="_blank"><code>leetcode.h</code></a> header file
-    contains various includes, standard Leetcode structs (<code>ListNode</code>, <code>TreeNode</code>), and macros for
-    things like calculating the size of an array (<i>in a portable manner</i>):</p>
-  <pre><code class="language-c">#define IS_ARRAY(value) \
-      (!__builtin_types_compatible_p(typeof((value)), typeof(&(value)[0])))
+#define ARRAY_SIZE(array)                                                      \
+  (__builtin_choose_expr(IS_ARRAY((array)),                                    \
+                         sizeof((array)) / sizeof((array)[0]), (void)0))
 
-      #define ARRAY_SIZE(array) \
-      (__builtin_choose_expr(IS_ARRAY((array)), \
-      sizeof((array)) / sizeof((array)[0]), (void)0))
-
-      // foo.c
-      int arr[] = {1, 2, 3};
-      int foo = func(arr, ARRAY_SIZE(arr));</code></pre>
-  <p>The <a href="https://git.pngu.org/leetcode/tree/leetcode.c" target="_blank"><code>leetcode.c</code></a> file
-    contains helper functions to fill <code>ListNode</code> and <code>TreeNode</code> data structures with given problem
-    input, and also print data returned by such functions.
-  </p>
-  <h4><code>ListNode</code> Data Type</h4>
-  <img class="inline-image" src="https://assets.leetcode.com/uploads/2022/02/02/ex1-1.png" alt="list node example">
-  <pre><code class="language-c">int main() {
+// foo.c
+int arr[] = {1, 2, 3};
+int foo = func(arr, ARRAY_SIZE(arr));</code></pre>
+    <p>
+      The
+      <a href="https://git.pngu.org/leetcode/tree/leetcode.c" target="_blank"
+        ><code>leetcode.c</code></a
+      >
+      file contains helper functions to fill <code>ListNode</code> and <code>TreeNode</code> data
+      structures with given problem input, and also print data returned by such functions.
+    </p>
+    <h4><code>ListNode</code> Data Type</h4>
+    <img src="https://assets.leetcode.com/uploads/2022/02/02/ex1-1.png" alt="list node example" />
+    <pre><code class="language-c">int main() {
       int input[] = {0, 3, 1, 0, 4, 5, 2, 0};
       struct ListNode *head = listnode_build(input, ARRAY_SIZE(input));
       listnode_print(head);
       listnode_free(head);
       }</code></pre>
-  <h4><code>TreeNode</code> Data Type</h4>
-  <img class="inline-image" src="https://assets.leetcode.com/uploads/2021/04/08/leftsum-tree.jpg"
-    alt="tree node example">
-  <p>Note that in the following, a value of -1 denotes a "null" leaf. If a problem's input depends on this value, use
-    <code>treenode_create()</code> to create each node individually.
-  </p>
-  <pre><code class="language-c">int main() {
+    <h4><code>TreeNode</code> Data Type</h4>
+    <img
+      class="inline-image"
+      src="https://assets.leetcode.com/uploads/2021/04/08/leftsum-tree.jpg"
+      alt="tree node example"
+    />
+    <p>
+      Note that in the following, a value of -1 denotes a "null" leaf. If a problem's input depends
+      on this value, use <code>treenode_create()</code> to create each node individually.
+    </p>
+    <pre><code class="language-c">int main() {
       int input[] = {3, 9, 20, -1, -1, 15, 7};
       struct TreeNode *root = treenode_build(input, ARRAY_SIZE(input));
       treenode_print(root);
       treenode_free(root);
       }</code></pre>
-  <h4>2D Array Helpers</h4>
-  <p>These functions dynamically allocate and fill a 2D array with values from a static array of values.</p>
-  <pre><code class="language-c">int func(int **edges, int edgesSize, int *edgesColSize);
+    <h4>2D Array Helpers</h4>
+    <p>
+      These functions dynamically allocate and fill a 2D array with values from a static array of
+      values.
+    </p>
+    <pre><code class="language-c">int func(int **edges, int edgesSize, int *edgesColSize);
 
       int main() {
       int edges_input[6][2] = {{0, 1}, {0, 2}, {1, 3}, {1, 4}, {2, 5}, {2, 6}};
@@ -70,29 +89,35 @@
       two_d_arr_free(edges);
       }
     </code></pre>
-  <p>If a problem's input has varying sized columns, one must create a array specifying each column's size and pass that
-    to the function, instead of <code>struct two_d_arr.col_size</code>.</p>
-  <h3>Python Utilities</h3>
-  <p>Quite similar to the above, <a href="https://git.pngu.org/leetcode/tree/leetcode.py"
-      target="_blank"><code>leetcode.py</code></a>
-    contains helpers to work Leetcode data structures. Python, of course, does not require special handling for things
-    like 2D arrays.</p>
-  <h4><code>ListNode</code> Data Type</h4>
-  <pre><code class="language-python">from leetcode import ListNode, listnode_build, listnode_print
+    <p>
+      If a problem's input has varying sized columns, one must create a array specifying each
+      column's size and pass that to the function, instead of
+      <code>struct two_d_arr.col_size</code>.
+    </p>
+    <h3>Python Utilities</h3>
+    <p>
+      Quite similar to the above,
+      <a href="https://git.pngu.org/leetcode/tree/leetcode.py" target="_blank"
+        ><code>leetcode.py</code></a
+      >
+      contains helpers to work Leetcode data structures. Python, of course, does not require special
+      handling for things like 2D arrays.
+    </p>
+    <h4><code>ListNode</code> Data Type</h4>
+    <pre><code class="language-python">from leetcode import ListNode, listnode_build, listnode_print
 
       if __name__ == "__main__":
       head = listnode_build(vals=[0, 3, 1, 0, 4, 5, 2, 0])
       listnode_print(head)
     </code></pre>
-  <h4><code>TreeNode</code> Data Type</h4>
-  <p>Note that in the following, a value of <code>None</code> denotes a "null" leaf.</p>
-  <pre><code class="language-python">from leetcode import TreeNode, treenode_build, treenode_print
+    <h4><code>TreeNode</code> Data Type</h4>
+    <p>Note that in the following, a value of <code>None</code> denotes a "null" leaf.</p>
+    <pre><code class="language-python">from leetcode import TreeNode, treenode_build, treenode_print
 
       if __name__ == "__main__":
       root = treenode_build(vals=[3, 9, 20, None, None, 15, 7])
       treenode_print(root)
     </code></pre>
-  <script src="frame.js"></script>
-</body>
-
+    <script src="frame.js"></script>
+  </body>
 </html>

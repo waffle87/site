@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Manually booting from GRUB</title>
+    <script src="header.js"></script>
+  </head>
+  <body>
+    <a style="text-decoration: none" href="content.html">&lt;--</a>
+    <h2>Manually booting from GRUB</h2>
+    <p><i>2026-02-23</i></p>
+    <hr />
+    <p>
+      Sometimes, (at the fault of my own) GRUB falls over and fails to boot my system. Assuming this
+      is not a catastrophic issue and more so something like mistakenly forgetting a
+      <code>grub-mkconfig</code> after installing a different kernel, or the kernel complaining it
+      does not have the correct root partition passed to its boot parameters, not all hope is lost.
+      Reboot and enter GRUB's command line (pressing C) and poke through the available file systems
+      to find where the kernel and initramfs live:
+    </p>
+    <pre><code>grub&gt; ls
+(hd0) (hd0,gpt0) (hd0,gpt1) (hd0,gpt2)
+grub&gt; ls (hd0,gpt1)/
+vmlinuz-6.10 vmlinuz-6.10.old initramfs-6.10 initramfs-6.10.old
+grub&gt; root=(hd0,gpt1)
+grub&gt; linux /boot/vmlinuz-6.10 root=/dev/sda3
+grub&gt; initrd /boot/initramfs-6.10
+grub&gt; boot
+</code></pre>
+    <p>
+      Here, <code>/dev/sda3</code> is the partition value passed to the kernel to boot. This is
+      where <code>/</code> lives. However, one may consider omitting GRUB entirely and booting
+      directly from an EFI Stub.
+    </p>
+    <script src="frame.js"></script>
+  </body>
+</html>

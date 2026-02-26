@@ -1,0 +1,82 @@
+00:00.0 Host bridge: Intel Corporation Broadwell-U Host Bridge -OPI (rev 09)
+        DeviceName: SATA
+        Subsystem: Apple Inc. Device 011b
+        Kernel driver in use: bdw_uncore
+00:02.0 VGA compatible controller: Intel Corporation Broadwell-U GT3 [HD Graphics 6000] (rev 09)
+        Subsystem: Apple Inc. Device 011b
+        Kernel driver in use: i915
+        Kernel modules: i915
+00:03.0 Audio device: Intel Corporation Broadwell-U Audio Controller (rev 09)
+        Subsystem: Apple Inc. Device 011b
+        Kernel driver in use: snd_hda_intel
+        Kernel modules: snd_hda_intel
+00:14.0 USB controller: Intel Corporation Wildcat Point-LP USB xHCI Controller (rev 03)
+        Subsystem: Intel Corporation Device 7270
+        Kernel driver in use: xhci_hcd
+        Kernel modules: xhci_pci
+00:15.0 DMA controller: Intel Corporation Wildcat Point-LP Serial IO DMA Controller (rev 03)
+        Subsystem: Intel Corporation Wildcat Point-LP Serial IO DMA Controller
+        Kernel driver in use: dw_dmac_pci
+00:15.4 Serial bus controller: Intel Corporation Wildcat Point-LP Serial IO GSPI Controller #1 (rev 03)
+        Subsystem: Intel Corporation Wildcat Point-LP Serial IO GSPI Controller #1
+        Kernel driver in use: pxa2xx_spi_pci
+        Kernel modules: spi_pxa2xx_pci
+00:16.0 Communication controller: Intel Corporation Wildcat Point-LP MEI Controller #1 (rev 03)
+        Subsystem: Intel Corporation Device 7270
+        Kernel driver in use: mei_me
+        Kernel modules: mei_me
+00:1b.0 Audio device: Intel Corporation Wildcat Point-LP High Definition Audio Controller (rev 03)
+        Subsystem: Intel Corporation Device 7270
+        Kernel driver in use: snd_hda_intel
+        Kernel modules: snd_hda_intel
+00:1c.0 PCI bridge: Intel Corporation Wildcat Point-LP PCI Express Root Port #1 (rev e3)
+        Subsystem: Intel Corporation Device 7270
+        Kernel driver in use: pcieport
+00:1c.1 PCI bridge: Intel Corporation Wildcat Point-LP PCI Express Root Port #2 (rev e3)
+        Subsystem: Intel Corporation Device 7270
+        Kernel driver in use: pcieport
+00:1c.2 PCI bridge: Intel Corporation Wildcat Point-LP PCI Express Root Port #3 (rev e3)
+        Subsystem: Intel Corporation Device 7270
+        Kernel driver in use: pcieport
+00:1c.4 PCI bridge: Intel Corporation Wildcat Point-LP PCI Express Root Port #5 (rev e3)
+        Subsystem: Intel Corporation Device 7270
+        Kernel driver in use: pcieport
+00:1c.5 PCI bridge: Intel Corporation Wildcat Point-LP PCI Express Root Port #6 (rev e3)
+        Subsystem: Intel Corporation Device 7270
+        Kernel driver in use: pcieport
+00:1f.0 ISA bridge: Intel Corporation Wildcat Point-LP LPC Controller (rev 03)
+        Subsystem: Intel Corporation Device 7270
+        Kernel driver in use: lpc_ich
+        Kernel modules: lpc_ich
+00:1f.3 SMBus: Intel Corporation Wildcat Point-LP SMBus Controller (rev 03)
+        Subsystem: Intel Corporation Device 7270
+        Kernel driver in use: i801_smbus
+        Kernel modules: i2c_i801
+00:1f.6 Signal processing controller: Intel Corporation Wildcat Point-LP Thermal Management Controller (rev 03)
+        Subsystem: Intel Corporation Device 7270
+        Kernel driver in use: intel_pch_thermal
+        Kernel modules: intel_pch_thermal
+02:00.0 Multimedia controller: Broadcom Inc. and subsidiaries 720p FaceTime HD Camera
+        Subsystem: Broadcom Inc. and subsidiaries 720p FaceTime HD Camera
+03:00.0 Network controller: Broadcom Inc. and subsidiaries BCM4360 802.11ac Dual Band Wireless Network Adapter (rev 03)
+        Subsystem: Apple Inc. Device 0117
+        Kernel driver in use: wl
+        Kernel modules: bcma, wl
+04:00.0 SATA controller: Samsung Electronics Co Ltd S4LN058A01[SSUBX] AHCI SSD Controller (Apple slot) (rev 01)
+        Subsystem: Samsung Electronics Co Ltd S4LN058A01[SSUBX] AHCI SSD Controller (Apple slot)
+        Kernel driver in use: ahci
+05:00.0 PCI bridge: Intel Corporation DSL5320 Thunderbolt 2 Bridge [Falcon Ridge 2C 2013]
+        Kernel driver in use: pcieport
+06:00.0 PCI bridge: Intel Corporation DSL5320 Thunderbolt 2 Bridge [Falcon Ridge 2C 2013]
+        Kernel driver in use: pcieport
+06:03.0 PCI bridge: Intel Corporation DSL5320 Thunderbolt 2 Bridge [Falcon Ridge 2C 2013]
+        Kernel driver in use: pcieport
+06:04.0 PCI bridge: Intel Corporation DSL5320 Thunderbolt 2 Bridge [Falcon Ridge 2C 2013]
+        Kernel driver in use: pcieport
+06:05.0 PCI bridge: Intel Corporation DSL5320 Thunderbolt 2 Bridge [Falcon Ridge 2C 2013]
+        Kernel driver in use: pcieport
+06:06.0 PCI bridge: Intel Corporation DSL5320 Thunderbolt 2 Bridge [Falcon Ridge 2C 2013]
+        Kernel driver in use: pcieport
+07:00.0 System peripheral: Intel Corporation DSL5320 Thunderbolt 2 NHI [Falcon Ridge 2C 2013]
+        Kernel driver in use: thunderbolt
+        Kernel modules: thunderbolt

@@ -9,9 +9,355 @@
   <body>
     <a style="text-decoration: none" href="content.html">&lt;--</a>
     <h2>Artix Laptop</h2>
-    <p><i>2026-02-19</i></p>
+    <p><i>2024-11-19</i></p>
     <hr />
-    <p>This page covers my 2013 Macbook Air (A1466) running Artix Linux.</p>
+    <p>
+      This page covers various features, hardware, and notes of my 2015 Macbook Air 7,2 (A1466)
+      running Artix Linux. This is my primary system out and about. My system configuration can be
+      found
+      <a href="https://git.pngu.org/dots/tree/?h=pluto" target="_blank">here</a>. The programs I use
+      on this system can mostly found <a href="programs.html">here</a>.
+    </p>
+    <h3>Hardware</h3>
+    <h4>Hardware Overview</h4>
+    <ul>
+      <li>Intel i7 5650U 4-core @ 2.20GHz</li>
+      <li>Intel 3rd Gen Graphics</li>
+      <li>8 GiB Memory</li>
+      <li>1 TB NVMe Samsung 970 SSD</li>
+      <li>Broadcom BCM4360 Network Controller</li>
+      <li>Broadcom BCM2046 Bluetooth Controller</li>
+      <li>Broadcom BCM5974 Touchpad</li>
+      <li>13" 1440x900 LCD Display</li>
+      <li>2x USB 3.0, 1x SDXC Reader, 1x Thunderbolt 2</li>
+      <li>
+        <a href="data/laptop_lspci" target="_blank"><code>lspci</code></a
+        >, <a href="data/laptop_lscpu" target="_blank"><code>lscpu</code></a>
+      </li>
+    </ul>
+    <h4>Hardware Modifications</h4>
+    <h5>SSD</h5>
+    <p>
+      Since Apple began using NVMe SSDs, they have used own proprietary ones with non-standard
+      connectors. This machine originally came with a 128 GiB Samsung "blade" SSD, which I was not
+      keen on keeping. There exists
+      <a href="https://www.microconnectors.com/macbook-m-2-nvme-upgrade-adapter" target="_blank"
+        >adapters</a
+      >
+      which act as a bridge between a standard NVMe SSD and Apple's connector. Installation is quite
+      straight forward and takes about 5 minutes.
+    </p>
+    <h5>Battery</h5>
+    <p>
+      Ten years on, this laptop's original battery lasted about 30 minutes and would lose power
+      randomly. A suitable
+      <a
+        href="https://www.ifixit.com/products/macbook-air-13-late-2010-2017-replacement-battery"
+        target="_blank"
+        >replacement</a
+      >
+      can be found for about 60 USD (or less on Aliexpress...). With this, battery life is about 5
+      hours, which is half decent for an Intel laptop, and mostly acccredited to TLP and thermald.
+    </p>
+    <h5>RAM</h5>
+    <p>
+      While not done on this specific model, I replaced the original 4 GiB of memory present on one
+      of my other similar (EMC2559) Macbooks with
+      <a href="https://www.aliexpress.com/item/3256808958665315.html" target="_blank"
+        >16 GiB memory</a
+      >. This was not particularly difficult, but time consuming &mdash; it took about 10 hours
+      total. This
+      <a href="https://rewa.tech/upgrade-macbook-air-a1466-to-i7-cpu-16gb-ram" target="_blank"
+        >write up</a
+      >
+      was particularly helpful, especially regarding the resistor modifications.
+    </p>
+    <img class="inline-image" src="data/laptop_open.jpg" alt="laptop_open.jpg" />
+    <h3>System</h3>
+    <h4>File System</h4>
+    <h5>Overview</h5>
+    <p>
+      One of the notable aspects is the fact the entire installation uses the
+      <a href="https://openzfs.github.io/openzfs-docs" target="_blank">Z file system (ZFS)</a>. This
+      poses a bit of a learning curve for first time ZFS users, however is ultimately very
+      convenient for the file system and logical volume manager to be combined in one tool. While
+      many of ZFS's features are not all that important on a laptop like this, some are still nice
+      to have like snapshots. I have one (root) pool that splits up the standard layout of a Linux
+      system into multiple datasets:
+    </p>
+    <pre><code>NAME                                  USED  AVAIL  REFER  MOUNTPOINT
+kepler_rpool                         30.7G   904G    96K  none
+kepler_rpool/DATA                    14.3G   904G    96K  none
+kepler_rpool/DATA/default            14.3G   904G    96K  none
+kepler_rpool/DATA/default/home       14.2G   904G  14.2G  /home
+kepler_rpool/DATA/default/opt         116M   904G   116M  /opt
+kepler_rpool/DATA/default/root        200K   904G   200K  /root
+kepler_rpool/DATA/default/usr        1.02M   904G    96K  /usr
+kepler_rpool/DATA/default/usr/local   952K   904G   952K  /usr/local
+kepler_rpool/DATA/default/var         628K   904G    96K  /var
+kepler_rpool/DATA/default/var/lib      96K   904G    96K  /var/lib
+kepler_rpool/DATA/default/var/log     316K   904G   316K  /var/log
+kepler_rpool/DATA/default/var/tmp     120K   904G   120K  /var/tmp
+kepler_rpool/ROOT                    16.4G   904G    96K  none
+kepler_rpool/ROOT/default            16.4G   904G  14.3G  /</code></pre>
+    <p>
+      This system has no need for a separate boot pool, as there is no bootloader. Another fun note
+      is that because ZFS handles mounting all partitions, there is no need for a
+      <code>/etc/fstab</code> file on this system.
+    </p>
+    <h5>Kernel Version</h5>
+    <p>
+      An important note about ZFS, is that is not compatible with mainline kernel development, and
+      lags a couple releases behind. Check release notes
+      <a href="https://github.com/openzfs/zfs/releases" target="_blank">here</a> for what version
+      ZFS is installed and pin kernel and kernel headers packages at something appropriate. This can
+      be done in Pacman like:
+    </p>
+    <pre><code>curl -O https://archive.archlinux.org/packages/l/linux-lts/linux-lts-6.12.74-1-x86_64.pkg.tar.zst
+curl -O https://archive.archlinux.org/packages/l/linux-lts-headers/linux-lts-headers-6.12.74-1-x86_64.pkg.tar.zst
+
+pacman -U linux-lts-6.12.74-1-x86_64.pkg.tar.zst
+pacman -U linux-lts-headers-6.12.74-1-x86_64.pkg.tar.zst</code></pre>
+    <p>
+      And add <code>linux-lts</code> and <code>linux-lts-headers</code> under the
+      <code>IgnorePkg</code> field in <code>/etc/pacman.conf</code> to prevent these packages from
+      automatically being upgraded.
+    </p>
+    <h5>Live Environment</h5>
+    <p>
+      There have been a couple times where I need to access this system via a live USB environment,
+      which is a little different than a system with a more typical file system. The first
+      consideration is that the live system must include ZFS utilities (<code>zfs-utils</code>) and
+      kernel modules (<code>zfs-dkms</code>). These can of course be obtained in the live
+      environment with a network connection, however, the kernel driver for this laptop's network
+      controller is not part of the Linux kernel. Thus, a network connection proves to be quite a
+      hassle. Ubuntu ISO images (e.g. 24.04 LTS) include both of these tools and make a suitable
+      live environment.
+      <br />
+      Once in the live environment and loading the ZFS kernel module, it is important to ensure the
+      Ubuntu system does not write its <code>hostid</code> to the zpool (<code>kepler_rpool</code>
+      in this case). Import it with no cache file and to an appropriate temporary location:
+    </p>
+    <pre><code>zpool import -f -o cachefile=none -o altroot=/mnt -R /mnt kepler_rpool</code></pre>
+    <p>Once imported, mounted pseudo file systems and <code>chroot</code> as normal:</p>
+    <pre><code>mount --rbind /dev  /mnt/dev
+mount --rbind /sys  /mnt/sys
+mount --rbind /proc /mnt/proc
+mount --rbind /run  /mnt/run
+
+chroot /mnt /bin/bash</code></pre>
+    <p>After fixing whatever is broke, exit and export pool(s):</p>
+    <pre><code>exit
+zpool export kepler_rpool
+umount -a
+    </code></pre>
+    <h4>Bootloader</h4>
+    <p>
+      As eluded to above, this system does not have a traditional bootloader, like GRUB. Being a
+      laptop, my needs are fairly minimal, and I have no need for alternate operating systems or
+      multiple kernels. Thus, a
+      <a href="https://uapi-group.org/specifications/specs/unified_kernel_image" target="_blank"
+        >UKI</a
+      >
+      can be used. This creates a bootable image that includes microcode, kernel image, etc. into
+      one binary that can be exposed to BIOS and booted via UEFI, or also a bootloader like GRUB. As
+      this system uses ZFS, configuring this is not quite as straight forward as my
+      <a href="gentoo_desktop.html/">Gentoo system's UKI</a>, but still doable.
+    </p>
+    <ol>
+      <li>
+        <p>
+          A "stub loader" is required, which is part of the Systemd package. Unfortunately, no such
+          package exists for Artix that includes only systemd utilities with no dependency on other
+          systemd components, like
+          <a href="https://packages.gentoo.org/packages/sys-apps/systemd-utils" target="_blank"
+            >there is for Gentoo</a
+          >. Luckily, the single file needed from systemd is a portable executable that handles the
+          transition between UEFI and the Linux kernel;
+          <a href="https://man.archlinux.org/man/linuxx64.efi.stub.7.en" target="_blank"
+            ><code>linuxx64.efi.stub</code></a
+          >. Obtain this file manually from the systemd package:
+        </p>
+        <pre><code>curl -O https://archive.archlinux.org/packages/s/systemd/systemd-259.1-1-x86_64.pkg.tar.zst
+bsdtar -xvf systemd-259.1-1-x86_64.pkg.tar.zst
+cp usr/lib/systemd/boot/efi/linuxx64.efi.stub /usr/lib/systemd/boot/efi/</code></pre>
+        <p>
+          Create this directory and its parents if needed. Dracut will search for this executable
+          here.
+        </p>
+      </li>
+      <li>
+        <p>
+          Dracut is the tool itself that creates the UKI. On a system using ZFS and OpenRC, some
+          additional configuration is needed to omit some systemd modules that will not exist on
+          this system, include ZFS-specific modules and files, and set the kernel command line
+          parameters.
+        </p>
+        <pre><code class="language-shell"># /etc/dracut.conf.d/uki_openrc_zfs.conf
+
+omit_dracutmodules+=" systemd-initrd systemd-networkd dracut-systemd "
+
+install_items+=" /etc/hostid /etc/zfs/zpool.cache "
+add_dracutmodules+=" zfs "
+filesystems+=" zfs "
+
+kernel_cmdline="root=ZFS=kepler_rpool/ROOT/default ro"
+        </code></pre>
+      </li>
+      <li>
+        <p>
+          Now, generate and install the UKI itself. On this system, since the ESP is not used at
+          runtime at all and does not need to be mounted, it is simply a VFAT filesystem on a 512 M
+          partition. In the case of this system, first mount this partition:
+        </p>
+        <pre><code>mount /dev/sda1 /boot</code></pre>
+        <p>Create the UKI (create the appropriate directories as necessary):</p>
+        <pre><code>dracut --uefi /boot/efi/EFI/Linux/artix-zfs-linux-$(uname -r) $(uname-r)</code></pre>
+        The directory should look like:
+        <pre><code>tree /boot
+/boot
+/boot/EFI
+/boot/EFI/Linux
+/boot/EFI/Linux/artix-zfs-linux-x.y.z</code></pre>
+        <p>Create a UEFI entry to expose the EFI stub using <code>efibootmgr</code>:</p>
+
+        <pre><code>efibootmgr --create --disk /dev/sdX --part partition_number --label "Artix Linux x.y.z" --loader 'EFI\Linux\artix-zfs-linux-$(uname -r).efi'</code></pre>
+        <p>
+          Above, the <code>disk</code> parameter should be only the identifier of the entire disk
+          (e.g. <code>sda</code>), and the <code>part</code> parameter is the partition number (e.g.
+          simply "1" if the ESP is on <code>/dev/sda1</code>).
+        </p>
+      </li>
+    </ol>
+    <h4>Laptop Utilities</h4>
+    <p>tlp, thermald, brightnessctl</p>
+    <p>
+      Across most of my systems, many of the utilities remain the same. There are a couple extra
+      packages that are useful on a laptop, or at least this one.
+    </p>
+    <ul>
+      <li>
+        <a href="https://github.com/Hummer12007/brightnessctl" target="_blank">brightnessctl</a>
+        <p>
+          Used to control both display brightness and keyboard backlight. On this hardware,
+          <code>CONFIG_APPLE_BACKLIGHT</code> and <code>CONFIG_SENSORS_APPLESMC</code> must be set
+          in the kernel. This functionality can be mapped in Sway:
+        </p>
+        <pre><code>bindsym XF86MonBrightnessDown exec brightnessctl -q set 10%-
+bindsym XF86MonBrightnessUp   exec brightnessctl -q set +10%
+bindsym XF86KbdBrightnessDown exec brightnessctl -q --device='smc::kbd_backlight' set 10%-
+bindsym XF86KbdBrightnessUp   exec brightnessctl -q --device='smc::kbd_backlight' set +10%</code></pre>
+      </li>
+      <li>
+        <a href="https://github.com/linrunner/TLP" target="_blank">TLP</a>
+        <p>
+          A tool that helps manage and conserve power usage on laptops. Requires zero configuration
+          and shows quite noticeable differences. Simply enable and start the service.
+        </p>
+      </li>
+      <li>
+        <a href="https://github.com/intel/thermal_daemon" target="_blank">thermald</a>
+        <p>
+          A tool for Intel CPUs that manages thermal state and prevents overheating. Knowing that
+          Intel processors run on the warmer and less energy efficient side, this both helps
+          conserve energy and prevent burns. Also requires zero configuration, and simply for the
+          service to be started.
+        </p>
+      </li>
+    </ul>
+    <h4>Miscellaneous</h4>
+    <h5>Pacman Hooks</h5>
+    <p>
+      The Pacman package manager has a feature that allows for a script to be run at some point
+      during its execution &mdash; e.g. after package installation, before, etc. I use this for two
+      things:
+    </p>
+    <ol>
+      <li>
+        <p>
+          Pacman archives multiple versions of packages after updating or even removing then (the
+          latter is actually quite useful if you, perhaps, are over eager and remove a package
+          required for networking, it can be reinstalled easily, despite you breaking your network
+          connectivity). The <code>paccache</code> tool from
+          <a href="https://archlinux.org/packages/extra/x86_64/pacman-contrib" target="_blank"
+            >pacman-contrib</a
+          >
+          package removes these cached files, but also allows for, say, 2 versions to be kept.
+        </p>
+        <pre><code># /etc/pacman.d/hooks/cache_cleanup.hook
+
+[Trigger]
+Type = Package
+Operation = Remove
+Operation = Install
+Operation = Upgrade
+Target = *
+
+[Action]
+Description = Removing unnecessary cached files...
+When = PostTransaction
+Exec = /usr/bin/paccache -rvk2</code></pre>
+      </li>
+      <li>
+        <p>
+          I have a preference to use Clang over GCC for compiling code locally. I also have a habit
+          of calling <code>cc foo.c</code>, rather than the full utility. The GCC package (from the
+          Arch repositories at least) is who owns/installs the <code>/usr/bin/cc</code> symlink.
+          This Pacman hook "fixes" this.
+        </p>
+        <pre><code># /etc/pacman.d/hooks/cc_link_clang.hook
+
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = gcc
+
+[Action]
+Description = Replacing /usr/bin/cc symlink with Clang after GCC update
+When = PostTransaction
+Exec = /usr/bin/ln -f /usr/bin/clang /usr/bin/cc
+Depends = clang</code></pre>
+      </li>
+    </ol>
+    <h5>Disable Startup Chime</h5>
+    <p>
+      Another QOL modification for me was disable the (obnoxious) startup sound present on all Macs.
+      This can be achieved by modifying an EFI variable. This requires the
+      <code>CONFIG_EFIVAR_FS</code> parameter to be set, although most configurations should enable
+      this by default. Install the
+      <a href="https://archlinux.org/packages/?name=efivar" target="_blank">efivar</a> package and
+      mount the <code>efivarfs</code> partition:
+    </p>
+    <pre><code>mount -t efivarfs efivarfs /sys/firmware/efi/efivars</code></pre>
+    <p>
+      This partition does not need to remain mounted after modification. The follow commands that
+      actually make the changes must be ran as proper root, not just with elevated permissions.
+    </p>
+    <ol>
+      <li>
+        <p>
+          Remove the immutable flag from the appropriate file. This should remain the same across
+          most Macbooks, however one can list out available efivars to be sure:
+        </p>
+        <pre><code>chattr -i /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82</code></pre>
+      </li>
+      <li>
+        <p>
+          Mac's EFI terminal uses the
+          <a href="https://en.wikipedia.org/wiki/ANSI_escape_code#C0_control_codes" target="_blank"
+            >bell code</a
+          >, <code>0x07</code>, to audibly play system messages/warnings. It can be set to null
+          characters to silence it:
+        </p>
+        <pre><code>printf "\x07\x00\x00\x00\x00" &gt; /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82</code></pre>
+      </li>
+      <li>
+        <p>Lastly, replace the immutable flag:</p>
+        <pre><code>chattr +i /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82</code></pre>
+      </li>
+    </ol>
+    <h3>Screenshots</h3>
     <img
       class="inline-image"
       src="https://raw.githubusercontent.com/waffle87/dots/refs/heads/kepler/.img/fetch.png"

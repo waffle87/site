@@ -10,8 +10,28 @@
           Helvetica,
           Arial,
           sans-serif;
-        background-color: #57baac;
+        background-color: white;
         color: white;
+      }
+
+      .outer {
+        display: table;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+      }
+
+      .middle {
+        display: table-cell;
+        vertical-align: middle;
+      }
+
+      .inner {
+        margin-left: auto;
+        margin-right: auto;
+        width: 400px;
       }
 
       /* ---- cube---- */
@@ -134,9 +154,9 @@
     </style>
   </head>
   <body>
-    <center>
-      <div class="scene scene--hero">
-        <div class="cube cube--hero is-spinning">
+    <div class="outer">
+      <div class="middle scene scene--hero">
+        <div class="inner cube cube--hero is-spinning">
           <div class="cube__face cube__face--front">404</div>
           <div class="cube__face cube__face--right">Oops!</div>
           <div class="cube__face cube__face--back">pngu.org</div>
@@ -145,6 +165,6 @@
           <div class="cube__face cube__face--bottom">Not Found</div>
         </div>
       </div>
-    </center>
+    </div>
   </body>
 </html>

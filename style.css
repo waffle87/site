@@ -93,7 +93,37 @@ pre {
 }
 
 .inline-image {
+  cursor: pointer;
+  max-width: 100%;
   display: block;
   margin: 10px 0px;
-  width: 100%;
+}
+
+.image-footer {
+  text-align: center;
+  font-style: italic;
+  font-size: 75%;
+}
+
+.lightbox-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+}
+
+.lightbox-overlay.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-overlay img {
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.lightbox-trigger {
+  cursor: pointer;
 }

@@ -43,16 +43,90 @@
               `"""</code></pre>
     <p>
       There is not much to discuss in terms of intricate system configuration or hardware quirks.
-      All services run in Docker containers, configured via Docker Compose. These include...
+      (Almost) all services run in Docker containers, configured via Docker Compose. One external
+      network links each container to the Caddy web server container, allowing each container to be
+      configured and run independently:
     </p>
-    <h3><a href="https://agendav.readthedocs.io" target="_blank">Agendav</a></h3>
-    <h3><a href="https://sabre.io/baikal" target="_blank">Ba&iuml;kal</a></h3>
-    <h3><a href="https://caddyserver.com" target="_blank">Caddy</a></h3>
-    <h3><a href="https://git.zx2c4.com/cgit" target="_blank">Cgit</a></h3>
-    <h3><a href="https://uptimekuma.org" target="_blank">Kuma</a></h3>
-    <h3><a href="https://roundcube.net" target="_blank">Roundcube</a></h3>
-    <h3><a href="https://stalw.art" target="_blank">Stalwart</a></h3>
-    <h3><a href="https://www.vaultwarden.net" target="_blank">Vaultwarden</a></h3>
+    <pre><code>services:
+  foo:
+    networks:
+      - caddybridge
+
+networks:
+  caddybridge:
+    external: true</code></pre>
+    <p>
+      If a container requires additional images within, like a database, an internal network is
+      used:
+    </p>
+    <pre><code>services:
+  foo:
+    networks:
+      - caddybridge
+      - foo_dbnet
+
+  db:
+    image: mariadb
+    container_name: foo_db
+    restart: unless-stopped
+    environment:
+    MYSQL_RANDOM_ROOT_PASSWORD: yes
+    MARIADB_DATABASE: foo
+    MARIADB_USER: foo_user
+    MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+    volumes:
+      - ./db:/var/lib/mysql
+    networks:
+      - vaultwarden_dbnet
+
+networks:
+  caddybridge:
+    external: true
+  foo_dbnet:
+    internal: true</code></pre>
+    <p>
+      I use MariaDB for any database needs, where possible, for consistency and as it is quite
+      lightweight.
+    </p>
+    <h3><a href="https://agendav.readthedocs.io" target="_blank">Agendav</a> (Calendar client)</h3>
+    <ul>
+      <li><a href="https://git.pngu.org/server/tree/agendav" target="_blank">Configuration</a></li>
+    </ul>
+    <h3><a href="https://sabre.io/baikal" target="_blank">Ba&iuml;kal</a> (CalDav server)</h3>
+    <ul>
+      <li><a href="https://git.pngu.org/server/tree/baikal" target="_blank">Configuration</a></li>
+    </ul>
+    <h3><a href="https://caddyserver.com" target="_blank">Caddy</a> (Web server)</h3>
+    <ul>
+      <li><a href="https://git.pngu.org/server/tree/caddy" target="_blank">Configuration</a></li>
+    </ul>
+    <h3><a href="https://git.zx2c4.com/cgit" target="_blank">Cgit</a> (Git client)</h3>
+    <ul>
+      <li><a href="https://git.pngu.org/server/tree/cgit" target="_blank">Configuration</a></li>
+    </ul>
+    <h3><a href="https://gitolite.com" target="_blank">Gitolite</a> (Git server)</h3>
+    <h3><a href="https://uptimekuma.org" target="_blank">Kuma</a> (System monitor)</h3>
+    <ul>
+      <li><a href="https://git.pngu.org/server/tree/kuma" target="_blank">Configuration</a></li>
+    </ul>
+    <h3><a href="https://roundcube.net" target="_blank">Roundcube</a> (Webmail client)</h3>
+    <ul>
+      <li>
+        <a href="https://git.pngu.org/server/tree/roundcube" target="_blank">Configuration</a>
+      </li>
+    </ul>
+    <h3><a href="https://stalw.art" target="_blank">Stalwart</a> (Mail server)</h3>
+    <ul>
+      <li><a href="https://git.pngu.org/server/tree/stalwart" target="_blank">Configuration</a></li>
+    </ul>
+    <h3>
+      <a href="https://www.vaultwarden.net" target="_blank">Vaultwarden</a> (Password manager)
+    </h3>
+    <ul>
+      <li>
+        <a href="https://git.pngu.org/server/tree/vaultwarden" target="_blank">Configuration</a>
+      </li>
+    </ul>
     <script src="frame.js"></script>
   </body>
 </html>

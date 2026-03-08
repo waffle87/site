@@ -140,17 +140,16 @@ pacman -U linux-lts-headers-6.12.74-1-x86_64.pkg.tar.zst</code></pre>
     </p>
     <pre><code>zpool import -f -o cachefile=none -o altroot=/mnt -R /mnt kepler_rpool</code></pre>
     <p>Once imported, mounted pseudo file systems and <code>chroot</code> as normal:</p>
-    <pre><code>mount --rbind /dev  /mnt/dev
-mount --rbind /sys  /mnt/sys
+    <pre><code>mount --rbind /dev /mnt/dev
+mount --rbind /sys /mnt/sys
 mount --rbind /proc /mnt/proc
-mount --rbind /run  /mnt/run
+mount --rbind /run /mnt/run
 
 chroot /mnt /bin/bash</code></pre>
     <p>After fixing whatever is broke, exit and export pool(s):</p>
     <pre><code>exit
 zpool export kepler_rpool
-umount -a
-    </code></pre>
+umount -a</code></pre>
     <h4>Bootloader</h4>
     <p>
       As eluded to above, this system does not have a traditional bootloader, like GRUB. Being a
@@ -201,8 +200,7 @@ install_items+=" /etc/hostid /etc/zfs/zpool.cache "
 add_dracutmodules+=" zfs "
 filesystems+=" zfs "
 
-kernel_cmdline="root=ZFS=kepler_rpool/ROOT/default ro"
-        </code></pre>
+kernel_cmdline="root=ZFS=kepler_rpool/ROOT/default ro"</code></pre>
       </li>
       <li>
         <p>
@@ -212,8 +210,13 @@ kernel_cmdline="root=ZFS=kepler_rpool/ROOT/default ro"
         </p>
         <pre><code>mount /dev/sda1 /boot</code></pre>
         <p>Create the UKI (create the appropriate directories as necessary):</p>
-        <pre><code>dracut --uefi /boot/efi/EFI/Linux/artix-zfs-linux-$(uname -r) $(uname-r)</code></pre>
-        The directory should look like:
+        <pre><code>dracut --uefi /boot/EFI/Linux/artix-zfs-linux-kver x.y.z</code></pre>
+        <p>
+          Note, the final argument in the above (<code>x.y.z</code>) is the kernel version dracut
+          will build the UKI for. This corresponds to the structure of
+          <code>/lib/modules/...</code>, and an argument of <code>$(uname -r)</code> for example,
+          will search in <code>/lib/modules/$(uname -r)</code>. After, the ESP should look like:
+        </p>
         <pre><code>tree /boot
 /boot
 /boot/EFI
@@ -221,7 +224,7 @@ kernel_cmdline="root=ZFS=kepler_rpool/ROOT/default ro"
 /boot/EFI/Linux/artix-zfs-linux-x.y.z</code></pre>
         <p>Create a UEFI entry to expose the EFI stub using <code>efibootmgr</code>:</p>
 
-        <pre><code>efibootmgr --create --disk /dev/sdX --part partition_number --label "Artix Linux x.y.z" --loader 'EFI\Linux\artix-zfs-linux-$(uname -r).efi'</code></pre>
+        <pre><code>efibootmgr --create --disk /dev/sdX --part partition_number --label "Artix Linux x.y.z" --loader 'EFI\Linux\artix-zfs-linux-kver.efi'</code></pre>
         <p>
           Above, the <code>disk</code> parameter should be only the identifier of the entire disk
           (e.g. <code>sda</code>), and the <code>part</code> parameter is the partition number (e.g.
@@ -230,7 +233,6 @@ kernel_cmdline="root=ZFS=kepler_rpool/ROOT/default ro"
       </li>
     </ol>
     <h4>Laptop Utilities</h4>
-    <p>tlp, thermald, brightnessctl</p>
     <p>
       Across most of my systems, many of the utilities remain the same. There are a couple extra
       packages that are useful on a laptop, or at least this one.

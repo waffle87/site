@@ -255,12 +255,22 @@ autoload -U compinit && compinit</code></pre>
         </p>
       </li>
       <li>
-        <a href="https://gitlab.freedesktop.org/emersion/grim" target="_blank">grim</a>
-        <ul>
-          <li>
-            <a href="https://github.com/emersion/slurp" target="_blank">slurp</a>
-          </li>
-        </ul>
+        <a href="https://gitlab.com/chinstrap/gammastep" target="_blank">Gammastep</a>
+        <p>
+          A fork of the
+          <a href="https://github.com/jonls/redshift" target="_blank">Redshift</a> program that
+          adjusts screen temperature (optionally, at sunset). Gammastep is also Wayland-compatible.
+          It can be enabled based on simply time or sunset/sunrise times in a given
+          latitude/longitude. For the latter, geographical coordinates can be manually set, or
+          <a href="https://github.com/erfanoabdi/geoclue" target="_blank">Geoclue</a> can be used to
+          determine location automatically, which is suitable for a laptop. Gammastep's defaults
+          work well for me, and it can simply be started by Sway:
+        </p>
+        <pre><code>exec gammastep -l 52.5200:13.4050</code></pre>
+      </li>
+      <li>
+        <a href="https://gitlab.freedesktop.org/emersion/grim" target="_blank">grim</a> +
+        <a href="https://github.com/emersion/slurp" target="_blank">slurp</a>
         <p>
           Screenshot tools that are boring and functional. Grim is the screenshot utility itself,
           while Slurp allows for selecting a region to capture. The combination is easily bound to

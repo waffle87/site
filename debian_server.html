@@ -77,7 +77,9 @@ networks:
     volumes:
       - ./db:/var/lib/mysql
     networks:
-      - vaultwarden_dbnet
+      - foo_dbnet
+    depends_on:
+      - foo
 
 networks:
   caddybridge:
@@ -92,6 +94,7 @@ networks:
     <ul>
       <li><a href="https://git.pngu.org/server/tree/agendav" target="_blank">Configuration</a></li>
     </ul>
+    <p>Works well and does not require and fancy configuration. No notes.</p>
     <h3><a href="https://sabre.io/baikal" target="_blank">Ba&iuml;kal</a> (CalDav server)</h3>
     <ul>
       <li><a href="https://git.pngu.org/server/tree/baikal" target="_blank">Configuration</a></li>

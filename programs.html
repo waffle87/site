@@ -255,7 +255,7 @@ autoload -U compinit && compinit</code></pre>
         </p>
       </li>
       <li>
-        <a href="https://gitlab.com/chinstrap/gammastep" target="_blank">Gammastep</a>
+        <a href="https://gitlab.com/chinstrap/gammastep" target="_blank">gammastep</a>
         <p>
           A fork of the
           <a href="https://github.com/jonls/redshift" target="_blank">Redshift</a> program that
@@ -266,7 +266,7 @@ autoload -U compinit && compinit</code></pre>
           determine location automatically, which is suitable for a laptop. Gammastep's defaults
           work well for me, and it can simply be started by Sway:
         </p>
-        <pre><code>exec gammastep -l 52.5200:13.4050</code></pre>
+        <pre><code>exec /usr/bin/gammastep -l 52.5200:13.4050</code></pre>
       </li>
       <li>
         <a href="https://gitlab.freedesktop.org/emersion/grim" target="_blank">grim</a> +
@@ -303,8 +303,9 @@ bindsym $mod+Shift+p exec grim -g "$(slurp)"</code></pre>
         <p>
           Notification daemon that's libnotify compatible, and easily
           <a href="https://git.pngu.org/dots/tree/.config/mako/config" target="_blank">configured</a
-          >. Its daemon must be started by Sway: <code>exec /usr/bin/mako</code>.
+          >. Its daemon must be started by Sway:.
         </p>
+        <pre><code>exec /usr/bin/mako</code></pre>
       </li>
       <li>
         <a href="https://fonts.google.com/noto" target="_blank">noto fonts</a>

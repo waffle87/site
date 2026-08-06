@@ -1,0 +1,122 @@
+00:00.0 Host bridge: Intel Corporation 8th/9th Gen Core Processor Host Bridge / DRAM Registers (rev 07)
+	DeviceName: SATA
+	Subsystem: Intel Corporation Device 7270
+	Kernel driver in use: skl_uncore
+00:01.0 PCI bridge: Intel Corporation 6th-10th Gen Core Processor PCIe Controller (x16) (rev 07)
+	Subsystem: Intel Corporation Device 7270
+	Kernel modules: shpchp
+00:01.1 PCI bridge: Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor PCIe Controller (x8) (rev 07)
+	Subsystem: Intel Corporation Device 7270
+	Kernel modules: shpchp
+00:01.2 PCI bridge: Intel Corporation Xeon E3-1200 v5/E3-1500 v5/6th Gen Core Processor PCIe Controller (x4) (rev 07)
+	Subsystem: Intel Corporation Device 7270
+	Kernel modules: shpchp
+00:02.0 VGA compatible controller: Intel Corporation CoffeeLake-H GT2 [UHD Graphics 630]
+	Subsystem: Apple Inc. Device 0176
+	Kernel driver in use: i915
+	Kernel modules: i915
+00:12.0 Signal processing controller: Intel Corporation 300/C240 Series Chipset Family Thermal Subsystem (rev 10)
+	Subsystem: Intel Corporation Device 7270
+	Kernel driver in use: intel_pch_thermal
+	Kernel modules: intel_pch_thermal
+00:14.0 USB controller: Intel Corporation 300/C240 Series Chipset Family USB 3.1 xHCI (rev 10)
+	Subsystem: Intel Corporation Device 7270
+	Kernel driver in use: xhci_hcd
+	Kernel modules: xhci_pci
+00:14.2 RAM memory: Intel Corporation 300/C240 Series Chipset Family Shared SRAM (rev 10)
+00:16.0 Communication controller: Intel Corporation 300/C240 Series Chipset Family HECI #1 (rev 10)
+	Subsystem: Intel Corporation Device 7270
+	Kernel driver in use: mei_me
+	Kernel modules: mei_me
+00:1b.0 PCI bridge: Intel Corporation 300/C240 Series Chipset Family PCIe Root Port #17 (rev f0)
+	Subsystem: Intel Corporation Device 7270
+	Kernel modules: shpchp
+00:1c.0 PCI bridge: Intel Corporation 300/C240 Series Chipset Family PCIe Root Port #1 (rev f0)
+	Subsystem: Intel Corporation Device 7270
+	Kernel modules: shpchp
+00:1e.0 Communication controller: Intel Corporation 300/C240 Series Chipset Family UART #0 (rev 10)
+	Subsystem: Intel Corporation Device 7270
+	Kernel driver in use: intel-lpss
+	Kernel modules: intel_lpss_pci
+00:1f.0 ISA bridge: Intel Corporation Cannon Lake LPC/eSPI Controller (rev 10)
+	Subsystem: Intel Corporation Device 7270
+00:1f.4 SMBus: Intel Corporation 300/C240 Series Chipset Family SMBus (rev 10)
+	Subsystem: Intel Corporation Device 7270
+	Kernel driver in use: i801_smbus
+	Kernel modules: i2c_i801
+00:1f.5 Serial bus controller: Intel Corporation 300/C240 Series Chipset Family SPI (Flash) Controller (rev 10)
+	Subsystem: Intel Corporation Device 7270
+	Kernel driver in use: intel-spi
+	Kernel modules: spi_intel_pci
+01:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Baffin [Radeon RX 460/560D / Pro 450/455/460/555/555X/560/560X] (rev e3)
+	Subsystem: Apple Inc. Radeon Pro 555X
+	Kernel driver in use: amdgpu
+	Kernel modules: amdgpu
+01:00.1 Audio device: Advanced Micro Devices, Inc. [AMD/ATI] Baffin HDMI/DP Audio [Radeon RX 550 640SP / RX 560/560X]
+	Subsystem: Advanced Micro Devices, Inc. [AMD/ATI] Baffin HDMI/DP Audio [Radeon RX 550 640SP / RX 560/560X]
+	Kernel driver in use: snd_hda_intel
+	Kernel modules: snd_hda_intel
+02:00.0 Mass storage controller: Apple Inc. ANS2 NVMe Controller (rev 01)
+	Subsystem: Apple Inc. Device 1800
+	Kernel driver in use: nvme
+	Kernel modules: nvme
+02:00.1 Non-VGA unclassified device: Apple Inc. T2 Bridge Controller (rev 01)
+	Subsystem: Apple Inc. T2 Bridge Controller
+	Kernel driver in use: t2bce_core
+	Kernel modules: t2bce_core
+02:00.2 Non-VGA unclassified device: Apple Inc. T2 Secure Enclave Processor (rev 01)
+	Subsystem: Apple Inc. T2 Secure Enclave Processor
+02:00.3 Multimedia audio controller: Apple Inc. Apple Audio Device (rev 01)
+	Subsystem: Apple Inc. Device 1881
+	Kernel driver in use: t2bce_audio
+	Kernel modules: t2bce_audio
+03:00.0 Network controller: Broadcom Inc. and subsidiaries BCM4364 802.11ac Wireless Network Adapter (rev 03)
+	Subsystem: Apple Inc. Device 07bf
+	Kernel driver in use: brcmfmac
+	Kernel modules: brcmfmac
+04:00.0 PCI bridge: Intel Corporation DSL6540 Thunderbolt 3 Bridge [Alpine Ridge 4C 2015] (rev 06)
+	Subsystem: Intel Corporation Device 0000
+	Kernel modules: shpchp
+05:00.0 PCI bridge: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] (rev 06)
+	Subsystem: Intel Corporation Device 0000
+	Kernel modules: shpchp
+05:01.0 PCI bridge: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] (rev 06)
+	Subsystem: Intel Corporation Device 0000
+	Kernel modules: shpchp
+05:02.0 PCI bridge: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] (rev 06)
+	Subsystem: Intel Corporation Device 0000
+	Kernel modules: shpchp
+05:04.0 PCI bridge: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] (rev 06)
+	Subsystem: Intel Corporation Device 0000
+	Kernel modules: shpchp
+06:00.0 System peripheral: Intel Corporation JHL7540 Thunderbolt 3 NHI [Titan Ridge 4C 2018] (rev 06)
+	Subsystem: Intel Corporation Device 0000
+	Kernel driver in use: thunderbolt
+	Kernel modules: thunderbolt
+07:00.0 USB controller: Intel Corporation JHL7540 Thunderbolt 3 USB Controller [Titan Ridge 4C 2018] (rev 06)
+	Subsystem: Intel Corporation Device 0000
+	Kernel driver in use: xhci_hcd
+	Kernel modules: xhci_pci
+7a:00.0 PCI bridge: Intel Corporation DSL6540 Thunderbolt 3 Bridge [Alpine Ridge 4C 2015] (rev 06)
+	Subsystem: Intel Corporation Device 0000
+	Kernel modules: shpchp
+7b:00.0 PCI bridge: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] (rev 06)
+	Subsystem: Intel Corporation Device 0000
+	Kernel modules: shpchp
+7b:01.0 PCI bridge: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] (rev 06)
+	Subsystem: Intel Corporation Device 0000
+	Kernel modules: shpchp
+7b:02.0 PCI bridge: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] (rev 06)
+	Subsystem: Intel Corporation Device 0000
+	Kernel modules: shpchp
+7b:04.0 PCI bridge: Intel Corporation JHL7540 Thunderbolt 3 Bridge [Titan Ridge 4C 2018] (rev 06)
+	Subsystem: Intel Corporation Device 0000
+	Kernel modules: shpchp
+7c:00.0 System peripheral: Intel Corporation JHL7540 Thunderbolt 3 NHI [Titan Ridge 4C 2018] (rev 06)
+	Subsystem: Intel Corporation Device 0000
+	Kernel driver in use: thunderbolt
+	Kernel modules: thunderbolt
+7d:00.0 USB controller: Intel Corporation JHL7540 Thunderbolt 3 USB Controller [Titan Ridge 4C 2018] (rev 06)
+	Subsystem: Intel Corporation Device 0000
+	Kernel driver in use: xhci_hcd
+	Kernel modules: xhci_pci

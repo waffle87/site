@@ -1,28 +1,45 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Type"
+      content="text/html;charset=utf-8"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
     <title>Debian Server</title>
     <script src="header.js"></script>
   </head>
 
   <body>
-    <a style="text-decoration: none" href="content.html">&lt;--</a>
+    <a
+      style="text-decoration: none"
+      href="content.html"
+      >&lt;--</a
+    >
     <h2>Debian Server</h2>
     <p><i>2024-07-25</i></p>
     <hr />
     <p>
-      Without the physical space or electricity funding to have a home lab setup, I opted for a VPS
-      instead. Despite some perhaps questionable reviews and information online,
-      <a href="https://racknerd.com" target="_blank">RackNerd</a> has provided well for my needs. I
-      pay about 25 USD per year for a KVM VPS with 4 GB RAM and 4 virtual CPU cores. While this is a
-      suspiciously low price (what one may pay <i>per month</i> with another provider), they have
-      quite good Black Friday sales. I initially chose them, as one of the requirements for a VPS
-      was the necessary SMTP ports open for a email server. Most providers (AWS, DigitalOcean, etc.)
-      keep these ports strictly closed, as to not be placed on an IP blacklists for spam
-      origination. I will note that my VPS's IP is on a number of blacklists and it has been a work
-      in progress to be able to send email to certain receivers.
+      Without the physical space or electricity funding to have a home lab
+      setup, I opted for a VPS instead. Despite some perhaps questionable
+      reviews and information online,
+      <a
+        href="https://racknerd.com"
+        target="_blank"
+        >RackNerd</a
+      >
+      has provided well for my needs. I pay about 25 USD per year for a KVM VPS
+      with 4 GB RAM and 4 virtual CPU cores. While this is a suspiciously low
+      price (what one may pay <i>per month</i> with another provider), they have
+      quite good Black Friday sales. I initially chose them, as one of the
+      requirements for a VPS was the necessary SMTP ports open for a email
+      server. Most providers (AWS, DigitalOcean, etc.) keep these ports strictly
+      closed, as to not be placed on an IP blacklists for spam origination. I
+      will note that my VPS's IP is on a number of blacklists and it has been a
+      work in progress to be able to send email to certain receivers.
     </p>
     <pre><code>       _,met$$$$$gg.          jack@pngu.org
     ,g$$$$$$$$$$$$$$$P.       -------------
@@ -42,9 +59,10 @@
           `"Y$b._
               `"""</code></pre>
     <p>
-      There is not much to discuss in terms of intricate system configuration or hardware quirks.
-      (Almost) all services run in Docker containers, configured via Docker Compose. One external
-      network links each container to the Caddy web server container, allowing each container to be
+      There is not much to discuss in terms of intricate system configuration or
+      hardware quirks. (Almost) all services run in Docker containers,
+      configured via Docker Compose. One external network links each container
+      to the Caddy web server container, allowing each container to be
       configured and run independently:
     </p>
     <pre><code>services:
@@ -56,8 +74,8 @@ networks:
   caddybridge:
     external: true</code></pre>
     <p>
-      If a container requires additional images within, like a database, an internal network is
-      used:
+      If a container requires additional images within, like a database, an
+      internal network is used:
     </p>
     <pre><code>services:
   foo:
@@ -87,47 +105,152 @@ networks:
   foo_dbnet:
     internal: true</code></pre>
     <p>
-      I use MariaDB for any database needs, where possible, for consistency and as it is quite
-      lightweight.
+      I use MariaDB for any database needs, where possible, for consistency and
+      as it is quite lightweight.
     </p>
-    <h3><a href="https://agendav.readthedocs.io" target="_blank">Agendav</a> (Calendar client)</h3>
-    <ul>
-      <li><a href="https://git.pngu.org/server/tree/agendav" target="_blank">Configuration</a></li>
-    </ul>
-    <p>Works well and does not require and fancy configuration. No notes.</p>
-    <h3><a href="https://sabre.io/baikal" target="_blank">Ba&iuml;kal</a> (CalDav server)</h3>
-    <ul>
-      <li><a href="https://git.pngu.org/server/tree/baikal" target="_blank">Configuration</a></li>
-    </ul>
-    <h3><a href="https://caddyserver.com" target="_blank">Caddy</a> (Web server)</h3>
-    <ul>
-      <li><a href="https://git.pngu.org/server/tree/caddy" target="_blank">Configuration</a></li>
-    </ul>
-    <h3><a href="https://git.zx2c4.com/cgit" target="_blank">Cgit</a> (Git client)</h3>
-    <ul>
-      <li><a href="https://git.pngu.org/server/tree/cgit" target="_blank">Configuration</a></li>
-    </ul>
-    <h3><a href="https://gitolite.com" target="_blank">Gitolite</a> (Git server)</h3>
-    <h3><a href="https://uptimekuma.org" target="_blank">Kuma</a> (System monitor)</h3>
-    <ul>
-      <li><a href="https://git.pngu.org/server/tree/kuma" target="_blank">Configuration</a></li>
-    </ul>
-    <h3><a href="https://roundcube.net" target="_blank">Roundcube</a> (Webmail client)</h3>
-    <ul>
-      <li>
-        <a href="https://git.pngu.org/server/tree/roundcube" target="_blank">Configuration</a>
-      </li>
-    </ul>
-    <h3><a href="https://stalw.art" target="_blank">Stalwart</a> (Mail server)</h3>
-    <ul>
-      <li><a href="https://git.pngu.org/server/tree/stalwart" target="_blank">Configuration</a></li>
-    </ul>
     <h3>
-      <a href="https://www.vaultwarden.net" target="_blank">Vaultwarden</a> (Password manager)
+      <a
+        href="https://agendav.readthedocs.io"
+        target="_blank"
+        >Agendav</a
+      >
+      (Calendar client)
     </h3>
     <ul>
       <li>
-        <a href="https://git.pngu.org/server/tree/vaultwarden" target="_blank">Configuration</a>
+        <a
+          href="https://git.pngu.org/server/tree/agendav"
+          target="_blank"
+          >Configuration</a
+        >
+      </li>
+    </ul>
+    <p>Works well and does not require and fancy configuration. No notes.</p>
+    <h3>
+      <a
+        href="https://sabre.io/baikal"
+        target="_blank"
+        >Ba&iuml;kal</a
+      >
+      (CalDav server)
+    </h3>
+    <ul>
+      <li>
+        <a
+          href="https://git.pngu.org/server/tree/baikal"
+          target="_blank"
+          >Configuration</a
+        >
+      </li>
+    </ul>
+    <h3>
+      <a
+        href="https://caddyserver.com"
+        target="_blank"
+        >Caddy</a
+      >
+      (Web server)
+    </h3>
+    <ul>
+      <li>
+        <a
+          href="https://git.pngu.org/server/tree/caddy"
+          target="_blank"
+          >Configuration</a
+        >
+      </li>
+    </ul>
+    <h3>
+      <a
+        href="https://git.zx2c4.com/cgit"
+        target="_blank"
+        >Cgit</a
+      >
+      (Git client)
+    </h3>
+    <ul>
+      <li>
+        <a
+          href="https://git.pngu.org/server/tree/cgit"
+          target="_blank"
+          >Configuration</a
+        >
+      </li>
+    </ul>
+    <h3>
+      <a
+        href="https://gitolite.com"
+        target="_blank"
+        >Gitolite</a
+      >
+      (Git server)
+    </h3>
+    <h3>
+      <a
+        href="https://uptimekuma.org"
+        target="_blank"
+        >Kuma</a
+      >
+      (System monitor)
+    </h3>
+    <ul>
+      <li>
+        <a
+          href="https://git.pngu.org/server/tree/kuma"
+          target="_blank"
+          >Configuration</a
+        >
+      </li>
+    </ul>
+    <h3>
+      <a
+        href="https://roundcube.net"
+        target="_blank"
+        >Roundcube</a
+      >
+      (Webmail client)
+    </h3>
+    <ul>
+      <li>
+        <a
+          href="https://git.pngu.org/server/tree/roundcube"
+          target="_blank"
+          >Configuration</a
+        >
+      </li>
+    </ul>
+    <h3>
+      <a
+        href="https://stalw.art"
+        target="_blank"
+        >Stalwart</a
+      >
+      (Mail server)
+    </h3>
+    <ul>
+      <li>
+        <a
+          href="https://git.pngu.org/server/tree/stalwart"
+          target="_blank"
+          >Configuration</a
+        >
+      </li>
+    </ul>
+    <h3>
+      <a
+        href="https://www.vaultwarden.net"
+        target="_blank"
+        >Vaultwarden</a
+      >
+      (Password manager)
+    </h3>
+    <ul>
+      <li>
+        <a
+          href="https://git.pngu.org/server/tree/vaultwarden"
+          target="_blank"
+          >Configuration</a
+        >
       </li>
     </ul>
     <script src="frame.js"></script>
